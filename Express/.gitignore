@@ -1,0 +1,11 @@
+package-lock.json
+node_modules
+yarn.lock
+dist/
+.env
+*-debug.log
+*-lock*
+*.lock
+*.tsbuildinfo
+.DS_Store
+src/bundle.js
