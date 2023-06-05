@@ -7,6 +7,7 @@ import { KnexContainer } from "./knex";
 import { UserService } from "./User/user.service";
 import { UserController } from "./User/user.controller";
 import { print } from "listening-on";
+import { HttpError } from "./http.error";
 // import { isAdmin, isUser } from './guard';
 
 export class AppServer {
@@ -23,8 +24,6 @@ export class AppServer {
     // let io = new socketIO.Server(server)
 
     app.use(express.static("public"));
-    app.use(express.static("adminPage"));
-    app.use(express.static("employeePage"));
 
     // app.use(express.static('public'))
     // app.use(isAdmin,express.static('adminPage'))
@@ -49,19 +48,11 @@ export class AppServer {
     //let memoController = new MemoController(memoService, memoUploader, io)
     //app.use(memoController.router)
 
-    app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-      console.error(error);
-      if ("statusCode" in error) {
-        res.status(error.statusCode);
-      } else {
-        res.status(500);
+    app.use(
+      (error: HttpError, req: Request, res: Response, next: NextFunction) => {
+        HttpError.endResponse(error, res);
       }
-      let message = String(error);
-      message = message.replace(/\w+: /, "");
-      res.json({
-        error: message,
-      });
-    });
+    );
 
     app.use((req, res, next) => {
       res.status(404);
