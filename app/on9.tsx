@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Stack, useRouter, Tabs } from 'expo-router'
 
-import { COLORS, icons, images, SIZES } from '../constants'
-import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome } from '../components'
+import { COLORS, icons, images, SIZES } from './constants'
+import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome } from './components'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, Pressable, Badge, HStack, Flex, Spacer, Divider, Icon, VStack } from "native-base";
 

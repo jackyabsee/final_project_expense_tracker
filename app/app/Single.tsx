@@ -10,9 +10,14 @@ import { Picker } from '@react-native-picker/picker';
 
 const Home = () => {
     const router = useRouter()
-    const [service, setService] = React.useState("交通");
+    const [service, setService] = React.useState("");
     return (
       <>
+      <View style={styles.topContainer}>
+      <Button variant="solid" colorScheme="green" m="2" p="2" width="95" height="45" onPress={() => router.push('/')}>
+        返回
+      </Button>
+      </View>
      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <Stack.Screen
         options={{
@@ -25,10 +30,10 @@ const Home = () => {
 <View style={styles.container}>
 <View style={styles.data}>
     <Text style={styles.text}>種類</Text>
-    <Box maxW="300">
-        <Select selectedValue={service} minWidth="90" _selectedItem={{
+    <Box maxW="300" >
+        <Select selectedValue={service} minWidth="110" fontSize={14}  _selectedItem={{
         bg: "teal.600",
-      }} mt={1} onValueChange={itemValue => setService(itemValue)}>
+      }} height={50} onValueChange={itemValue => setService(itemValue)}>
           <Select.Item label="交通" value="交通" />
           <Select.Item label="餐飲" value="餐飲" />
           <Select.Item label="衣飾" value="衣飾" />
@@ -48,7 +53,7 @@ const Home = () => {
     <View style={styles.data}>
     <Text style={styles.text}>日期</Text>
     <View style={styles.InputView}>
-    <Input style={styles.Input} ></Input>      
+    <Input style={styles.Input} placeholder='dd-mm-yyyy' ></Input>      
     </View>       
     </View>
     <View style={styles.data}>
@@ -59,6 +64,12 @@ const Home = () => {
     </View>
     
 </View>
+<View style={styles.bottomContainer}>
+      <Button variant="solid" colorScheme="green" m="2" p="2" width="95" height="45" onPress={() => router.push('/')}>
+        確認
+      </Button>
+      </View>
+
 </SafeAreaView>
    </>      
     )
@@ -67,7 +78,7 @@ const Home = () => {
 const styles = StyleSheet.create({
     topContainer:{
       display:'flex',
-      flexDirection: 'row-reverse',
+      flexDirection: 'row',
 
     },
     container: {
@@ -86,13 +97,15 @@ const styles = StyleSheet.create({
       marginBottom: '1.75%'
     },
     InputView:{
-        width:90
+        width:  110
     },
     Input: {
-        width: 90
+        width: 100,
+        marginTop: 10,
+        fontSize: 14,
     },
     text: {
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: 'bold',
     },
     pickerContainer: {
@@ -101,6 +114,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginLeft: 16,
+      },
+      bottomContainer:{
+        display:'flex',
+        flexDirection: 'row-reverse',
+  
       }
 });
 export default Home 

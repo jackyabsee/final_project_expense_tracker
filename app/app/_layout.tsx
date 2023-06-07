@@ -7,7 +7,7 @@ const Layout = () => {
     <Tabs>
     <Tabs.Screen name="table" options={{title: "table"}}/>
     <Tabs.Screen name="index" options={{title: "on98"}}/>
-        <Tabs.Screen name="on9" options={{title: "on99"}}/>
+        {/* <Tabs.Screen name="on9" options={{title: "on99"}}/> */}
     <Stack />
     </Tabs>
     </NativeBaseProvider>
