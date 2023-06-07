@@ -1,0 +1,68 @@
+user
+--------------------------
+id	serial unique PK 
+account varchar(20)                                           
+email	varchar(50)
+password varchar	                               
+username varchar(10)
+
+spending
+---------
+id	serial unique PK 
+type varchar
+price varchar
+date date
+remark varchar
+user_id varchar FK -- user.id
+
+asset
+---------
+id	serial unique PK
+category varchar(10)
+organization varchar(12)
+type  varchar(12)
+value varchar(10)
+interest_rate varchar
+remark varchar
+user_id varchar FK -- user.id
+
+content
+----------
+id	serial unique PK
+title varchar(40)
+url varchar
+
+-------command to create table---------
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  account VARCHAR(20),
+  email VARCHAR(50),
+  password VARCHAR,
+  username VARCHAR(10)
+);
+
+CREATE TABLE spending (
+  id SERIAL PRIMARY KEY,
+  type VARCHAR,
+  price VARCHAR,
+  date DATE,
+  remark VARCHAR,
+  user_id INTEGER NOT NULL REFERENCES users(id)
+);
+
+CREATE TABLE asset (
+  id SERIAL PRIMARY KEY,
+  category VARCHAR(10),
+  organization VARCHAR(12),
+  type VARCHAR(12),
+  value VARCHAR(10),
+  interest_rate VARCHAR,
+  remark VARCHAR,
+  user_id INTEGER NOT NULL REFERENCES users(id)
+);
+
+CREATE TABLE content (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(40),
+  url VARCHAR
+);
