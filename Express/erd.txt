@@ -1,0 +1,34 @@
+user
+--------------------------
+id	serial unique PK 
+account varchar(32) unique                                          
+email	varchar(255)
+password_hash varchar(60)	                               
+username varchar(32)
+
+spending
+---------
+id	serial unique PK 
+type varchar(20) 
+price varchar(10)
+date date
+remark varchar(255)
+user_id integer FK -- user.id
+
+asset
+---------
+id	serial unique PK
+category varchar(10)
+organization varchar(12)
+type  varchar(12)
+value varchar(10)
+interest_rate varchar(10)
+remark varchar(255)
+user_id integer FK -- user.id
+
+content
+----------
+id	serial unique PK
+title varchar(40)
+url varchar(255)
+
