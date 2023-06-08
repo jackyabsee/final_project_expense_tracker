@@ -1,4 +1,4 @@
-import { Stack, Tabs } from  'expo-router';
+import { Stack, Tabs } from "expo-router";
 import { NativeBaseProvider, Box } from "native-base";
 const Layout = () => {
     
@@ -14,7 +14,7 @@ const Layout = () => {
     <Stack />
     </Tabs>
     </NativeBaseProvider>
-    )
-}
+  );
+};
 
-export default Layout
+export default Layout;
