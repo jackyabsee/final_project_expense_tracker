@@ -2,7 +2,7 @@ user
 --------------------------
 id	serial unique PK 
 account varchar(32) unique                                          
-email	varchar(255)
+email	varchar(255) null unique
 password_hash varchar(60)	                               
 username varchar(32)
 

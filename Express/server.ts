@@ -8,6 +8,7 @@ import { UserService } from "./User/user.service";
 import { UserController } from "./User/user.controller";
 import { print } from "listening-on";
 import { HttpError } from "./http.error";
+import cors from "cors";
 // import { isAdmin, isUser } from './guard';
 
 export class AppServer {
@@ -15,6 +16,7 @@ export class AppServer {
   public readonly knex: Knex;
   constructor() {
     let app = express();
+    app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 
