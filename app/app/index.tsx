@@ -13,7 +13,7 @@ const Home = () => {
     return (
       <>
       <View  style={styles.topContainer}>
-      <Button variant="solid" colorScheme="green" m="2" p="2">
+      <Button variant="solid" colorScheme="green" m="2" p="2" onPress={() => router.push('/Multi')}>
         多次記賬
       </Button>
       <Button variant="solid" colorScheme="green" m="2" p="2" onPress={() => router.push('/Single')}>

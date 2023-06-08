@@ -1,30 +1,49 @@
-import React, { useState, useRef } from 'react';
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
+import React, { useState } from 'react';
 import { Stack, useRouter, Tabs } from 'expo-router'
-import { COLORS, icons, images, SIZES } from '../constants'
+import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { StyleSheet, View, Text } from 'react-native';
+import { Box, Button, Icon, Pressable, Badge, HStack, Flex, Spacer, Select, Input, ScrollView } from "native-base";
+
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Box, Button, Icon, Pressable, Badge, HStack, Flex, Spacer, Select, Input } from "native-base";
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { Picker } from '@react-native-picker/picker';
 import { apiOrigin } from '../env';
 
-const Home = () => {
-    const router = useRouter()
-    const [type, setType] = React.useState("");
+const App = () => {
+    const router = useRouter
+  const [selectedDates, setSelectedDates] = useState({});
+  const [selectedDateKeys, setSelectedDateKeys] = useState([]);
+  const handleDayPress = (day) => {
+    const selectedDate = day.dateString;
+    const updatedSelectedDates = { ...selectedDates };
+    if (selectedDates[selectedDate]) {
+      delete updatedSelectedDates[selectedDate];
+    } else {
+      updatedSelectedDates[selectedDate] = { selected: true, marked: false, selectedColor: 'lightgreen' };
+    }
+    setSelectedDates(updatedSelectedDates);
+    setSelectedDateKeys(Object.keys(updatedSelectedDates));
+    
+  };
+  
+    
+  const [type, setType] = React.useState("");
     const [price, setPrice] = React.useState("");
-    const [date, setDate] = React.useState("");
     const [remark, setRemark] = React.useState("");
     const handleSubmit = async () => {
-      console.log({ type, price, date, remark })
+        const bodyArr = []
+        console.log(selectedDateKeys)
+        for(let d of selectedDateKeys){
+            bodyArr.push([type, price, d ,remark])
+            console.log(bodyArr)
+        }
+      
       
       try {
-        const response = await fetch(`${apiOrigin}/quickRecordPost`, {
+        const response = await fetch(`${apiOrigin}/multiRecordPost`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ type, price, date, remark }),
+          body: JSON.stringify(bodyArr),
         });
         const json = await response.json();
         console.log(json)
@@ -34,22 +53,32 @@ const Home = () => {
       }
     };
 
-    return (
-      <>
-      <View style={styles.topContainer}>
-      <Button variant="solid" colorScheme="green" m="2" p="2" width="95" height="45" onPress={() => router.push('/')}>
-        返回
-      </Button>
-      </View>
-     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
-      <Stack.Screen
-        options={{
-          headerStyle: { backgroundColor: COLORS.lightWhite },
-          headerShadowVisible: false,
-          
-          headerTitle: "快速記賬",
-        }}
-      />
+
+
+  return (
+    <SafeAreaView>
+    <ScrollView>
+    <View>
+    <Calendar style={{
+        borderWidth: 1,
+        borderColor: 'gray',
+        height: 310,
+      }}
+      theme={{
+        backgroundColor: '#ffffff',
+        calendarBackground: '#ffffff',
+        textSectionTitleColor: '#b6c1cd',
+        selectedDayBackgroundColor: '#00adf5',
+        selectedDayTextColor: '#ffffff',
+        todayTextColor: '#00adf5',
+        dayTextColor: '#2d4150',
+        textDisabledColor: '#d9eeee'
+      }}
+      onDayPress={handleDayPress}
+      markedDates={selectedDates}
+    />
+   </View>
+    
 <View style={styles.container}>
 <View style={styles.data}>
     <Text style={styles.text}>種類</Text>
@@ -67,17 +96,13 @@ const Home = () => {
       </Box>
       
     </View>
+
+
     <View style={styles.data}>
         <Text style={styles.text}>價格</Text>
     <View style={styles.InputView}>
     <Input style={styles.Input} onChangeText={itemValue => setPrice(itemValue)} ></Input>      
     </View>
-    </View>
-    <View style={styles.data}>
-    <Text style={styles.text}>日期</Text>
-    <View style={styles.InputView}>
-    <Input style={styles.Input} placeholder='dd-mm-yyyy' onChangeText={itemValue => setDate(itemValue)}></Input>      
-    </View>       
     </View>
     <View style={styles.data}>
     <Text style={styles.text}>備註</Text>
@@ -93,10 +118,13 @@ const Home = () => {
       </Button>
       </View>
 
-</SafeAreaView>
-   </>      
-    )
-}
+
+
+      </ScrollView>
+   </SafeAreaView>
+ 
+  );
+};
 
 const styles = StyleSheet.create({
     topContainer:{
@@ -105,7 +133,8 @@ const styles = StyleSheet.create({
 
     },
     container: {
-      flex: 1,
+        marginTop:1,
+        height:300,
       backgroundColor: '#fff',
       justifyContent: 'center',
       alignItems: 'center',
@@ -144,4 +173,5 @@ const styles = StyleSheet.create({
   
       }
 });
-export default Home 
+
+export default App;
