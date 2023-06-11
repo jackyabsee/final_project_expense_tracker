@@ -9,6 +9,8 @@ import { UserController } from "./User/user.controller";
 import { print } from "listening-on";
 import { HttpError } from "./http.error";
 import cors from "cors";
+import { RecordService } from "./Record/record.service";
+import { RecordController } from "./Record/record.controller";
 // import { isAdmin, isUser } from './guard';
 
 export class AppServer {
@@ -37,6 +39,9 @@ export class AppServer {
 
     let userService = new UserService(this.knex);
     let userController = new UserController(userService);
+    let recordService = new RecordService(this.knex);
+    let recordController = new RecordController(recordService);
+    app.use(recordController.router)
     app.use(userController.router);
 
     //let memoUploader = new MemoUploader()
