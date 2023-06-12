@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { UserService } from "./user.service";
 import "../../session";
-import { email, nullable, object, string } from "cast.ts";
+import { email, nullable, number, object, string } from "cast.ts";
 import { HttpController } from "../http.controller";
 
 let usernameParser = string({ match: /^[a-zA-Z]+[a-zA-Z0-9]*$/ });
@@ -16,11 +16,16 @@ let registerParser = object({
   email: nullable(email()),
   username: nullable(usernameParser),
 });
+
+let getDataParser = object({
+  userId: number(),
+});
 export class UserController extends HttpController {
   constructor(private userService: UserService) {
     super();
     this.router.post("/users/register", this.wrapMethod(this.register));
     this.router.post("/users/login", this.wrapMethod(this.login));
+    this.router.get("/users/current-expense", this.wrapMethod(this.getData));
   }
 
   register = async (req: Request) => {
@@ -33,5 +38,9 @@ export class UserController extends HttpController {
   login = async (req: Request) => {
     let input = loginParser.parse(req.body);
     return this.userService.login(input);
+  };
+  getData = async (req: Request) => {
+    let input = getDataParser.parse(req.body);
+    return this.userService.getData(input.userId);
   };
 }

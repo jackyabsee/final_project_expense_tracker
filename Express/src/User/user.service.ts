@@ -49,6 +49,21 @@ export class UserService {
 
     return { token };
   }
+  async getData(input: number) {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    console.log("current month", currentMonth);
+
+    let data = await this.knex("spending")
+      .select("type", "price")
+      .whereRaw(`EXTRACT(MONTH FROM date::date) = ? AND user_id = ?`, [
+        currentMonth,
+        input,
+      ]);
+    console.log(data);
+    if (!data) throw new HttpError(404, "No data");
+    return { data };
+  }
 
   private genJWTPayload(id: number): JWTPayload {
     return { id, iat: Math.floor(Date.now() / 1000) };
