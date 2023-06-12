@@ -65,6 +65,11 @@ const App = () => {
     } catch (error) {
       console.error(error);
     }
+    setType("");
+    setPrice("");
+    setRemark("");
+    setSelectedDates({});
+    setSelectedDateKeys([]);
   };
 
   return (
@@ -122,6 +127,7 @@ const App = () => {
               <Input
                 style={styles.Input}
                 onChangeText={(itemValue) => setPrice(itemValue)}
+                value={price}
               ></Input>
             </View>
           </View>
@@ -131,6 +137,7 @@ const App = () => {
               <Input
                 style={styles.Input}
                 onChangeText={(itemValue) => setRemark(itemValue)}
+                value={remark}
               ></Input>
             </View>
           </View>
@@ -148,6 +155,7 @@ const App = () => {
             確認
           </Button>
         </View>
+        <Button onPress={() => router.back()}>back</Button>
       </ScrollView>
     </SafeAreaView>
   );
