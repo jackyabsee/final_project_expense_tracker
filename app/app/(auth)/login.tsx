@@ -12,9 +12,8 @@ import { useAuth } from "../../context/authContext";
 
 const Login = () => {
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState<string | null>(null);
   const { authState, onLogin } = useAuth();
   useEffect(() => {
     if (authState.authenticated) {
@@ -23,7 +22,7 @@ const Login = () => {
   }, [authState]);
 
   const login = async () => {
-    const result = await onLogin!({ username, password });
+    const result = await onLogin!({ account, password });
     if (!result) {
       console.log("server error");
 
@@ -47,10 +46,10 @@ const Login = () => {
         <View style={styles.form}>
           <TextInput
             style={styles.input}
-            placeholder="Username"
-            onChangeText={(text: string) => setUsername(text)}
+            placeholder="Account Name"
+            onChangeText={(text: string) => setAccount(text)}
             placeholderTextColor="#aaaaaa"
-            value={username}
+            value={account}
           ></TextInput>
           <TextInput
             style={styles.input}
@@ -69,7 +68,7 @@ const Login = () => {
             title="Login"
             onPress={() => {
               login();
-              setUsername("");
+              setAccount("");
               setPassword("");
             }}
           ></Button>

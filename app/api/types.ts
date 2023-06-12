@@ -8,7 +8,7 @@ export type JWTPayload = {
 };
 
 export type LoginInput = {
-  username: string;
+  account: string;
   password: string;
 };
 export type LoginResult = {
@@ -16,7 +16,8 @@ export type LoginResult = {
   error?: string;
 };
 export type RegisterInput = {
-  username: string;
+  account: string;
+  username: string | null;
   password: string;
   email: string | null;
 };

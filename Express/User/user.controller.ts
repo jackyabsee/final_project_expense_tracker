@@ -14,7 +14,7 @@ let registerParser = object({
   account: usernameParser,
   password: string(),
   email: nullable(email()),
-  username: usernameParser,
+  username: nullable(usernameParser),
 });
 export class UserController extends HttpController {
   constructor(private userService: UserService) {
@@ -25,6 +25,7 @@ export class UserController extends HttpController {
 
   register = async (req: Request) => {
     req.body.email ||= null;
+    req.body.username ||= null;
     let input = registerParser.parse(req.body);
     return this.userService.register(input);
   };

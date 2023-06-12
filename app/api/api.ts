@@ -1,10 +1,12 @@
 import { apiOrigin } from "../env";
-import { LoginInput, LoginResult } from "./types";
+import { LoginInput, LoginResult, RegisterInput } from "./types";
 
 export async function loginFn(input: LoginInput) {
   return post<LoginResult>("/users/login", input);
 }
-
+export async function registerFn(input: RegisterInput) {
+  return post<LoginResult>("/users/register", input);
+}
 export async function get<T>(url: string, token?: string) {
   try {
     let res = await fetch(apiOrigin + url, {

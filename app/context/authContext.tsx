@@ -4,7 +4,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { AuthState, RegisterInput, LoginInput } from "../api/types";
 import { apiOrigin } from "../env";
-import { loginFn } from "../api/api";
+import { loginFn, registerFn } from "../api/api";
 interface AuthProps {
   authState?: AuthState;
   onRegister?: (input: RegisterInput) => Promise<any>;
@@ -41,33 +41,19 @@ export const AuthProvider = ({ children }: { children: any }) => {
   }, []);
 
   const register = async (input: RegisterInput) => {
-    try {
-      const json = await axios.post(apiOrigin + "/users/register", {
-        input,
-      });
-      setAuthState({ token: json.data.token, authenticated: true });
-      axios.defaults.headers.common["Authorization"] = `Bearer ${json.data}`;
-      await SecureStore.setItemAsync(TOKEN_KEY, json.data.token);
-      return { json };
-    } catch (error) {
-      return { error: String(error) };
+    const json = await registerFn(input);
+    if (json.error) {
+      return { error: json.error };
     }
+    if (json.token) {
+      const token = json.token;
+      setAuthState({ token, authenticated: true });
+      await SecureStore.setItemAsync(TOKEN_KEY, token);
+    }
+    return { json };
   };
 
   const login = async (input: LoginInput) => {
-    //v1
-    // const json = await axios.post("http://192.168.80.87:8100/users/login", {
-    //   input,
-    // });
-    // console.log(json);
-
-    // setAuthState({ token: json.data.token, authenticated: true });
-    // axios.defaults.headers.common[
-    //   "Authorization"
-    // ] = `Bearer ${json.data.token}`;
-    // await SecureStore.setItemAsync(TOKEN_KEY, json.data.token);
-    // return json;
-
     //v2
     const json = await loginFn(input);
     if (json.error) {
