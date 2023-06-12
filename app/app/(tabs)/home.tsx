@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Stack, useRouter, Tabs } from "expo-router";
 
@@ -16,13 +16,54 @@ import {
 import { Button as HeaderButton } from "react-native";
 import { useAuth } from "../../context/authContext";
 import jwtDecode from "jwt-decode";
-import { JWTPayload } from "../../api/types";
+import { HomeData, JWTPayload } from "../../api/types";
 import { UseGetId } from "../../hooks/useGetId";
+import { getHomeData } from "../../api/api";
+import { useGet } from "../../hooks/useGet";
 
 const Home = () => {
   const router = useRouter();
   const { onLogout, authState } = useAuth();
   const userId = UseGetId();
+  // let data: { items: Array<HomeData> } & { error?: string };
+  const [data, setData] = useState<
+    { items: Array<HomeData> } & { error?: string }
+  >({ items: null, error: "loading" });
+  useEffect(() => {
+    (async () => {
+      const data = await getHomeData(authState.token);
+      setData(data as { items: Array<HomeData> } & { error?: string });
+    })();
+  }, []);
+
+  function RenderHomeData({
+    data,
+  }: {
+    data: { items: Array<HomeData> } & { error?: string };
+  }) {
+    if (!data) {
+      return <></>;
+    }
+
+    if (data.error) {
+      return <Text style={styles.text}>{String(data.error)}</Text>;
+    }
+
+    if (!Array.isArray(data.items)) {
+      return <></>;
+    }
+
+    return data.items.map((item: HomeData) => {
+      return (
+        <View>
+          <Text style={styles.text}>
+            {item.type} {item.price}
+          </Text>
+        </View>
+      );
+    });
+  }
+
   return (
     <>
       <View style={styles.topContainer}>
@@ -39,7 +80,13 @@ const Home = () => {
             ),
           }}
         />
-        <Button variant="solid" colorScheme="green" m="2" p="2" onPress={() => router.push("/Multi")}>
+        <Button
+          variant="solid"
+          colorScheme="green"
+          m="2"
+          p="2"
+          onPress={() => router.push("/Multi")}
+        >
           多次記賬
         </Button>
         <Button
@@ -54,7 +101,9 @@ const Home = () => {
       </View>
 
       <SafeAreaView style={styles.container}>
-        <View style={styles.data}>
+        {<RenderHomeData data={data} />}
+
+        {/* <View style={styles.data}>
           <Text style={styles.text}>交通</Text>
           <Text style={styles.text}>$300</Text>
         </View>
@@ -77,7 +126,7 @@ const Home = () => {
         <View style={styles.data}>
           <Text style={styles.text}>其他</Text>
           <Text style={styles.text}>$130</Text>
-        </View>
+        </View> */}
         <View>{authState.token ? <Text>{userId}</Text> : null}</View>
       </SafeAreaView>
     </>

@@ -21,3 +21,8 @@ export type RegisterInput = {
   password: string;
   email: string | null;
 };
+
+export type HomeData = {
+  type: string;
+  price: string;
+};

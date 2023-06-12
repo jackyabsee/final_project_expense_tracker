@@ -60,9 +60,21 @@ export class UserService {
         currentMonth,
         input,
       ]);
-    console.log(data);
+
     if (!data) throw new HttpError(404, "No data");
-    return { data };
+    const result = Object.values(
+      data.reduce((acc, curr) => {
+        if (acc[curr.type]) {
+          acc[curr.type].price += parseInt(curr.price);
+        } else {
+          acc[curr.type] = { type: curr.type, price: parseInt(curr.price) };
+        }
+
+        return acc;
+      }, {})
+    );
+    console.log(result);
+    return { items: result };
   }
 
   private genJWTPayload(id: number): JWTPayload {
