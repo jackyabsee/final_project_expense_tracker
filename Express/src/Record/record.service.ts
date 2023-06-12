@@ -13,7 +13,7 @@ export class RecordService {
     remark: string;
     userId: string;
   }) {
-    await this.knex
+    let json = await this.knex
       .insert({
         type: Record.type,
         price: Record.price,
@@ -23,22 +23,24 @@ export class RecordService {
       })
       .into("spending")
       .returning("id");
-
-    return "abc";
+      console.log("json in service: ",json)
+    return json;
   }
 
   async multiRecord(req: Request) {
     try {
-      console.log(req.body);
-      // for (let e of req.body as any) {
-      //     await this.knex.insert({
-      //         'employee_id': user_id,
-      //         'date': e.date,
-      //         'section': e.section,
-      //         'available': e.available
-      //     }).into("working_time")
-      //     console.log("pogo")
-      // }
+      console.log(req);
+       for (let eachRecord of req as any) {
+           await this.knex.insert({
+            type: eachRecord[0],
+            price: eachRecord[1],
+            date: eachRecord[2],
+            remark: eachRecord[3],
+            user_id: eachRecord[4]
+
+           }).into("spending")
+           console.log("pogo")
+       }
       return "abc";
     } catch (err) {
       return err;

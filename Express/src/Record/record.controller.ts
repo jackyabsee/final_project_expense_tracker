@@ -30,7 +30,7 @@ export class RecordController extends HttpController {
     let remark = req.body.remark;
     let userId = req.body.userId;
 
-    console.log(req.body);
+    console.log("controller req.body:", req.body);
 
     let json = await this.recordService.quickRecord({
       type,

@@ -39,7 +39,7 @@ const Home = () => {
             ),
           }}
         />
-        <Button variant="solid" colorScheme="green" m="2" p="2">
+        <Button variant="solid" colorScheme="green" m="2" p="2" onPress={() => router.push("/Multi")}>
           多次記賬
         </Button>
         <Button
