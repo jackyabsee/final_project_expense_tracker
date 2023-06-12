@@ -6,10 +6,10 @@ import { NativeBaseProvider } from "native-base";
 export default function Layout() {
   return (
     // Setup the auth context and render our layout inside of it.
-    <NativeBaseProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <NativeBaseProvider>
         <Stack screenOptions={{ headerShown: false }} />
-      </AuthProvider>
-    </NativeBaseProvider>
+      </NativeBaseProvider>
+    </AuthProvider>
   );
 }

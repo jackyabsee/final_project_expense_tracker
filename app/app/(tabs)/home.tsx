@@ -70,13 +70,14 @@ const Home = () => {
         <Stack.Screen
           options={{
             headerRight: () => (
-              <HeaderButton
-                title="Logout"
+              <Button
                 onPress={async () => {
                   await onLogout();
                   router.replace("/");
                 }}
-              />
+              >
+                Logout
+              </Button>
             ),
           }}
         />

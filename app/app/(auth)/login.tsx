@@ -93,10 +93,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#262626",
   },
   form: {
-    width: "75%",
-    backgroundColor: "#ffffff",
+    width: "80%",
+    backgroundColor: "#191919",
     padding: 20,
     borderRadius: 10,
     shadowColor: "#000",
@@ -110,10 +111,27 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: "#cccccc",
+    borderColor: "#00FFA2",
     borderWidth: 1,
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
+    color: "#F5F5F5",
+  },
+  button: {
+    backgroundColor: "#00FFA2",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  buttonText: {
+    color: "#191919",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  createAccountText: {
+    color: "#F5F5F5",
+    marginTop: 20,
+    textDecorationLine: "underline",
   },
 });

@@ -101,8 +101,12 @@ export default function ExampleFour() {
             <HeaderButton
               title="Logout"
               onPress={async () => {
-                await onLogout();
-                router.replace("/");
+                try {
+                  await onLogout();
+                  router.replace("/");
+                } catch (error) {
+                  console.log(error);
+                }
               }}
             />
           ),
