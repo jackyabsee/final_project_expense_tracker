@@ -11,7 +11,7 @@ export class RecordService {
     price: string;
     date: Date;
     remark: string;
-    userId: string;
+    userId: number;
   }) {
     let json = await this.knex
       .insert({
@@ -23,24 +23,25 @@ export class RecordService {
       })
       .into("spending")
       .returning("id");
-      console.log("json in service: ",json)
+    console.log("json in service: ", json);
     return json;
   }
 
   async multiRecord(req: Request) {
     try {
       console.log(req);
-       for (let eachRecord of req as any) {
-           await this.knex.insert({
+      for (let eachRecord of req as any) {
+        await this.knex
+          .insert({
             type: eachRecord[0],
             price: eachRecord[1],
             date: eachRecord[2],
             remark: eachRecord[3],
-            user_id: eachRecord[4]
-
-           }).into("spending")
-           console.log("pogo")
-       }
+            user_id: eachRecord[4],
+          })
+          .into("spending");
+        console.log("pogo");
+      }
       return "abc";
     } catch (err) {
       return err;

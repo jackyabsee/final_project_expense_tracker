@@ -73,7 +73,9 @@ export class UserService {
         return acc;
       }, {})
     );
-    console.log(result);
+    console.log("data", data);
+
+    console.log("result", result);
     return { items: result };
   }
 

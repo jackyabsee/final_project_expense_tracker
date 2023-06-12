@@ -2,6 +2,15 @@ import { Request } from "express";
 import { RecordService } from "./record.service";
 import "../../session";
 import { HttpController } from "../http.controller";
+import { date, number, object, string } from "cast.ts";
+
+let quickRecordParser = object({
+  type: string(),
+  price: string(),
+  date: date(),
+  remark: string(),
+  userId: number(),
+});
 
 export class RecordController extends HttpController {
   constructor(private recordService: RecordService) {
@@ -24,21 +33,10 @@ export class RecordController extends HttpController {
 
   quickRecord = async (req: Request) => {
     console.log(req.body);
-    let type = req.body.type;
-    let price = req.body.price;
-    let date = req.body.date;
-    let remark = req.body.remark;
-    let userId = req.body.userId;
-
+    let input = quickRecordParser.parse(req.body);
     console.log("controller req.body:", req.body);
 
-    let json = await this.recordService.quickRecord({
-      type,
-      price,
-      date,
-      remark,
-      userId,
-    });
+    let json = await this.recordService.quickRecord(input);
     return json;
   };
 
