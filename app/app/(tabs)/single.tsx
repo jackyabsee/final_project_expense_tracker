@@ -37,7 +37,7 @@ const Home = () => {
   const [remark, setRemark] = React.useState("");
   const userId = UseGetId();
   const handleSubmit = async () => {
-    console.log({ type, price, date, remark });
+    console.log({ type, price, date, remark, userId });
 
     try {
       const response = await fetch(`${apiOrigin}/quickRecordPost`, {
@@ -45,10 +45,14 @@ const Home = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ type, price, date, remark }),
+        body: JSON.stringify({ type, price, date, remark, userId }),
       });
       const json = await response.json();
       console.log(json);
+      setType("");
+      setPrice("");
+      setDate("");
+      setRemark("");
     } catch (error) {
       console.error(error);
     }
@@ -85,7 +89,7 @@ const Home = () => {
                   p="2"
                   width="95"
                   height="45"
-                  onPress={() => router.push("/")}
+                  onPress={() => router.back()}
                 >
                   返回
                 </Button>
@@ -121,6 +125,7 @@ const Home = () => {
                 <Input
                   style={styles.Input}
                   onChangeText={(itemValue) => setPrice(itemValue)}
+                  value={price}
                 ></Input>
               </View>
             </View>
@@ -131,6 +136,7 @@ const Home = () => {
                   style={styles.Input}
                   placeholder="dd-mm-yyyy"
                   onChangeText={(itemValue) => setDate(itemValue)}
+                  value={date}
                 ></Input>
               </View>
             </View>
@@ -140,6 +146,7 @@ const Home = () => {
                 <Input
                   style={styles.Input}
                   onChangeText={(itemValue) => setRemark(itemValue)}
+                  value={remark}
                 ></Input>
               </View>
             </View>
