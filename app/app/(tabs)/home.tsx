@@ -15,10 +15,13 @@ import {
 } from "native-base";
 import { Button as HeaderButton } from "react-native";
 import { useAuth } from "../../context/authContext";
+import jwtDecode from "jwt-decode";
+import { JWTPayload } from "../../api/types";
 
 const Home = () => {
   const router = useRouter();
-  const { onLogout } = useAuth();
+  const { onLogout, authState } = useAuth();
+
   return (
     <>
       <View style={styles.topContainer}>
@@ -73,6 +76,11 @@ const Home = () => {
         <View style={styles.data}>
           <Text style={styles.text}>其他</Text>
           <Text style={styles.text}>$130</Text>
+        </View>
+        <View>
+          {authState.token ? (
+            <Text>{(jwtDecode(authState.token) as JWTPayload).id}</Text>
+          ) : null}
         </View>
       </SafeAreaView>
     </>

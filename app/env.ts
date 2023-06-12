@@ -1,1 +1,1 @@
-export const apiOrigin = "http://10.193.191.210:8100";
+export const apiOrigin = "http://192.168.80.81:8100";
