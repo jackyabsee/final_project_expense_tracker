@@ -50,3 +50,22 @@ export async function getJWTPayload(req: Request) {
 export function encodeJWT(payload: JWTPayload) {
   return jwt.encode(payload, env.JWT_SECRET);
 }
+export function decodeJWT(req: Request) {
+  let token: string;
+  try {
+    token = permit.check(req);
+  } catch (error) {
+    throw new HttpError(401, "missing jwt token");
+  }
+  if (!token) {
+    throw new HttpError(401, "empty jwt token");
+  }
+
+  let payload: JWTPayload;
+  try {
+    payload = jwt.decode(token, env.JWT_SECRET);
+  } catch (error) {
+    throw new HttpError(403, "invalid jwt token");
+  }
+  return payload;
+}

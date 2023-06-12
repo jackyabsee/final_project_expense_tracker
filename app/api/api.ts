@@ -1,5 +1,5 @@
 import { apiOrigin } from "../env";
-import { LoginInput, LoginResult, RegisterInput } from "./types";
+import { HomeData, LoginInput, LoginResult, RegisterInput } from "./types";
 
 export async function loginFn(input: LoginInput) {
   return post<LoginResult>("/users/login", input);
@@ -7,10 +7,15 @@ export async function loginFn(input: LoginInput) {
 export async function registerFn(input: RegisterInput) {
   return post<LoginResult>("/users/register", input);
 }
+
+export async function getHomeData(token: string) {
+  return get<{ items: Array<HomeData> }>("/users/current-expense", token);
+}
 export async function get<T>(url: string, token?: string) {
   try {
     let res = await fetch(apiOrigin + url, {
       headers: { Authorization: "Bearer " + token },
+      method: "GET",
     });
 
     let json = await res.json();

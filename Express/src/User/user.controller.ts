@@ -1,8 +1,9 @@
 import { Request } from "express";
 import { UserService } from "./user.service";
 import "../../session";
-import { email, nullable, number, object, string } from "cast.ts";
+import { email, nullable, object, string } from "cast.ts";
 import { HttpController } from "../http.controller";
+import { decodeJWT } from "../../jwt";
 
 let usernameParser = string({ match: /^[a-zA-Z]+[a-zA-Z0-9]*$/ });
 let loginParser = object({
@@ -17,9 +18,6 @@ let registerParser = object({
   username: nullable(usernameParser),
 });
 
-let getDataParser = object({
-  userId: number(),
-});
 export class UserController extends HttpController {
   constructor(private userService: UserService) {
     super();
@@ -40,7 +38,7 @@ export class UserController extends HttpController {
     return this.userService.login(input);
   };
   getData = async (req: Request) => {
-    let input = getDataParser.parse(req.body);
-    return this.userService.getData(input.userId);
+    let id = decodeJWT(req).id;
+    return this.userService.getData(id);
   };
 }
