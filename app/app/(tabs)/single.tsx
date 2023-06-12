@@ -8,7 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Picker } from '@react-native-picker/picker';
 import { apiOrigin } from '../../env';
-import { JWTPayload.id } from '../../api/types';
+import { JWTPayload } from '../../api/types';
+import jwtDecode from 'jwt-decode';
 
 const Home = () => {
     const router = useRouter()
@@ -18,7 +19,9 @@ const Home = () => {
     const [remark, setRemark] = React.useState("");
     const handleSubmit = async () => {
       console.log({ type, price, date, remark })
-      
+      const userId =  {authState.token ? (
+        <Text>{(jwtDecode(authState.token) as JWTPayload).id}</Text>
+      ) : null}。
       try {
         const response = await fetch(`${apiOrigin}/quickRecordPost`, {
           method: 'POST',
