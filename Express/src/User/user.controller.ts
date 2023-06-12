@@ -1,8 +1,8 @@
 import { Request } from "express";
-import { HttpController } from "./http.controller";
 import { UserService } from "./user.service";
-import "../session";
+import "../../session";
 import { email, nullable, object, string } from "cast.ts";
+import { HttpController } from "../http.controller";
 
 let usernameParser = string({ match: /^[a-zA-Z]+[a-zA-Z0-9]*$/ });
 let loginParser = object({
