@@ -19,7 +19,7 @@ export class RecordService {
       .into('spending')
       .returning('id')
 
-      
+      return "abc"
     }
 
     async multiRecord(req: Request){

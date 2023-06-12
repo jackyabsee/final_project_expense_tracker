@@ -1,6 +1,6 @@
 user
 --------------------------
-id	serial unique PK 
+id unique PK 
 account varchar(32) unique                                          
 email	varchar(255) null unique
 password_hash varchar(60)	                               
@@ -8,7 +8,7 @@ username varchar(32)
 
 spending
 ---------
-id	serial unique PK 
+id unique PK 
 type varchar(20) 
 price varchar(10)
 date date
