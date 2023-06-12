@@ -1,20 +1,13 @@
-import { Stack, Tabs } from "expo-router";
-import { NativeBaseProvider, Box } from "native-base";
-const Layout = () => {
-    
-    return (
-        <NativeBaseProvider>
-    <Tabs>
-    <Tabs.Screen name="table" options={{title: "table"}}/>
-    <Tabs.Screen name="index" options={{title: "主頁"}}/>
-    <Tabs.Screen name="Single" options={{title: "Single", href:null}}/>
-    <Tabs.Screen name="Multi" options={{title: "Multi", href:null}}/>
-    <Tabs.Screen name="table2" options={{title: "Asset"}}/>
-        <Tabs.Screen name="on9" options={{title: "on99",  href:null}}/>
-    <Stack />
-    </Tabs>
-    </NativeBaseProvider>
-  );
-};
+import { Slot, Stack, Tabs, useRouter } from "expo-router";
+import { AuthProvider, useAuth } from "../context/authContext";
+import { NativeBaseProvider } from "native-base";
+// import { Provider } from "../context/auth";
 
-export default Layout;
+export default function Layout() {
+  return (
+    // Setup the auth context and render our layout inside of it.
+    <AuthProvider>
+      <Stack screenOptions={{ headerShown: true }} />
+    </AuthProvider>
+  );
+}

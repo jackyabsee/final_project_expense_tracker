@@ -11,7 +11,7 @@ export type RegisterInput = {
   account: string;
   password: string;
   email: string | null;
-  username: string;
+  username: string | null;
 };
 
 // export type SelfProfileOutput = {
