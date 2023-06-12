@@ -4,13 +4,13 @@ import http from "http";
 import { Knex } from "knex";
 // import { employeeRoutes } from './employeeTime/employee.routes'
 import { KnexContainer } from "./knex";
-import { UserService } from "./User/user.service";
-import { UserController } from "./User/user.controller";
+import { UserService } from "./src/User/user.service";
+import { UserController } from "./src/User/user.controller";
 import { print } from "listening-on";
 import { HttpError } from "./http.error";
 import cors from "cors";
-import { RecordService } from "./Record/record.service";
-import { RecordController } from "./Record/record.controller";
+import { RecordService } from "./src/Record/record.service";
+import { RecordController } from "./src/Record/record.controller";
 // import { isAdmin, isUser } from './guard';
 
 export class AppServer {
@@ -41,7 +41,7 @@ export class AppServer {
     let userController = new UserController(userService);
     let recordService = new RecordService(this.knex);
     let recordController = new RecordController(recordService);
-    app.use(recordController.router)
+    app.use(recordController.router);
     app.use(userController.router);
 
     //let memoUploader = new MemoUploader()

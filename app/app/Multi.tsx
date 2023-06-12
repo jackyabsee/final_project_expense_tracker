@@ -18,11 +18,13 @@ import {
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { apiOrigin } from "../env";
+import { UseGetId } from "../hooks/useGetId";
 
 const App = () => {
   const router = useRouter;
   const [selectedDates, setSelectedDates] = useState({});
   const [selectedDateKeys, setSelectedDateKeys] = useState([]);
+  const userId = UseGetId();
   const handleDayPress = (day) => {
     const selectedDate = day.dateString;
     const updatedSelectedDates = { ...selectedDates };
@@ -46,7 +48,7 @@ const App = () => {
     const bodyArr = [];
     console.log(selectedDateKeys);
     for (let d of selectedDateKeys) {
-      bodyArr.push([type, price, d, remark]);
+      bodyArr.push([type, price, d, remark, userId]);
       console.log(bodyArr);
     }
 

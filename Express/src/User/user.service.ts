@@ -1,9 +1,9 @@
 import { Knex } from "knex";
-import { comparePassword, hashPassword } from "../hash";
-import { HttpError } from "../http.error";
-import { JWTPayload, LoginInput, RegisterInput } from "../types";
+import { comparePassword, hashPassword } from "../../hash";
+import { HttpError } from "../../http.error";
+import { JWTPayload, LoginInput, RegisterInput } from "../../types";
 import httpStatus from "http-status";
-import { encodeJWT } from "../jwt";
+import { encodeJWT } from "../../jwt";
 
 export class UserService {
   constructor(private knex: Knex) {}
