@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Stack, useRouter, Tabs } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -15,20 +16,64 @@ import {
 } from "native-base";
 import { Button as HeaderButton } from "react-native";
 import { useAuth } from "../../context/authContext";
-import jwtDecode from "jwt-decode";
+// import jwtDecode from "jwt-decode";
 import { HomeData, JWTPayload } from "../../api/types";
-import { UseGetId } from "../../hooks/useGetId";
+import { useGetId } from "../../hooks/useGetId";
 import { getHomeData } from "../../api/api";
 import { useGet } from "../../hooks/useGet";
+function RenderHomeData({
+  data,
+}: {
+  data: { items: Array<HomeData> } & { error?: string };
+}): any {
+  if (!data) {
+    return <></>;
+  }
+
+  if (data.error) {
+    return <Text style={styles.text}>{String(data.error)}</Text>;
+  }
+
+  if (!Array.isArray(data.items)) {
+    return <></>;
+  }
+
+  return data.items.map((item: HomeData) => {
+    return (
+      <View>
+        <Text style={styles.text}>
+          {item.type} {item.price}
+        </Text>
+      </View>
+    );
+  });
+}
+
+function Logout() {
+  const router = useRouter();
+  const { onLogout, authState } = useAuth();
+
+  return (
+    <Button
+      onPress={async () => {
+        await onLogout();
+        router.replace("/login");
+      }}
+    >
+      Logout
+    </Button>
+  );
+}
 
 const Home = () => {
   const router = useRouter();
   const { onLogout, authState } = useAuth();
-  const userId = UseGetId();
+  const userId = useGetId();
   // let data: { items: Array<HomeData> } & { error?: string };
   const [data, setData] = useState<
     { items: Array<HomeData> } & { error?: string }
   >({ items: null, error: "loading" });
+
   useEffect(() => {
     (async () => {
       const data = await getHomeData(authState.token);
@@ -36,51 +81,15 @@ const Home = () => {
     })();
   }, []);
 
-  function RenderHomeData({
-    data,
-  }: {
-    data: { items: Array<HomeData> } & { error?: string };
-  }) {
-    if (!data) {
-      return <></>;
-    }
-
-    if (data.error) {
-      return <Text style={styles.text}>{String(data.error)}</Text>;
-    }
-
-    if (!Array.isArray(data.items)) {
-      return <></>;
-    }
-
-    return data.items.map((item: HomeData) => {
-      return (
-        <View>
-          <Text style={styles.text}>
-            {item.type} {item.price}
-          </Text>
-        </View>
-      );
-    });
-  }
-
   return (
     <>
       <View style={styles.topContainer}>
         <Stack.Screen
           options={{
-            headerRight: () => (
-              <Button
-                onPress={async () => {
-                  await onLogout();
-                  router.replace("/");
-                }}
-              >
-                Logout
-              </Button>
-            ),
+            headerRight: () => <Logout />,
           }}
         />
+
         <Button
           variant="solid"
           colorScheme="green"
@@ -102,7 +111,7 @@ const Home = () => {
       </View>
 
       <SafeAreaView style={styles.container}>
-        {<RenderHomeData data={data} />}
+        <RenderHomeData data={data} />
 
         {/* <View style={styles.data}>
           <Text style={styles.text}>交通</Text>

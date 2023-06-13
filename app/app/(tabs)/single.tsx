@@ -26,9 +26,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Picker } from "@react-native-picker/picker";
 import { apiOrigin } from "../../env";
-import { JWTPayload } from "../../api/types";
-import jwtDecode from "jwt-decode";
-import { UseGetId } from "../../hooks/useGetId";
+// import { JWTPayload } from "../../api/types";
+// import jwtDecode from "jwt-decode";
+import { useGetId } from "../../hooks/useGetId";
 
 const Home = () => {
   const router = useRouter();
@@ -36,7 +36,7 @@ const Home = () => {
   const [price, setPrice] = React.useState("");
   const [date, setDate] = React.useState("");
   const [remark, setRemark] = React.useState("");
-  const userId = UseGetId();
+  const userId = useGetId();
   const handleSubmit = async () => {
     console.log({ type, price, date, remark, userId });
 

@@ -15,8 +15,13 @@ const Login = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const { authState, onLogin } = useAuth();
+
   useEffect(() => {
     if (authState.authenticated) {
+      console.log("AAAAAAAAAAAAAAAAAAA");
+      console.log(authState);
+      console.log(authState.authenticated);
+
       router.replace("/home");
     }
   }, [authState]);

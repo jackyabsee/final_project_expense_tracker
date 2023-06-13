@@ -5,9 +5,12 @@ const Tabs_layout = () => {
     <Tabs>
       <Tabs.Screen name="home" options={{ title: "Home" }} />
       <Tabs.Screen name="single" options={{ title: "single" }} />
-      <Tabs.Screen name="Multi" options={{ title: "Multi" }} />
       <Tabs.Screen name="table" options={{ title: "table" }} />
       <Tabs.Screen name="table2" options={{ title: "table2" }} />
+      <Tabs.Screen
+        name="addAssetDetails"
+        options={{ title: "addAssetDetails" }}
+      />
     </Tabs>
   );
 };

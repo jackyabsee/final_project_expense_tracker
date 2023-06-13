@@ -76,6 +76,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
       // axios.defaults.headers.common["Authorization"] = "";
       setAuthState({ token: null, authenticated: null });
     } catch (error) {
+      console.log(error);
       return { error: String(error) };
     }
   };
@@ -86,5 +87,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
     onLogout: logout,
     authState,
   };
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
