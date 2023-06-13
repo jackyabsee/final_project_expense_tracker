@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
-import React, { Component } from "react";
+import { Heading } from "native-base";
+import React, { Component, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -9,67 +10,70 @@ import {
 } from "react-native";
 import { Table, TableWrapper, Row } from "react-native-table-component";
 
-export default function SavingTable() {
+
+
+function AddBtn({ title }:{ title: string }) {
   const router = useRouter();
-  const tableHead = [
-    "所屬機構",
-    "資產種類",
-    "資產價值",
-    "備註",
-    "年利率",
-    "編輯/刪除",
-  ];
-  const widthArr = [90, 100, 100, 90, 100, 130];
-  const tableData = [
-    ["恒生銀行", "定期存款", "$3000000", "3%", "31-03-2024 完成", "編輯/刪除"],
-  ];
 
-  function editAndDelete() {
-    return (
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.editBtn}>
-          <View style={styles.editBtn}>
-            <Text style={styles.btnText}>編輯</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteBtn}>
-          <View style={styles.deleteBtn}>
-            <Text style={styles.btnText}>刪除</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+  return (
+    <View style={styles.buttonContainer}>
+      <TouchableOpacity
+        style={styles.addBtn}
+        onPress={() => router.push({ pathname: "/addAssetDetails", params: { title: title } })}
+      >
+        <View style={styles.addBtn}>
+          <Text style={styles.btnText}>新增</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
 
-  function addBtn() {
-    return (
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.addBtn}
-          onPress={() => router.push("/addAssetDetails")}
-        >
-          <View style={styles.addBtn}>
-            <Text style={styles.btnText}>新增</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+function EditAndDelete() {
+  return (
+    <View style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.editBtn}>
+        <View style={styles.editBtn}>
+          <Text style={styles.btnText}>編輯</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.deleteBtn}>
+        <View style={styles.deleteBtn}>
+          <Text style={styles.btnText}>刪除</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
 
-  for (let i = 1; i < 20; i++) {
-    let rowData = [editAndDelete()];
-    if (i === 19) {
-      tableData.push([addBtn()]);
-      break;
-    }
-    for (let j = 0; j < 5; j++) {
-      rowData.unshift(`${i}${j}`);
-    }
-    tableData.push(rowData);
-  }
+const tableHead = [
+  "所屬機構",
+  "資產種類",
+  "資產價值",
+  "回報率",
+  "編輯/刪除"
+];
+const widthArr = [120, 100, 100, 100, 130, 90];
+const tableDataRaw: any[] = [
+  ["編輯", "恒生銀行", "資產類別", "$3000000", "3%", "2024年完成"],
+];
+
+export default function SavingTable() {
+ 
+
+  const [ tableData, setTableData ] = useState<any[]>(tableDataRaw);
+
+  useEffect(() => {
+    setTableData([
+      ...tableData,
+      [, "", "", "", "", ""]
+    ])
+  }, [])
+  
 
   return (
     <View style={styles.container}>
+      <View><Heading size='lg'>存款</Heading></View>
       <ScrollView horizontal={true}>
         <View>
           <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>

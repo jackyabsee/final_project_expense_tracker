@@ -18,8 +18,7 @@ user_id integer FK -- user.id
 asset
 ---------
 id	serial unique PK
-category varchar(10)
-organization varchar(12)
+institution varchar(12)
 type  varchar(12)
 value varchar(10)
 interest_rate varchar(10)
@@ -32,3 +31,4 @@ id	serial unique PK
 title varchar(40)
 url varchar(255)
 
+13/6/2023 dropped category column and change the column name 'organization' to 'institution'

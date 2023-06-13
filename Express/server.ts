@@ -11,6 +11,9 @@ import { HttpError } from "./http.error";
 import cors from "cors";
 import { RecordService } from "./src/Record/record.service";
 import { RecordController } from "./src/Record/record.controller";
+import { AssetService } from "./src/Asset/asset.service";
+import { AssetController } from "./src/Asset/asset.controller";
+
 // import { isAdmin, isUser } from './guard';
 
 export class AppServer {
@@ -41,8 +44,11 @@ export class AppServer {
     let userController = new UserController(userService);
     let recordService = new RecordService(this.knex);
     let recordController = new RecordController(recordService);
+    let assetService = new AssetService(this.knex);
+    let assetController = new AssetController(assetService);
     app.use(recordController.router);
     app.use(userController.router);
+    app.use(assetController.router)
 
     //let memoUploader = new MemoUploader()
     //

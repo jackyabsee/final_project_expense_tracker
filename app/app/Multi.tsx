@@ -19,6 +19,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { apiOrigin } from "../env";
 import { useGetId } from "../hooks/useGetId";
+import { COLORS } from "../constants";
+import { ScrollViewBase } from "react-native";
 
 const App = () => {
   const router = useRouter();
@@ -74,8 +76,7 @@ const App = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <View>
+        <Button onPress={() => router.back()}>back</Button>
           <Calendar
             style={{
               borderWidth: 1,
@@ -95,7 +96,8 @@ const App = () => {
             onDayPress={handleDayPress}
             markedDates={selectedDates}
           />
-        </View>
+        <ScrollView nestedScrollEnabled>
+    
 
         <View style={styles.container}>
           <View style={styles.data}>
@@ -155,7 +157,6 @@ const App = () => {
             確認
           </Button>
         </View>
-        <Button onPress={() => router.back()}>back</Button>
       </ScrollView>
     </SafeAreaView>
   );
