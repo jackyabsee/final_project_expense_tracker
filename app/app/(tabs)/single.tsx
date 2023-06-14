@@ -43,7 +43,10 @@ const Home = () => {
   const { authState } = useAuth();
   const handleSubmit = async () => {
     console.log({ type, price, date, remark, userId });
-
+    if (type === "" || price == "") {
+      alert("Please enter enough imformation");
+      return;
+    }
     try {
       const response = await fetch(`${apiOrigin}/quickRecordPost`, {
         method: "POST",

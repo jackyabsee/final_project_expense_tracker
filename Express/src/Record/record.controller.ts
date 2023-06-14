@@ -7,7 +7,7 @@ import { decodeJWT } from "../../jwt";
 
 let quickRecordParser = object({
   type: string(),
-  price: number(),
+  price: number({ min: 0 }),
   date: date(),
   remark: nullable(string()),
 });
@@ -33,6 +33,7 @@ export class RecordController extends HttpController {
 
   quickRecord = async (req: Request) => {
     console.log(req.body);
+    req.body.remark ||= null;
     let input = quickRecordParser.parse(req.body);
     console.log("controller req.body:", req.body);
     const realInput = {

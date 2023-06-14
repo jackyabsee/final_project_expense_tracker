@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Stack, useRouter, Tabs } from "expo-router";
+import { Stack, useRouter, Tabs, usePathname } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,11 +21,22 @@ import { HomeData, JWTPayload } from "../../api/types";
 import { useGetId } from "../../hooks/useGetId";
 import { getHomeData } from "../../api/api";
 import { useGet } from "../../hooks/useGet";
+import { PieChart } from "react-native-svg-charts";
 function RenderHomeData({
   data,
 }: {
   data: { items: Array<HomeData> | null } & { error?: string };
 }): any {
+  return (
+    <PieChart
+      data={[
+        { value: 100, key: "1", svg: { fill: "#FF5733" } },
+        { value: 100, key: "2", svg: { fill: "#FF5733" } },
+        { value: 100, key: "3", svg: { fill: "#FF5733" } },
+      ]}
+      style={{ height: 100, backgroundColor: "#FF5733" }}
+    />
+  );
   if (!data) {
     return <></>;
   }
@@ -37,16 +48,35 @@ function RenderHomeData({
   if (!Array.isArray(data.items)) {
     return <></>;
   }
-
-  return data.items.map((item: HomeData) => {
-    return (
-      <View>
-        <Text style={styles.text}>
-          {item.type} {item.price}
-        </Text>
-      </View>
+  const randomColor = () =>
+    ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
+      0,
+      7
     );
-  });
+  const dataItems = data.items.map((item) => ({
+    value: item.price,
+    key: item.type,
+    svg: {
+      fill: randomColor(),
+    },
+  }));
+  console.log(dataItems);
+
+  if (!dataItems) {
+    return <></>;
+  }
+  return (
+    <PieChart data={dataItems} style={{ height: 100, borderColor: "black" }} />
+  );
+  // return data.items.map((item: HomeData) => {
+  //   return (
+  //     <View>
+  //       <Text style={styles.text}>
+  //         {item.type} {item.price}
+  //       </Text>
+  //     </View>
+  //   );
+  // });
 }
 
 function Logout() {
@@ -73,13 +103,16 @@ const Home = () => {
   const [data, setData] = useState<
     { items: Array<HomeData> | null } & { error?: string }
   >({ items: null, error: "loading" });
+  const pathname = usePathname();
 
   useEffect(() => {
-    (async () => {
-      const data = await getHomeData(authState.token || "");
-      setData(data as { items: Array<HomeData> } & { error?: string });
-    })();
-  }, []);
+    if (pathname === "/home") {
+      (async () => {
+        const data = await getHomeData(authState.token || "");
+        setData(data as { items: Array<HomeData> } & { error?: string });
+      })();
+    }
+  }, [pathname]);
 
   return (
     <>
@@ -111,32 +144,15 @@ const Home = () => {
       </View>
 
       <SafeAreaView style={styles.container}>
-        <RenderHomeData data={data} />
-
-        {/* <View style={styles.data}>
-          <Text style={styles.text}>交通</Text>
-          <Text style={styles.text}>$300</Text>
-        </View>
-        <View style={styles.data}>
-          <Text style={styles.text}>餐飲</Text>
-          <Text style={styles.text}>$2300</Text>
-        </View>
-        <View style={styles.data}>
-          <Text style={styles.text}>衣飾</Text>
-          <Text style={styles.text}>$1200</Text>
-        </View>
-        <View style={styles.data}>
-          <Text style={styles.text}>娛樂</Text>
-          <Text style={styles.text}>$1300</Text>
-        </View>
-        <View style={styles.data}>
-          <Text style={styles.text}>繳費</Text>
-          <Text style={styles.text}>$5000</Text>
-        </View>
-        <View style={styles.data}>
-          <Text style={styles.text}>其他</Text>
-          <Text style={styles.text}>$130</Text>
-        </View> */}
+        {/* <RenderHomeData data={data} /> */}
+        <PieChart
+          data={[
+            { value: 100, key: "1", svg: { fill: "#FF5733" } },
+            { value: 100, key: "2", svg: { fill: "#FF5733" } },
+            { value: 100, key: "3", svg: { fill: "#FF5733" } },
+          ]}
+          style={{ height: 100, backgroundColor: "#FF5733" }}
+        />
         <View>{authState.token ? <Text>{userId}</Text> : null}</View>
       </SafeAreaView>
     </>
