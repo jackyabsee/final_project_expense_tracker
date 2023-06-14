@@ -128,6 +128,7 @@ const App = () => {
                 style={styles.Input}
                 onChangeText={(itemValue) => setPrice(itemValue)}
                 value={price}
+                keyboardType="numeric"
               ></Input>
             </View>
           </View>
