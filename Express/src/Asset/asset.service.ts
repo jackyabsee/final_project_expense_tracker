@@ -39,5 +39,16 @@ export class AssetService {
     return json;
   }
 
-  async deleteAsset(userId: number) {}
+  async deleteAsset(rowData: any[]) {
+    console.log("rowrow::", rowData);
+    await this.knex("asset")
+      .where("institution", rowData[0])
+      .where("type", rowData[1])
+      .where("value", rowData[2])
+      .where("interest_rate", rowData[3])
+      .where("remark", rowData[4])
+      .where("user_id", rowData[5])
+      .del();
+    return;
+  }
 }

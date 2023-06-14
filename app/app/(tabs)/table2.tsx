@@ -14,6 +14,7 @@ import { Table, TableWrapper, Row } from "react-native-table-component";
 import { useGetId } from "../../hooks/useGetId";
 import { apiOrigin } from "../../env";
 import { useAuth } from "../../context/authContext";
+import { table } from "console";
 
 const tableHead = [
   "所屬機構",
@@ -35,49 +36,6 @@ export default function SavingTable() {
 
   const [tableData, setTableData] = useState<any[]>([]);
   const [refreshing, setRefreshing] = React.useState(false);
-
-  function editAndDelete() {
-    const handleDelete = async () => {
-      let token = authState.token;
-      console.log("before fetch: ", authState.token);
-      try {
-        const response = await fetch(`${apiOrigin}/deleteAsset`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
-
-        const json = await response.json();
-        json.push([addBtn()]);
-        console.log("jsonPush: ", json);
-        setTableData(json);
-
-        console.log("json: ", json);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    return (
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.editBtn}>
-          <View style={styles.editBtn}>
-            <Text style={styles.btnText}>編輯</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.deleteBtn}
-          onPress={() => handleDelete()}
-        >
-          <View style={styles.deleteBtn}>
-            <Text style={styles.btnText}>刪除</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  }
 
   function addBtn() {
     return (
@@ -119,9 +77,12 @@ export default function SavingTable() {
       });
 
       const json = await response.json();
-      for (let subArray of json) {
-        subArray.push(editAndDelete());
+      for (let i = 0; i < json.length; i++) {
+        json[i].push(editAndDelete(i));
       }
+      //  for (let subArray of json) {
+      //    subArray.push(editAndDelete());
+      //  }
       json.push([addBtn()]);
       console.log("jsonPush: ", json);
       setTableData(json);
@@ -143,6 +104,51 @@ export default function SavingTable() {
   //  }
   //  tableData.push(rowData);
   //}
+
+  function editAndDelete(index: number) {
+    const handleDelete = async (index: number) => {
+      let token = authState.token;
+
+      let rowData = tableData[index];
+      console.log("click delete::", rowData);
+      console.log("before fetch: ", authState.token);
+      try {
+        const response = await fetch(`${apiOrigin}/deleteAsset`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify(rowData),
+        });
+
+        const json = await response.json();
+        json.push([addBtn()]);
+
+        setTableData(json);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    return (
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.editBtn}>
+          <View style={styles.editBtn}>
+            <Text style={styles.btnText}>編輯</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.deleteBtn}
+          onPress={() => handleDelete(index)}
+        >
+          <View style={styles.deleteBtn}>
+            <Text style={styles.btnText}>刪除</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
