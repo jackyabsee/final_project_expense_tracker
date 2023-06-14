@@ -8,7 +8,7 @@ export class RecordService {
   //}
   async quickRecord(Record: {
     type: string;
-    price: string;
+    price: number;
     date: Date;
     remark: string;
     userId: number;

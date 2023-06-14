@@ -6,7 +6,7 @@ import { date, number, object, string } from "cast.ts";
 
 let quickRecordParser = object({
   type: string(),
-  price: string(),
+  price: number(),
   date: date(),
   remark: string(),
   userId: number(),

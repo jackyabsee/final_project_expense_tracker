@@ -10,16 +10,19 @@ import {
 } from "react-native";
 import { Table, TableWrapper, Row } from "react-native-table-component";
 
-
-
-function AddBtn({ title }:{ title: string }) {
+function AddBtn({ title }: { title: string }) {
   const router = useRouter();
 
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity
         style={styles.addBtn}
-        onPress={() => router.push({ pathname: "/addAssetDetails", params: { title: title } })}
+        onPress={() =>
+          router.push({
+            pathname: "/addAssetDetails",
+            params: { title: title },
+          })
+        }
       >
         <View style={styles.addBtn}>
           <Text style={styles.btnText}>新增</Text>
@@ -46,34 +49,24 @@ function EditAndDelete() {
   );
 }
 
-const tableHead = [
-  "所屬機構",
-  "資產種類",
-  "資產價值",
-  "回報率",
-  "編輯/刪除"
-];
+const tableHead = ["所屬機構", "資產種類", "資產價值", "回報率", "編輯/刪除"];
 const widthArr = [120, 100, 100, 100, 130, 90];
 const tableDataRaw: any[] = [
   ["編輯", "恒生銀行", "資產類別", "$3000000", "3%", "2024年完成"],
 ];
 
 export default function SavingTable() {
- 
-
-  const [ tableData, setTableData ] = useState<any[]>(tableDataRaw);
+  const [tableData, setTableData] = useState<any[]>(tableDataRaw);
 
   useEffect(() => {
-    setTableData([
-      ...tableData,
-      [, "", "", "", "", ""]
-    ])
-  }, [])
-  
+    setTableData([...tableData, [, "", "", "", "", ""]]);
+  }, []);
 
   return (
     <View style={styles.container}>
-      <View><Heading size='lg'>存款</Heading></View>
+      <View>
+        <Heading size="lg">存款</Heading>
+      </View>
       <ScrollView horizontal={true}>
         <View>
           <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>

@@ -46,7 +46,7 @@ const Home = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ type, price, date, remark, userId }),
+        body: JSON.stringify({ type, price: +price, date, remark, userId }),
       });
       const json = await response.json();
       console.log(json);
@@ -114,6 +114,7 @@ const Home = () => {
                   style={styles.Input}
                   onChangeText={(itemValue) => setPrice(itemValue)}
                   value={price}
+                  keyboardType="numeric"
                 ></Input>
               </View>
             </View>

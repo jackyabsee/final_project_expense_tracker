@@ -21,7 +21,7 @@ id	serial unique PK
 institution varchar(12)
 type  varchar(12)
 value real
-interest_rate varchar(10)
+interest_rate real
 remark varchar(255)
 user_id integer FK -- user.id
 

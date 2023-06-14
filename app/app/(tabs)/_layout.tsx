@@ -7,9 +7,12 @@ const Tabs_layout = () => {
       <Tabs.Screen name="single" options={{ title: "single" }} />
       <Tabs.Screen name="Multi" options={{ title: "Multi" }} />
       <Tabs.Screen name="table2" options={{ title: "table2" }} />'
-      <Tabs.Screen name="addAssetDetails" options={{ title: "addAssetDetails" }} />
+      <Tabs.Screen
+        name="addAssetDetails"
+        options={{ title: "addAssetDetails" }}
+      />
     </Tabs>
-);
+  );
 };
 
 export default Tabs_layout;

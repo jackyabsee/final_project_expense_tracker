@@ -76,29 +76,27 @@ const App = () => {
 
   return (
     <SafeAreaView>
-        <Button onPress={() => router.back()}>back</Button>
-          <Calendar
-            style={{
-              borderWidth: 1,
-              borderColor: "gray",
-              height: 310,
-            }}
-            theme={{
-              backgroundColor: "#ffffff",
-              calendarBackground: "#ffffff",
-              textSectionTitleColor: "#b6c1cd",
-              selectedDayBackgroundColor: "#00adf5",
-              selectedDayTextColor: "#ffffff",
-              todayTextColor: "#00adf5",
-              dayTextColor: "#2d4150",
-              textDisabledColor: "#d9eeee",
-            }}
-            onDayPress={handleDayPress}
-            markedDates={selectedDates}
-          />
-        <ScrollView nestedScrollEnabled>
-    
-
+      <Button onPress={() => router.back()}>back</Button>
+      <Calendar
+        style={{
+          borderWidth: 1,
+          borderColor: "gray",
+          height: 310,
+        }}
+        theme={{
+          backgroundColor: "#ffffff",
+          calendarBackground: "#ffffff",
+          textSectionTitleColor: "#b6c1cd",
+          selectedDayBackgroundColor: "#00adf5",
+          selectedDayTextColor: "#ffffff",
+          todayTextColor: "#00adf5",
+          dayTextColor: "#2d4150",
+          textDisabledColor: "#d9eeee",
+        }}
+        onDayPress={handleDayPress}
+        markedDates={selectedDates}
+      />
+      <ScrollView nestedScrollEnabled>
         <View style={styles.container}>
           <View style={styles.data}>
             <Text style={styles.text}>種類</Text>

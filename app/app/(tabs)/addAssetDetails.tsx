@@ -47,7 +47,14 @@ const addAssetDetails = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ institution, type, value, interestRate, remark, userId}),
+        body: JSON.stringify({
+          institution,
+          type,
+          value,
+          interestRate,
+          remark,
+          userId,
+        }),
       });
       const json = await response.json();
       console.log(json);
@@ -82,7 +89,7 @@ const addAssetDetails = () => {
             }}
           />
           <View style={styles.container}>
-          <View style={styles.data}>
+            <View style={styles.data}>
               <Text style={styles.text}>所屬機構</Text>
               <View style={styles.InputView}>
                 <Input
