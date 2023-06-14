@@ -24,5 +24,5 @@ export type RegisterInput = {
 
 export type HomeData = {
   type: string;
-  price: string;
+  price: number;
 };
