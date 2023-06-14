@@ -58,6 +58,7 @@ const addAssetDetails = () => {
       });
       const json = await response.json();
       console.log(json);
+      router.push("table2");
     } catch (error) {
       console.error(error);
     }

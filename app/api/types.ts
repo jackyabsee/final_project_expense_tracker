@@ -1,6 +1,6 @@
 export type AuthState = {
   token: string | null;
-  authenticated: boolean | null;
+  authenticated: boolean;
 };
 export type JWTPayload = {
   id: number;

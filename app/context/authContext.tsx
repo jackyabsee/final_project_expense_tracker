@@ -5,25 +5,28 @@ import * as SecureStore from "expo-secure-store";
 import { AuthState, RegisterInput, LoginInput } from "../api/types";
 import { apiOrigin } from "../env";
 import { loginFn, registerFn } from "../api/api";
-interface AuthProps {
-  authState?: AuthState;
-  onRegister?: (input: RegisterInput) => Promise<any>;
-  onLogin?: (input: LoginInput) => Promise<any>;
-  onLogout?: () => Promise<any>;
+import { View, Text } from "react-native";
+
+interface AuthValue {
+  authState: AuthState;
+  onRegister: (input: RegisterInput) => Promise<any>;
+  onLogin: (input: LoginInput) => Promise<any>;
+  onLogout: () => Promise<any>;
 }
 
 const TOKEN_KEY = "token";
-const AuthContext = createContext<AuthProps>({});
+const AuthContext = createContext<AuthValue | null>(null);
 
-export const useAuth = () => {
-  return useContext(AuthContext);
+export const useAuth = (): AuthValue => {
+  const value = useContext(AuthContext);
+  if (!value) {
+    throw new Error("missing <AuthContext.Provider>");
+  }
+  return value;
 };
 
 export const AuthProvider = ({ children }: { children: any }) => {
-  const [authState, setAuthState] = useState<AuthState>({
-    token: null,
-    authenticated: null,
-  });
+  const [authState, setAuthState] = useState<AuthState>();
 
   useEffect(() => {
     const loadToken = async () => {
@@ -74,14 +77,24 @@ export const AuthProvider = ({ children }: { children: any }) => {
     try {
       await SecureStore.deleteItemAsync(TOKEN_KEY);
       // axios.defaults.headers.common["Authorization"] = "";
-      setAuthState({ token: null, authenticated: null });
+      setAuthState({ token: null, authenticated: false });
     } catch (error) {
       console.log(error);
       return { error: String(error) };
     }
   };
 
-  const value = {
+  if (!authState) {
+    return (
+      <>
+        <View>
+          <Text>Loading auth state ...</Text>
+        </View>
+      </>
+    );
+  }
+
+  const value: AuthValue = {
     onRegister: register,
     onLogin: login,
     onLogout: logout,

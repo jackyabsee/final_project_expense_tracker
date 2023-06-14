@@ -76,7 +76,7 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getHomeData(authState.token);
+      const data = await getHomeData(authState.token || "");
       setData(data as { items: Array<HomeData> } & { error?: string });
     })();
   }, []);

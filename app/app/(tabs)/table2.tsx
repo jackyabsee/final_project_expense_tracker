@@ -1,30 +1,65 @@
 import { useRouter } from "expo-router";
-import React, { Component } from "react";
+import { usePathname } from "expo-router";
+
+import React, { Component, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
   ScrollView,
   TouchableOpacity,
   Text,
+  RefreshControl,
 } from "react-native";
 import { Table, TableWrapper, Row } from "react-native-table-component";
+import { useGetId } from "../../hooks/useGetId";
+import { apiOrigin } from "../../env";
+import { useAuth } from "../../context/authContext";
+
+const tableHead = [
+  "所屬機構",
+  "資產種類",
+  "資產價值",
+  "年利率",
+  "備註",
+  "編輯/刪除",
+];
+const widthArr = [90, 100, 100, 90, 100, 130];
+// const tableData = data;
 
 export default function SavingTable() {
   const router = useRouter();
-  const tableHead = [
-    "所屬機構",
-    "資產種類",
-    "資產價值",
-    "備註",
-    "年利率",
-    "編輯/刪除",
-  ];
-  const widthArr = [90, 100, 100, 90, 100, 130];
-  const tableData = [
-    ["恒生銀行", "定期存款", "$3000000", "3%", "31-03-2024 完成", "編輯/刪除"],
-  ];
+  const pathname = usePathname();
+
+  const { authState } = useAuth();
+  const userId = useGetId();
+
+  const [tableData, setTableData] = useState<any[]>([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   function editAndDelete() {
+    const handleDelete = async () => {
+      let token = authState.token;
+      console.log("before fetch: ", authState.token);
+      try {
+        const response = await fetch(`${apiOrigin}/deleteAsset`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        const json = await response.json();
+        json.push([addBtn()]);
+        console.log("jsonPush: ", json);
+        setTableData(json);
+
+        console.log("json: ", json);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     return (
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.editBtn}>
@@ -32,7 +67,10 @@ export default function SavingTable() {
             <Text style={styles.btnText}>編輯</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteBtn}>
+        <TouchableOpacity
+          style={styles.deleteBtn}
+          onPress={() => handleDelete()}
+        >
           <View style={styles.deleteBtn}>
             <Text style={styles.btnText}>刪除</Text>
           </View>
@@ -56,21 +94,64 @@ export default function SavingTable() {
     );
   }
 
-  for (let i = 1; i < 20; i++) {
-    let rowData = [editAndDelete()];
-    if (i === 19) {
-      tableData.push([addBtn()]);
-      break;
+  useEffect(() => {
+    console.log("AAAAAAAAAAAAAAAAAAAA", pathname);
+    if (pathname === "/table2") {
+      fetchData();
     }
-    for (let j = 0; j < 5; j++) {
-      rowData.unshift(`${i}${j}`);
+  }, [pathname]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  async function fetchData() {
+    let token = authState.token;
+    console.log("before fetch: ", authState.token);
+    try {
+      const response = await fetch(`${apiOrigin}/loadAsset`, {
+        headers: { Authorization: "Bearer " + token },
+        method: "GET",
+      });
+
+      const json = await response.json();
+      for (let subArray of json) {
+        subArray.push(editAndDelete());
+      }
+      json.push([addBtn()]);
+      console.log("jsonPush: ", json);
+      setTableData(json);
+
+      console.log("json: ", json);
+    } catch (error) {
+      console.error(error);
     }
-    tableData.push(rowData);
   }
+
+  //for (let i = 1; i < 20; i++) {
+  //  let rowData = [editAndDelete()];
+  //  if (i === 19) {
+  //    tableData.push([addBtn()]);
+  //    break;
+  //  }
+  //  for (let j = 0; j < 5; j++) {
+  //    rowData.unshift(`${i}${j}`);
+  //  }
+  //  tableData.push(rowData);
+  //}
 
   return (
     <View style={styles.container}>
-      <ScrollView horizontal={true}>
+      <ScrollView
+        horizontal={true}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View>
           <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
             <Row
@@ -80,22 +161,26 @@ export default function SavingTable() {
               textStyle={styles.text}
             />
           </Table>
-          <ScrollView style={styles.dataWrapper}>
-            <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
-              {tableData.map((rowData, index) => (
-                <Row
-                  key={index}
-                  data={rowData}
-                  widthArr={widthArr}
-                  style={[
-                    styles.row,
-                    index % 2 && { backgroundColor: "#F7F6E7" },
-                  ]}
-                  textStyle={styles.text}
-                />
-              ))}
-            </Table>
-          </ScrollView>
+          {tableData ? (
+            <ScrollView style={styles.dataWrapper}>
+              <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
+                {tableData.map((rowData, index) => (
+                  <Row
+                    key={index}
+                    data={rowData}
+                    widthArr={widthArr}
+                    style={[
+                      styles.row,
+                      index % 2 === 0 && { backgroundColor: "#F7F6E7" },
+                    ]}
+                    textStyle={styles.text}
+                  />
+                ))}
+              </Table>
+            </ScrollView>
+          ) : (
+            <Text>Loading data...</Text>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -104,7 +189,7 @@ export default function SavingTable() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: "#fff" },
-  header: { height: 50, backgroundColor: "#537791" },
+  header: { height: 50, backgroundColor: "white" },
   text: { textAlign: "center", fontWeight: "100" },
   dataWrapper: { marginTop: -1 },
   row: { height: 40, backgroundColor: "#E7E6E1" },

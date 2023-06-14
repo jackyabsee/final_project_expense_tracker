@@ -6,14 +6,24 @@ export class AssetService {
   //async getUser(): Promise<object[]> {
   //    return await this.knex.select('*').from('users');
   //}
+
+  async loadAsset(userId: number) {
+    let json = await this.knex("asset")
+      .select("*")
+      .where("user_id", userId)
+      .orderBy("updated_at", "desc");
+
+    console.log("assetservice: ", json);
+    return json;
+  }
   async addAsset(asset: {
-  institution: string,
-  type: string,
-  value: number,
-  interestRate: number,
-  remark: string,
-  userId: number,
-  }){
+    institution: string;
+    type: string;
+    value: number;
+    interestRate: number;
+    remark: string;
+    userId: number;
+  }) {
     let json = await this.knex
       .insert({
         institution: asset.institution,
@@ -29,4 +39,5 @@ export class AssetService {
     return json;
   }
 
+  async deleteAsset(userId: number) {}
 }
