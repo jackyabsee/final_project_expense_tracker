@@ -10,7 +10,7 @@ spending
 ---------
 id unique PK 
 type varchar(20) 
-price varchar(10)
+price real
 date date
 remark varchar(255)
 user_id integer FK -- user.id
@@ -20,7 +20,7 @@ asset
 id	serial unique PK
 institution varchar(12)
 type  varchar(12)
-value varchar(10)
+value real
 interest_rate varchar(10)
 remark varchar(255)
 user_id integer FK -- user.id
