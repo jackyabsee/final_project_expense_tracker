@@ -24,7 +24,7 @@ import { useGet } from "../../hooks/useGet";
 function RenderHomeData({
   data,
 }: {
-  data: { items: Array<HomeData> } & { error?: string };
+  data: { items: Array<HomeData> | null } & { error?: string };
 }): any {
   if (!data) {
     return <></>;
@@ -71,7 +71,7 @@ const Home = () => {
   const userId = useGetId();
   // let data: { items: Array<HomeData> } & { error?: string };
   const [data, setData] = useState<
-    { items: Array<HomeData> } & { error?: string }
+    { items: Array<HomeData> | null } & { error?: string }
   >({ items: null, error: "loading" });
 
   useEffect(() => {

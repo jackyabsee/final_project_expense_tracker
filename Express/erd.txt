@@ -12,7 +12,7 @@ id unique PK
 type varchar(20) 
 price real
 date date
-remark varchar(255)
+remark varchar(255) null
 user_id integer FK -- user.id
 
 asset

@@ -29,14 +29,18 @@ import { apiOrigin } from "../../env";
 // import { JWTPayload } from "../../api/types";
 // import jwtDecode from "jwt-decode";
 import { useGetId } from "../../hooks/useGetId";
+import { useAuth } from "../../context/authContext";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 const Home = () => {
   const router = useRouter();
   const [type, setType] = React.useState("");
   const [price, setPrice] = React.useState("");
-  const [date, setDate] = React.useState("");
+  const [date, setDate] = React.useState(new Date());
   const [remark, setRemark] = React.useState("");
   const userId = useGetId();
+  const { authState } = useAuth();
   const handleSubmit = async () => {
     console.log({ type, price, date, remark, userId });
 
@@ -45,14 +49,14 @@ const Home = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + authState.token,
         },
-        body: JSON.stringify({ type, price: +price, date, remark, userId }),
+        body: JSON.stringify({ type, price: +price, date, remark }),
       });
       const json = await response.json();
       console.log(json);
       setType("");
       setPrice("");
-      setDate("");
       setRemark("");
     } catch (error) {
       console.error(error);
@@ -121,12 +125,7 @@ const Home = () => {
             <View style={styles.data}>
               <Text style={styles.text}>日期</Text>
               <View style={styles.InputView}>
-                <Input
-                  style={styles.Input}
-                  placeholder="dd-mm-yyyy"
-                  onChangeText={(itemValue) => setDate(itemValue)}
-                  value={date}
-                ></Input>
+                <RNDateTimePicker value={date} onChange={() => setDate} />
               </View>
             </View>
             <View style={styles.data}>

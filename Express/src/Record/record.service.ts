@@ -10,7 +10,7 @@ export class RecordService {
     type: string;
     price: number;
     date: Date;
-    remark: string;
+    remark: string | null;
     userId: number;
   }) {
     let json = await this.knex

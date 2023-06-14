@@ -2,14 +2,14 @@ import { Request } from "express";
 import { RecordService } from "./record.service";
 import "../../session";
 import { HttpController } from "../http.controller";
-import { date, number, object, string } from "cast.ts";
+import { date, nullable, number, object, string } from "cast.ts";
+import { decodeJWT } from "../../jwt";
 
 let quickRecordParser = object({
   type: string(),
   price: number(),
   date: date(),
-  remark: string(),
-  userId: number(),
+  remark: nullable(string()),
 });
 
 export class RecordController extends HttpController {
@@ -35,8 +35,14 @@ export class RecordController extends HttpController {
     console.log(req.body);
     let input = quickRecordParser.parse(req.body);
     console.log("controller req.body:", req.body);
-
-    let json = await this.recordService.quickRecord(input);
+    const realInput = {
+      type: input.type,
+      price: input.price,
+      date: input.date,
+      remark: input.remark,
+      userId: decodeJWT(req).id,
+    };
+    let json = await this.recordService.quickRecord(realInput);
     return json;
   };
 
