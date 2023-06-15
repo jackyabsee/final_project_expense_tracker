@@ -55,7 +55,7 @@ export class UserService {
     console.log("current month", currentMonth);
 
     let data = await this.knex("spending")
-      .select("type", "price")
+      .select("type", "price", "date")
       .whereRaw(`EXTRACT(MONTH FROM date::date) = ? AND user_id = ?`, [
         currentMonth,
         input,
