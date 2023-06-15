@@ -141,7 +141,7 @@ const Home = () => {
         <Provider store={store}>
           <RenderHomeData data={data} />
         </Provider>
-
+        <Button onPress={() => router.push("/extraData")}>To extraData</Button>
         <View>{authState.token ? <Text>{userId}</Text> : null}</View>
       </SafeAreaView>
     </>

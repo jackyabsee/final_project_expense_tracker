@@ -1,6 +1,6 @@
 import { Slot, Stack, Tabs, useRouter } from "expo-router";
 import { AuthProvider, useAuth } from "../context/authContext";
-import { NativeBaseProvider } from "native-base";
+import { Button, NativeBaseProvider } from "native-base";
 import { Provider } from "react-redux";
 import { store } from "../redux/selectedItemStore";
 // import { Provider } from "../context/auth";
@@ -19,6 +19,7 @@ export default function Layout() {
                 presentation: "modal",
               }}
             />
+            <Stack.Screen name="extraData" />
           </Stack>
         </Provider>
       </NativeBaseProvider>
