@@ -1,6 +1,12 @@
 import { Parser } from "cast.ts";
 import { apiOrigin } from "../env";
-import { HomeData, LoginInput, LoginResult, RegisterInput } from "./types";
+import {
+  ExtraData,
+  HomeData,
+  LoginInput,
+  LoginResult,
+  RegisterInput,
+} from "./types";
 
 export async function loginFn(body: LoginInput) {
   return post<LoginResult>("/users/login", { body });
@@ -12,7 +18,9 @@ export async function registerFn(body: RegisterInput) {
 export async function getHomeData(token: string) {
   return get<{ items: Array<HomeData> }>("/users/current-expense", { token });
 }
-
+export async function getExtraData() {
+  return get<{ items: Array<ExtraData> }>("/users/extra-data");
+}
 type AjaxOptions<T> = {
   method: string;
   url: string;
