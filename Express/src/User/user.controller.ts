@@ -24,6 +24,7 @@ export class UserController extends HttpController {
     this.router.post("/users/register", this.wrapMethod(this.register));
     this.router.post("/users/login", this.wrapMethod(this.login));
     this.router.get("/users/current-expense", this.wrapMethod(this.getData));
+    this.router.get("/users/extra-data", this.wrapMethod(this.getExtraData));
   }
 
   register = async (req: Request) => {
@@ -40,5 +41,8 @@ export class UserController extends HttpController {
   getData = async (req: Request) => {
     let id = decodeJWT(req).id;
     return this.userService.getData(id);
+  };
+  getExtraData = async (req: Request) => {
+    return this.userService.getExtraData();
   };
 }

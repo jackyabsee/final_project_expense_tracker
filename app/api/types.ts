@@ -26,3 +26,9 @@ export type HomeData = {
   type: string;
   price: number;
 };
+
+export type ExtraData = {
+  id: number;
+  title: string;
+  url: string;
+};

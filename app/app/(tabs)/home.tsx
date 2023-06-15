@@ -126,6 +126,10 @@ const Home = () => {
         >
           多次記賬
         </Button>
+        <Button onPress={() => router.push("/extraData")}>
+          To Extra Information
+        </Button>
+
         <Button
           variant="solid"
           colorScheme="green"
@@ -141,7 +145,6 @@ const Home = () => {
         <Provider store={store}>
           <RenderHomeData data={data} />
         </Provider>
-
         <View>{authState.token ? <Text>{userId}</Text> : null}</View>
       </SafeAreaView>
     </>

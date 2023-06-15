@@ -79,6 +79,12 @@ export class UserService {
     return { items: result };
   }
 
+  async getExtraData() {
+    let data = await this.knex("content").select("*");
+    if (!data) throw new HttpError(404, "No data");
+    return { items: data };
+  }
+
   private genJWTPayload(id: number): JWTPayload {
     return { id, iat: Math.floor(Date.now() / 1000) };
   }
