@@ -5,9 +5,7 @@ import { store } from "../../redux/selectedItemStore";
 const Tabs_layout = () => {
   return (
     <Tabs>
-      <Provider store={store}>
-        <Tabs.Screen name="home" options={{ title: "Home" }} />
-      </Provider>
+      <Tabs.Screen name="home" options={{ title: "Home" }} />
       <Tabs.Screen name="single" options={{ title: "single" }} />
       <Tabs.Screen name="table2" options={{ title: "table2" }} />
       <Tabs.Screen

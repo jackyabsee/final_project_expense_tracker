@@ -9,8 +9,12 @@ const modal = () => {
     <>
       <View>
         <Text>
-          {selectedData.selectedData?.type}
-          {selectedData.selectedData?.price}
+          {selectedData.selectedData?.type
+            ? selectedData.selectedData.type
+            : null}
+          {selectedData.selectedData?.price
+            ? selectedData.selectedData?.price
+            : null}
         </Text>
       </View>
     </>

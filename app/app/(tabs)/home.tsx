@@ -55,24 +55,14 @@ function RenderHomeData({
         {
           target: "data",
           eventHandlers: {
-            onPressIn: () => {
-              // return [
-              //   {
-              //     target: "data",
-              //     mutation: ({ style }) => {
-              //       return style.fill === "#c43a31"
-              //         ? null
-              //         : { style: { fill: "#c43a31" } };
-              //     },
-              //   },
-              //   {
-              //     target: "labels",
-              //     mutation: ({ text }) => {
-              //       return text === "clicked" ? null : { text: "clicked" };
-              //     },
-              //   },
-              // ];
-              // dispatch(setSelectedData())
+            onPressIn: (event, data) => {
+              console.log(data.datum);
+              const input = {
+                type: data.datum.labels as string,
+                price: data.datum.y as number,
+              };
+              console.log(input);
+              dispatch(setSelectedData(input));
               return router.push("/modal");
             },
           },

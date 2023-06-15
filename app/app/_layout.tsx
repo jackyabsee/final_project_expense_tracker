@@ -11,16 +11,16 @@ export default function Layout() {
     // Setup the auth context and render our layout inside of it.
     <AuthProvider>
       <NativeBaseProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Provider store={store}>
+        <Provider store={store}>
+          <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen
               name="modal"
               options={{
                 presentation: "modal",
               }}
             />
-          </Provider>
-        </Stack>
+          </Stack>
+        </Provider>
       </NativeBaseProvider>
     </AuthProvider>
   );
