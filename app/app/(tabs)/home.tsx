@@ -13,15 +13,20 @@ import { useGetId } from "../../hooks/useGetId";
 import { getHomeData } from "../../api/api";
 import { useGet } from "../../hooks/useGet";
 import { VictoryPie } from "victory-native";
+import { Provider, useSelector } from "react-redux";
+import {
+  RootState,
+  setSelectedData,
+  store,
+} from "../../redux/selectedItemStore";
+import { useDispatch } from "react-redux";
 function RenderHomeData({
   data,
-  selectedItem,
-  onItemSelected,
 }: {
   data: { items: Array<HomeData> | null } & { error?: string };
-  selectedItem: HomeData | null;
-  onItemSelected: (item: HomeData | null) => void;
 }): any {
+  const router = useRouter();
+  const dispatch = useDispatch();
   if (!data) {
     return <></>;
   }
@@ -43,15 +48,6 @@ function RenderHomeData({
   if (!dataItems) {
     return <></>;
   }
-  // return data.items.map((item: HomeData) => {
-  //   return (
-  //     <View>
-  //       <Text style={styles.text}>
-  //         {item.type} {item.price}
-  //       </Text>
-  //     </View>
-  //   );
-  // });
   return (
     <VictoryPie
       // animate={{ duration: 2000 }}
@@ -60,27 +56,31 @@ function RenderHomeData({
           target: "data",
           eventHandlers: {
             onPressIn: () => {
-              return [
-                {
-                  target: "data",
-                  mutation: ({ style }) => {
-                    return style.fill === "#c43a31"
-                      ? null
-                      : { style: { fill: "#c43a31" } };
-                  },
-                },
-                {
-                  target: "labels",
-                  mutation: ({ text }) => {
-                    return text === "clicked" ? null : { text: "clicked" };
-                  },
-                },
-              ];
+              // return [
+              //   {
+              //     target: "data",
+              //     mutation: ({ style }) => {
+              //       return style.fill === "#c43a31"
+              //         ? null
+              //         : { style: { fill: "#c43a31" } };
+              //     },
+              //   },
+              //   {
+              //     target: "labels",
+              //     mutation: ({ text }) => {
+              //       return text === "clicked" ? null : { text: "clicked" };
+              //     },
+              //   },
+              // ];
+              // dispatch(setSelectedData())
+              return router.push("/modal");
             },
           },
         },
       ]}
       data={dataItems}
+      colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+      innerRadius={90}
     />
   );
 }
@@ -103,14 +103,13 @@ function Logout() {
 
 const Home = () => {
   const router = useRouter();
-  const { onLogout, authState } = useAuth();
+  const { authState } = useAuth();
   const userId = useGetId();
   // let data: { items: Array<HomeData> } & { error?: string };
   const [data, setData] = useState<
     { items: Array<HomeData> | null } & { error?: string }
   >({ items: null, error: "loading" });
   const pathname = usePathname();
-  const [selectedItem, setSelectedItem] = useState<HomeData | null>(null);
 
   useEffect(() => {
     if (pathname === "/home") {
@@ -151,11 +150,9 @@ const Home = () => {
       </View>
 
       <SafeAreaView style={styles.container}>
-        <RenderHomeData
-          data={data}
-          selectedItem={selectedItem}
-          onItemSelected={(item) => setSelectedItem(item)}
-        />
+        <Provider store={store}>
+          <RenderHomeData data={data} />
+        </Provider>
 
         <View>{authState.token ? <Text>{userId}</Text> : null}</View>
       </SafeAreaView>
