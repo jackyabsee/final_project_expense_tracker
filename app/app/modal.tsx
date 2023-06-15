@@ -22,7 +22,7 @@ const Modal = () => {
             ? selectedData.selectedData?.price
             : null}
         </Text>
-        o
+
         <Button
           title="Close"
           onPress={() => {

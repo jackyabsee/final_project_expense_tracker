@@ -61,6 +61,7 @@ const Home = () => {
       setType("");
       setPrice("");
       setRemark("");
+      setDate(new Date());
     } catch (error) {
       console.error(error);
     }
@@ -128,7 +129,16 @@ const Home = () => {
             <View style={styles.data}>
               <Text style={styles.text}>日期</Text>
               <View style={styles.InputView}>
-                <RNDateTimePicker value={date} onChange={() => setDate} />
+                <RNDateTimePicker
+                  value={date}
+                  onChange={(event, date) => {
+                    if (!date) {
+                      return;
+                    }
+                    console.log("selected date:", date);
+                    setDate(date);
+                  }}
+                />
               </View>
             </View>
             <View style={styles.data}>
