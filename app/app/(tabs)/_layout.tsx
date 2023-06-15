@@ -7,7 +7,7 @@ const Tabs_layout = () => {
     <Tabs>
       <Tabs.Screen name="home" options={{ title: "Home" }} />
       <Tabs.Screen name="single" options={{ title: "single" }} />
-      <Tabs.Screen name="table2" options={{ title: "table2" }} />
+      <Tabs.Screen name="SavingTable" options={{ title: "Saving" }} />
       <Tabs.Screen
         name="addAssetDetails"
         options={{ title: "addAssetDetails" }}

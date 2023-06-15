@@ -16,6 +16,7 @@
     "@types/react": "~18.0.27",
     "@types/react-native-table-component": "^1.2.4",
     "axios": "^1.4.0",
+    "cast.ts": "^1.7.1",
     "deprecated-react-native-prop-types": "^4.1.0",
     "expo": "^48.0.7",
     "expo-constants": "~14.2.1",
@@ -42,6 +43,7 @@
     "react-native-table-component": "^1.2.2",
     "react-native-web": "~0.18.7",
     "react-redux": "^8.1.0",
+    "react-use-event": "^1.1.0",
     "victory-native": "^36.6.11"
   },
   "devDependencies": {

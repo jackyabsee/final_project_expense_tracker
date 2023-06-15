@@ -9,9 +9,9 @@ export default function Layout() {
   const router = useRouter();
   return (
     // Setup the auth context and render our layout inside of it.
-    <AuthProvider>
-      <NativeBaseProvider>
-        <Provider store={store}>
+    <Provider store={store}>
+      <AuthProvider>
+        <NativeBaseProvider>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen
               name="modal"
@@ -21,8 +21,8 @@ export default function Layout() {
             />
             <Stack.Screen name="extraData" />
           </Stack>
-        </Provider>
-      </NativeBaseProvider>
-    </AuthProvider>
+        </NativeBaseProvider>
+      </AuthProvider>
+    </Provider>
   );
 }

@@ -8,47 +8,32 @@ export class AssetService {
   //}
 
   async loadAsset(userId: number) {
-    let json = await this.knex("asset")
-      .select("*")
+    let assets = await this.knex("asset")
+      .select("id", "institution", "type", "value", "interest_rate", "remark")
       .where("user_id", userId)
       .orderBy("updated_at", "desc");
 
-    console.log("assetservice: ", json);
-    return json;
+    console.log("loadAsset:", { userId, assets });
+    return {
+      assets,
+    };
   }
   async addAsset(asset: {
     institution: string;
     type: string;
     value: number;
-    interestRate: number;
+    interest_rate: number;
     remark: string;
-    userId: number;
+    user_id: number;
   }) {
-    let json = await this.knex
-      .insert({
-        institution: asset.institution,
-        type: asset.type,
-        value: asset.value,
-        interest_rate: asset.interestRate,
-        remark: asset.remark,
-        user_id: asset.userId,
-      })
-      .into("asset")
-      .returning("id");
-    console.log("json in service: ", json);
-    return json;
+    console.log("add asset:", asset);
+    let [{ id }] = await this.knex.insert(asset).into("asset").returning("id");
+    return { id };
   }
 
-  async deleteAsset(rowData: any[]) {
-    console.log("rowrow::", rowData);
-    await this.knex("asset")
-      .where("institution", rowData[0])
-      .where("type", rowData[1])
-      .where("value", rowData[2])
-      .where("interest_rate", rowData[3])
-      .where("remark", rowData[4])
-      .where("user_id", rowData[5])
-      .del();
-    return;
+  async deleteAsset(filter: { id: number; user_id: number }) {
+    console.log("delete asset:", filter);
+    await this.knex("asset").where(filter).del();
+    return {};
   }
 }
