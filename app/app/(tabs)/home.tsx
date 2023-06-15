@@ -1,24 +1,15 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import { Stack, useRouter, Tabs, usePathname } from "expo-router";
-import * as SecureStore from "expo-secure-store";
-
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Box, Button, Icon, Badge, HStack, Flex, Spacer } from "native-base";
-import { Button as HeaderButton } from "react-native";
+import { Button } from "native-base";
 import { useAuth } from "../../context/authContext";
-// import jwtDecode from "jwt-decode";
 import { HomeData, JWTPayload } from "../../api/types";
 import { useGetId } from "../../hooks/useGetId";
 import { getHomeData } from "../../api/api";
-import { useGet } from "../../hooks/useGet";
-import { VictoryPie } from "victory-native";
-import { Provider, useSelector } from "react-redux";
-import {
-  RootState,
-  setSelectedData,
-  store,
-} from "../../redux/selectedItemStore";
+import { VictoryPie, VictoryTheme } from "victory-native";
+import { Provider } from "react-redux";
+import { setSelectedData, store } from "../../redux/selectedItemStore";
 import { useDispatch } from "react-redux";
 function RenderHomeData({
   data,
@@ -69,8 +60,15 @@ function RenderHomeData({
         },
       ]}
       data={dataItems}
-      colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+      colorScale={["#00b3a4", "#00ffc2", "#aaff00", "#ffaa00", "#ff006e"]}
       innerRadius={90}
+      style={{
+        labels: {
+          fontSize: 15,
+          fill: "#00b3a4",
+        },
+      }}
+      theme={VictoryTheme.material}
     />
   );
 }
@@ -154,23 +152,43 @@ const styles = StyleSheet.create({
   topContainer: {
     display: "flex",
     flexDirection: "row-reverse",
+    backgroundColor: "#1a1c20",
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 20,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  logoutButton: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 10,
+  },
+  logoutButtonText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#1a1c20",
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#0d1117",
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    paddingTop: 30,
     justifyContent: "center",
     alignItems: "center",
   },
   data: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
     width: "80%",
     marginBottom: "1.75%",
+    alignItems: "center",
   },
   text: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "#c9d1d9",
   },
 });
 export default Home;
