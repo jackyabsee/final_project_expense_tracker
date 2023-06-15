@@ -1,19 +1,10 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 import { Stack, useRouter, Tabs, usePathname } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  Box,
-  Button,
-  Icon,
-  Pressable,
-  Badge,
-  HStack,
-  Flex,
-  Spacer,
-} from "native-base";
+import { Box, Button, Icon, Badge, HStack, Flex, Spacer } from "native-base";
 import { Button as HeaderButton } from "react-native";
 import { useAuth } from "../../context/authContext";
 // import jwtDecode from "jwt-decode";
@@ -21,22 +12,16 @@ import { HomeData, JWTPayload } from "../../api/types";
 import { useGetId } from "../../hooks/useGetId";
 import { getHomeData } from "../../api/api";
 import { useGet } from "../../hooks/useGet";
-import { PieChart } from "react-native-svg-charts";
+import { VictoryPie } from "victory-native";
 function RenderHomeData({
   data,
+  selectedItem,
+  onItemSelected,
 }: {
   data: { items: Array<HomeData> | null } & { error?: string };
+  selectedItem: HomeData | null;
+  onItemSelected: (item: HomeData | null) => void;
 }): any {
-  return (
-    <PieChart
-      data={[
-        { value: 100, key: "1", svg: { fill: "#FF5733" } },
-        { value: 100, key: "2", svg: { fill: "#FF5733" } },
-        { value: 100, key: "3", svg: { fill: "#FF5733" } },
-      ]}
-      style={{ height: 100, backgroundColor: "#FF5733" }}
-    />
-  );
   if (!data) {
     return <></>;
   }
@@ -48,26 +33,16 @@ function RenderHomeData({
   if (!Array.isArray(data.items)) {
     return <></>;
   }
-  const randomColor = () =>
-    ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
-      0,
-      7
-    );
   const dataItems = data.items.map((item) => ({
-    value: item.price,
-    key: item.type,
-    svg: {
-      fill: randomColor(),
-    },
+    x: item.type,
+    y: item.price,
+    labels: item.type,
   }));
   console.log(dataItems);
 
   if (!dataItems) {
     return <></>;
   }
-  return (
-    <PieChart data={dataItems} style={{ height: 100, borderColor: "black" }} />
-  );
   // return data.items.map((item: HomeData) => {
   //   return (
   //     <View>
@@ -77,6 +52,37 @@ function RenderHomeData({
   //     </View>
   //   );
   // });
+  return (
+    <VictoryPie
+      // animate={{ duration: 2000 }}
+      events={[
+        {
+          target: "data",
+          eventHandlers: {
+            onPressIn: () => {
+              return [
+                {
+                  target: "data",
+                  mutation: ({ style }) => {
+                    return style.fill === "#c43a31"
+                      ? null
+                      : { style: { fill: "#c43a31" } };
+                  },
+                },
+                {
+                  target: "labels",
+                  mutation: ({ text }) => {
+                    return text === "clicked" ? null : { text: "clicked" };
+                  },
+                },
+              ];
+            },
+          },
+        },
+      ]}
+      data={dataItems}
+    />
+  );
 }
 
 function Logout() {
@@ -104,6 +110,7 @@ const Home = () => {
     { items: Array<HomeData> | null } & { error?: string }
   >({ items: null, error: "loading" });
   const pathname = usePathname();
+  const [selectedItem, setSelectedItem] = useState<HomeData | null>(null);
 
   useEffect(() => {
     if (pathname === "/home") {
@@ -144,15 +151,12 @@ const Home = () => {
       </View>
 
       <SafeAreaView style={styles.container}>
-        {/* <RenderHomeData data={data} /> */}
-        <PieChart
-          data={[
-            { value: 100, key: "1", svg: { fill: "#FF5733" } },
-            { value: 100, key: "2", svg: { fill: "#FF5733" } },
-            { value: 100, key: "3", svg: { fill: "#FF5733" } },
-          ]}
-          style={{ height: 100, backgroundColor: "#FF5733" }}
+        <RenderHomeData
+          data={data}
+          selectedItem={selectedItem}
+          onItemSelected={(item) => setSelectedItem(item)}
         />
+
         <View>{authState.token ? <Text>{userId}</Text> : null}</View>
       </SafeAreaView>
     </>
