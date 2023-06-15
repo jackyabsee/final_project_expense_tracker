@@ -21,48 +21,91 @@ import {
   Spacer,
   Select,
   Input,
+  NumberInput,
 } from "native-base";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  usePreventRemoveContext,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Picker } from "@react-native-picker/picker";
 import { apiOrigin } from "../../env";
 // import { JWTPayload } from "../../api/types";
 // import jwtDecode from "jwt-decode";
 import { useGetId } from "../../hooks/useGetId";
+import { post } from "../../api/api";
+import { useAuth } from "../../context/authContext";
+import { useEvent } from "react-use-event";
+import { object, optional, id, string } from "cast.ts";
+
+type NewAsset = {
+  institution: string;
+  type: string;
+  value: string;
+  interest_rate: string;
+  remark: string;
+};
+
+export type CreatedAssetEvent = {
+  type: "CreatedAsset";
+  asset: {
+    id: number;
+    institution: string;
+    type: string;
+    value: number;
+    interest_rate: number;
+    remark: string;
+  };
+};
+
+let createAssetParser = object({
+  id: optional(id()),
+  error: optional(string()),
+});
+function createAsset(asset: NewAsset, token: string) {
+  return post("/assets", { body: asset, token, parser: createAssetParser });
+}
 
 const addAssetDetails = () => {
   const router = useRouter();
-  const [institution, setInstitution] = React.useState("");
-  const [type, setType] = React.useState("");
-  const [value, setValue] = React.useState("");
-  const [interestRate, setInterestRate] = React.useState("");
-  const [remark, setRemark] = React.useState("");
-  const userId = useGetId();
-  const handleSubmit = async () => {
-    console.log({ institution, type, value, interestRate, userId });
 
-    try {
-      const response = await fetch(`${apiOrigin}/addAsset`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+  let r = (Math.random() * 100) | 0;
+  const [asset, setAsset] = useState<NewAsset>({
+    institution: "org " + r,
+    type: "type " + r,
+    value: "" + r,
+    interest_rate: "" + r,
+    remark: "remark " + r,
+  });
+
+  const dispatch = useEvent<CreatedAssetEvent>("CreatedAsset");
+
+  const {
+    authState: { token },
+  } = useAuth();
+
+  const handleSubmit = async (token: string) => {
+    const json = await createAsset(asset, token);
+    if (json.id) {
+      dispatch({
+        asset: {
+          ...asset,
+          id: json.id,
+          value: +asset.value,
+          interest_rate: +asset.interest_rate,
         },
-        body: JSON.stringify({
-          institution,
-          type,
-          value,
-          interestRate,
-          remark,
-          userId,
-        }),
       });
-      const json = await response.json();
-      console.log(json);
-      router.push("table2");
-    } catch (error) {
-      console.error(error);
+      router.push("SavingTable");
     }
   };
+
+  if (!token) {
+    return (
+      <View style={styles.container}>
+        <Text>This function is not available to guest, please login...</Text>
+      </View>
+    );
+  }
 
   return (
     <>
@@ -95,8 +138,10 @@ const addAssetDetails = () => {
               <View style={styles.InputView}>
                 <Input
                   style={styles.Input}
-                  onChangeText={(itemValue) => setInstitution(itemValue)}
-                  value={institution}
+                  onChangeText={(itemValue) =>
+                    setAsset({ ...asset, institution: itemValue })
+                  }
+                  value={asset.institution}
                 ></Input>
               </View>
             </View>
@@ -105,8 +150,10 @@ const addAssetDetails = () => {
               <View style={styles.InputView}>
                 <Input
                   style={styles.Input}
-                  onChangeText={(itemValue) => setType(itemValue)}
-                  value={type}
+                  onChangeText={(itemValue) =>
+                    setAsset({ ...asset, type: itemValue })
+                  }
+                  value={asset.type}
                 ></Input>
               </View>
             </View>
@@ -116,8 +163,10 @@ const addAssetDetails = () => {
                 <Input
                   style={styles.Input}
                   placeholder="63100"
-                  onChangeText={(itemValue) => setValue(itemValue)}
-                  value={value}
+                  onChangeText={(itemValue) =>
+                    setAsset({ ...asset, value: itemValue })
+                  }
+                  value={asset.value}
                 ></Input>
               </View>
             </View>
@@ -127,8 +176,10 @@ const addAssetDetails = () => {
                 <Input
                   style={styles.Input}
                   placeholder="1.03"
-                  onChangeText={(itemValue) => setInterestRate(itemValue)}
-                  value={interestRate}
+                  onChangeText={(itemValue) =>
+                    setAsset({ ...asset, interest_rate: itemValue })
+                  }
+                  value={asset.interest_rate}
                 ></Input>
               </View>
             </View>
@@ -137,8 +188,10 @@ const addAssetDetails = () => {
               <View style={styles.InputView}>
                 <Input
                   style={styles.Input}
-                  onChangeText={(itemValue) => setRemark(itemValue)}
-                  value={remark}
+                  onChangeText={(itemValue) =>
+                    setAsset({ ...asset, remark: itemValue })
+                  }
+                  value={asset.remark}
                 ></Input>
               </View>
             </View>
@@ -151,7 +204,7 @@ const addAssetDetails = () => {
               p="2"
               width="95"
               height="45"
-              onPress={handleSubmit}
+              onPress={() => handleSubmit(token)}
             >
               確認
             </Button>
