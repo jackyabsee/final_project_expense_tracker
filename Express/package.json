@@ -7,7 +7,7 @@
     "start": "ts-node-dev main.ts",
     "test": "jest tsc --noEmit",
     "watch": "npm run build -- --watch",
-    "build": "esbuild src/Algo.ts --outfile=src/bundle.js --bundle"
+    "build": "tsc -p ."
   },
   "keywords": [],
   "author": "",
