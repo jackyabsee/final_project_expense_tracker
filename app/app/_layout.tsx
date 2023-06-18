@@ -13,12 +13,12 @@ export default function Layout() {
       <AuthProvider>
         <NativeBaseProvider>
           <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen
+            {/* <Stack.Screen
               name="modal"
               options={{
                 presentation: "modal",
               }}
-            />
+            /> */}
             <Stack.Screen name="extraData" />
           </Stack>
         </NativeBaseProvider>
