@@ -35,6 +35,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
         console.log("stored: ", token);
         if (token) {
           setAuthState({ token: token, authenticated: true });
+        } else {
+          setAuthState({ token: null, authenticated: false });
         }
       } catch (error) {
         console.log(error);

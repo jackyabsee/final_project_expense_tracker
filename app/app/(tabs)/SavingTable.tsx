@@ -117,7 +117,24 @@ export default function SavingTable() {
   async function fetchData(token: string) {
     console.log("get assets");
     let json = await getAssets(token);
-    setTableData(json);
+    if (json.error !== undefined) {
+      let tableDataExample = {
+        error: undefined,
+        assets: [
+          {
+            id: 99,
+            institution: "example bank",
+            type: "stock",
+            value: 100000,
+            interest_rate: 1.03,
+            remark: "This is an example",
+          },
+        ],
+      };
+      setTableData(tableDataExample);
+    } else {
+      setTableData(json);
+    }
   }
 
   //for (let i = 1; i < 20; i++) {

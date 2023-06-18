@@ -24,6 +24,7 @@ export class AssetController extends HttpController {
   loadAsset = async (req: Request) => {
     let decodeId = decodeJWT(req).id;
     let json = await this.assetService.loadAsset(decodeId);
+    console.log(json);
     return json;
   };
 
