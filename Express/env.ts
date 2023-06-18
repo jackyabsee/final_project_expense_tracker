@@ -4,7 +4,7 @@ import populateEnv from "populate-env";
 config();
 
 export let env = {
-  PORT: 8130,
+  PORT: 8080,
   NODE_ENV: "development",
   //for development and production
   DB_HOST: "localhost",

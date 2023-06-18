@@ -1,5 +1,5 @@
 import { ElementType } from "react";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
 
 export type Field<T> = {
   label: string;
@@ -47,7 +47,7 @@ function THead(props: { fields: Field<any>[] }) {
       <TRow>
         {fields.map((field, index) => (
           <Col key={index} width={field.width}>
-            {field.label}
+            <Text style={styles.th}>{field.label}</Text>
           </Col>
         ))}
       </TRow>
@@ -63,7 +63,7 @@ function TBody<T>(props: { rows: T[]; fields: Field<T>[] }) {
         <TRow key={index}>
           {fields.map((field, index) => (
             <Col key={index} width={field.width}>
-              {field.render(row)}
+              <Text style={styles.td}>{field.render(row)}</Text>
             </Col>
           ))}
         </TRow>
@@ -74,7 +74,13 @@ function TBody<T>(props: { rows: T[]; fields: Field<T>[] }) {
 
 function TRow(props: { children: React.ReactNode }) {
   return (
-    <View style={{ display: "flex", flexDirection: "row" }}>
+    <View
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "#80CCDD",
+      }}
+    >
       {props.children}
     </View>
   );
@@ -90,3 +96,30 @@ function Col(props: { children: React.ReactNode; width: number }) {
   }
   return <View style={{ width: props.width }}>{children}</View>;
 }
+
+const styles = StyleSheet.create({
+  table: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  th: {
+    backgroundColor: "#f2f2f2",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    fontWeight: "bold",
+    textAlign: "left",
+  },
+  td: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    textAlign: "left",
+  },
+  evenRow: {
+    backgroundColor: "#f2f2f2",
+  },
+  oddRow: {
+    backgroundColor: "#ffffff",
+  },
+});

@@ -31,6 +31,13 @@ export class AssetService {
     return { id };
   }
 
+  async getAssetDetails(filter: { id: number; user_id: number }) {
+    console.log("edit asset:", filter);
+    let json = await this.knex("asset").where(filter).select();
+    console.log("edit asset:", filter);
+    return json;
+  }
+
   async deleteAsset(filter: { id: number; user_id: number }) {
     console.log("delete asset:", filter);
     await this.knex("asset").where(filter).del();

@@ -63,8 +63,8 @@ function deleteAsset(id: number, token: string) {
   return del("/assets/" + id, { token });
 }
 
-function getAssetDetails(id: number, token: string) {
-  return get("/assets/" + id, { token });
+function editAsset(id: number, token: string) {
+  return get("/editAssets/" + id, { token });
 }
 
 export default function SavingTable() {
@@ -95,8 +95,10 @@ export default function SavingTable() {
   };
 
   const router = useRouter();
-  const getById = async (id: number, token: string) => {
-    router.push({ pathname: "/editAssetDetails", params: { id, token } });
+  const editById = async (id: number, token: string) => {
+    let json = await editAsset(id, token);
+    console.log("after clicking edit::", json);
+    router.push({ pathname: "/editAssetDetails", params: { json } });
   };
   useEffect(() => {
     console.log("check get asset", pathname);
@@ -173,7 +175,7 @@ export default function SavingTable() {
                   width: 130,
                   render: (row) => (
                     <EditAndDelete
-                      edit={() => getById(row.id, token)}
+                      edit={() => editById(row.id, token)}
                       delete={() => deleteById(row.id, token)}
                     />
                   ),
