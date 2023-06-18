@@ -1,6 +1,5 @@
 import { Request } from "express";
 import { AssetService } from "./asset.service";
-import "../../session";
 import { HttpController } from "../http.controller";
 import { number, object, string } from "cast.ts";
 import { decodeJWT } from "../../jwt";

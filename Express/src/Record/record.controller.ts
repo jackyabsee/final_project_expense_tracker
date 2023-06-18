@@ -1,6 +1,5 @@
 import { Request } from "express";
 import { RecordService } from "./record.service";
-import "../../session";
 import { HttpController } from "../http.controller";
 import { date, nullable, number, object, string } from "cast.ts";
 import { decodeJWT } from "../../jwt";

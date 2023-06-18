@@ -6,21 +6,19 @@ set -x
 npm run build
 
 scp -r \
-	package.json \
-	dist \
-	public \
-	c25kb:~/express-server/
+package.json \
+dist \
+dt:~/multi/
 
-ssh c25kb "
-	source ~/.nvm/nvm.sh && \
-	cd ~/express-server/ && \
-	npm i --omit=dev && \
-	cp .env dist/ && \
-	cd dist && \
-	npx knex migrate:latest && \
-	npx knex seed:run && \
-	pm2 reload express-server && \
-	echo done.
+ssh dt "
+source ~/.nvm/nvm.sh && \
+cd ~/multi/ && \
+npm i --omit=dev && \
+cp .env dist/ && \
+cd dist && \
+npx knex migrate:latest
 "
+
+
 
 ## for first time setup, run: pm2 start --name express-server dist/server.js

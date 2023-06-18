@@ -1,6 +1,7 @@
 package-lock.json
 node_modules
 yarn.lock
+scripts/
 dist/
 .env
 *-debug.log

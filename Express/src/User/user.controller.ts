@@ -1,6 +1,5 @@
 import { Request } from "express";
 import { UserService } from "./user.service";
-import "../../session";
 import { email, nullable, object, string } from "cast.ts";
 import { HttpController } from "../http.controller";
 import { decodeJWT } from "../../jwt";

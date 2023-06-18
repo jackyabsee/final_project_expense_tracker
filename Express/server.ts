@@ -1,5 +1,4 @@
 import express, { NextFunction, Request, Response } from "express";
-import { sessionMiddleware } from "./session";
 import http from "http";
 import { Knex } from "knex";
 // import { employeeRoutes } from './employeeTime/employee.routes'
@@ -25,7 +24,6 @@ export class AppServer {
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 
-    app.use(sessionMiddleware);
     let server = new http.Server(app);
     this.knex = new KnexContainer().createKnex();
     // let io = new socketIO.Server(server)
@@ -38,8 +36,6 @@ export class AppServer {
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 
-    app.use(sessionMiddleware);
-
     let userService = new UserService(this.knex);
     let userController = new UserController(userService);
     let recordService = new RecordService(this.knex);
@@ -48,7 +44,7 @@ export class AppServer {
     let assetController = new AssetController(assetService);
     app.use(recordController.router);
     app.use(userController.router);
-    app.use(assetController.router)
+    app.use(assetController.router);
 
     //let memoUploader = new MemoUploader()
     //

@@ -15,8 +15,9 @@
       "noImplicitThis": true,
       "noImplicitAny": true,
       "strictNullChecks": true,
+      "incremental": true,
     //   "suppressImplicitAnyIndexErrors": true,
       "noUnusedLocals": true
     },
-    "exclude": ["node_modules", "build", "scripts", "index.js"]
+    "exclude": ["node_modules", "dist", "scripts"]
   }
