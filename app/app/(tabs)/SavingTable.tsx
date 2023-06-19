@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { usePathname } from "expo-router";
 
 import React, { Component, useEffect, useState } from "react";
@@ -27,6 +27,7 @@ import { del, get } from "../../api/api";
 import { Table } from "../../components/Table";
 import useEvent from "react-use-event";
 import { CreatedAssetEvent } from "./addAssetDetails";
+import { Button } from "native-base";
 
 const tableHeaders = [
   "所屬機構",
@@ -162,52 +163,75 @@ export default function SavingTable() {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView
-        horizontal={true}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        {tableData.error ? <Text>{tableData.error}</Text> : null}
+    <>
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
 
-        {tableData.assets ? (
-          <View>
-            <Table
-              rows={tableData.assets}
-              fields={[
-                {
-                  label: "所屬機構",
-                  width: 90,
-                  render: (row) => row.institution,
-                },
-                { label: "資產種類", width: 100, render: (row) => row.type },
-                { label: "資產價值", width: 100, render: (row) => row.value },
-                {
-                  label: "年利率",
-                  width: 90,
-                  render: (row) => row.interest_rate,
-                },
-                { label: "備註", width: 100, render: (row) => row.remark },
-                {
-                  label: "編輯/刪除",
-                  width: 130,
-                  render: (row) => (
-                    <EditAndDelete
-                      edit={() => getById(row.id, token)}
-                      delete={() => deleteById(row.id, token)}
-                    />
-                  ),
-                },
-              ]}
-            ></Table>
-            <AddBtn />
-          </View>
-        ) : (
-          <Text>Loading data...</Text>
-        )}
-      </ScrollView>
-    </View>
+          headerTitle: "快速記賬",
+          headerRight: () => (
+            <Button
+              variant="solid"
+              colorScheme="blue"
+              m="2"
+              p="2"
+              width="85"
+              height="39"
+              onPress={() => router.push("/addAssetDetails")}
+            >
+              新堵資產
+            </Button>
+          ),
+        }}
+      />
+
+      <View style={styles.container}>
+        <ScrollView
+          horizontal={true}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {tableData.error ? <Text>{tableData.error}</Text> : null}
+
+          {tableData.assets ? (
+            <View>
+              <Table
+                rows={tableData.assets}
+                fields={[
+                  {
+                    label: "所屬機構",
+                    width: 90,
+                    render: (row) => row.institution,
+                  },
+                  { label: "資產種類", width: 100, render: (row) => row.type },
+                  { label: "資產價值", width: 100, render: (row) => row.value },
+                  {
+                    label: "年利率",
+                    width: 90,
+                    render: (row) => row.interest_rate,
+                  },
+                  { label: "備註", width: 110, render: (row) => row.remark },
+                  {
+                    label: "編輯/刪除",
+                    width: 122,
+                    render: (row) => (
+                      <EditAndDelete
+                        edit={() => getById(row.id, token)}
+                        delete={() => deleteById(row.id, token)}
+                      />
+                    ),
+                  },
+                ]}
+              ></Table>
+              {/* <AddBtn /> */}
+            </View>
+          ) : (
+            <Text>Loading data...</Text>
+          )}
+        </ScrollView>
+      </View>
+    </>
   );
 }
 
@@ -228,28 +252,36 @@ function EditAndDelete(props: { delete: () => void; edit: () => void }) {
   );
 }
 
-function AddBtn() {
-  const router = useRouter();
-  return (
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity
-        style={styles.addBtn}
-        onPress={() => router.push("/addAssetDetails")}
-      >
-        <View style={styles.addBtn}>
-          <Text style={styles.btnText}>新增</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-}
+//function AddBtn() {
+//  const router = useRouter();
+//  return (
+//    <View style={styles.buttonContainer}>
+//      <TouchableOpacity
+//        style={styles.addBtn}
+//        onPress={() => router.push("/addAssetDetails")}
+//      >
+//        <View style={styles.addBtn}>
+//          <Text style={styles.btnText}>新增</Text>
+//        </View>
+//      </TouchableOpacity>
+//    </View>
+//  );
+//}
 
 const styles = StyleSheet.create({
+  topContainer: {
+    display: "flex",
+    flexDirection: "row-reverse",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: 100,
+  },
   container: {
     flex: 1,
     padding: 16,
     paddingTop: 30,
     backgroundColor: "#fff",
+    border: 1,
   },
   header: { height: 50, backgroundColor: "white" },
   text: { textAlign: "center", fontWeight: "100" },
@@ -259,14 +291,15 @@ const styles = StyleSheet.create({
   buttonContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    paddingTop: 7,
   },
   editBtn: {
     width: 46,
     height: 30,
     backgroundColor: "#72A0C1",
     borderRadius: 4,
-    marginRight: 8,
+    marginLeft: 4,
+    marginRight: 12,
     justifyContent: "center",
   },
   deleteBtn: {
@@ -275,6 +308,7 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: 4,
     justifyContent: "center",
+    marginLeft: 4,
   },
   addBtn: {
     width: 46,
@@ -282,6 +316,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1CAB78",
     borderRadius: 4,
     justifyContent: "center",
+    marginLeft: 4,
   },
-  btnText: { textAlign: "center", color: "#fff" },
+  btnText: { textAlign: "center", marginRight: 4, color: "#fff" },
 });
