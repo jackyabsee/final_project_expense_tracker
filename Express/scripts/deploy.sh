@@ -8,15 +8,17 @@ npm run build
 scp -r \
 package.json \
 dist \
-dt:~/multi/
+jackydemo:~/final-project-express-server/
 
-ssh dt "
+ssh jackydemo "
 source ~/.nvm/nvm.sh && \
-cd ~/multi/ && \
+cd ~/final-project-express-server/ && \
 npm i --omit=dev && \
 cp .env dist/ && \
 cd dist && \
-npx knex migrate:latest
+npx knex migrate:latest && \
+pm2 reload express-server && \ 
+echo done.
 "
 
 
