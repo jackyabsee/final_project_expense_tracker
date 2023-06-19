@@ -76,7 +76,7 @@ export default function SavingTable() {
 
   const [tableData, setTableData] = useState<ParseResult<typeof dataParser>>({
     error: undefined,
-    assets: undefined,
+    assets: [],
   });
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -117,7 +117,7 @@ export default function SavingTable() {
   async function fetchData(token: string) {
     console.log("get assets");
     let json = await getAssets(token);
-    if (json.error !== undefined) {
+    if (json.error) {
       let tableDataExample = {
         error: undefined,
         assets: [
