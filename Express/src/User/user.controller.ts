@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { UserService } from "./user.service";
-import { email, nullable, object, string } from "cast.ts";
+import { email, nullable, number, object, string } from "cast.ts";
 import { HttpController } from "../http.controller";
 import { decodeJWT } from "../../jwt";
 
@@ -15,6 +15,9 @@ let registerParser = object({
   password: string(),
   email: nullable(email()),
   username: nullable(usernameParser),
+});
+let deleteHistoryItemParser = object({
+  id: number(),
 });
 
 export class UserController extends HttpController {
@@ -48,5 +51,10 @@ export class UserController extends HttpController {
   getHistory = async (req: Request) => {
     let id = decodeJWT(req).id;
     return this.userService.getHistory(id);
+  };
+  deleteHistoryItem = async (req: Request) => {
+    let user_id = decodeJWT(req).id;
+    let itemId = deleteHistoryItemParser.parse(req.body);
+    return this.userService.deleteHistoryItem({ id: itemId.id, user_id });
   };
 }

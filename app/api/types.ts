@@ -38,4 +38,5 @@ export type HistoryData = {
   type: string;
   price: number;
   date: Date;
+  remark: string;
 };

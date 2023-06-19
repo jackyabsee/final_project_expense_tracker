@@ -86,11 +86,15 @@ export class UserService {
   }
   async getHistory(input: number) {
     let data = await this.knex("spending")
-      .select("id", "type", "price", "date")
+      .select("id", "type", "price", "date", "remark")
       .where("user_id", input)
       .orderBy("date", "asc");
     if (!data) throw new HttpError(404, "No data");
     return { items: data };
+  }
+  async deleteHistoryItem(filter: { id: number; user_id: number }) {
+    await this.knex("spending").where(filter).del();
+    return { success: true };
   }
   private genJWTPayload(id: number): JWTPayload {
     return { id, iat: Math.floor(Date.now() / 1000) };
