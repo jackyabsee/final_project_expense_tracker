@@ -314,10 +314,10 @@ const Home = () => {
         >
           多次記賬
         </Button>
-        <Button onPress={() => router.push("/extraData")}>
+        <Button onPress={() => router.replace("/extraData")}>
           To Extra Information
         </Button>
-
+        <Button onPress={() => router.replace("/history")}>To History</Button>
         <Button
           variant="solid"
           colorScheme="green"
