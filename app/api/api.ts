@@ -25,6 +25,12 @@ export async function getExtraData() {
 export async function getHistory(token: string) {
   return get<{ items: Array<HistoryData> }>("/users/history", { token });
 }
+export async function deleteHistoryItem(id: number, token: string) {
+  return post<{ success: boolean }>("/users/delete-history-item", {
+    token,
+    body: { id },
+  });
+}
 type AjaxOptions<T> = {
   method: string;
   url: string;

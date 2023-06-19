@@ -11,41 +11,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { HistoryData, HomeData } from "../api/types";
 import { usePathname, useRouter } from "expo-router";
-import { getHistory, getHomeData } from "../api/api";
+import { deleteHistoryItem, getHistory, getHomeData } from "../api/api";
 import { useAuth } from "../context/authContext";
 import { Table } from "../components/greenTable";
 import { Button } from "native-base";
 import { convertDate } from "../api/util";
 import { background } from "native-base/lib/typescript/theme/styled-system";
-
-function ConfirmDeleteModal({ openModel }: { openModel: boolean }) {
-  const [modalVisible, setModalVisible] = useState(openModel);
-  return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          alert("Modal has been closed.");
-          setModalVisible(false);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-    </View>
-  );
-}
 
 const history = () => {
   const router = useRouter();
@@ -54,7 +25,8 @@ const history = () => {
     { items: Array<HistoryData> | null } & { error?: string }
   >({ items: null, error: "loading" });
   const pathname = usePathname();
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(0);
   useEffect(() => {
     if (pathname === "/history") {
       (async () => {
@@ -99,9 +71,12 @@ const history = () => {
                   {
                     label: "刪除",
                     width: 99,
-                    render: (row: any) => (
+                    render: (row) => (
                       <Button
-                        onPress={() => <ConfirmDeleteModal openModel={true} />}
+                        onPress={() => {
+                          setSelectedItemId(row.id);
+                          setModalVisible(true);
+                        }}
                       >
                         刪除
                       </Button>
@@ -114,6 +89,65 @@ const history = () => {
             <Text>Loading data...</Text>
           )}
         </ScrollView>
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              alert("Modal has been closed.");
+              setModalVisible(false);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Are You Sure?</Text>
+                <View style={{ display: "flex", flexDirection: "row" }}>
+                  <Button
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={async () => {
+                      if (selectedItemId <= 0) {
+                        alert("Can't delete");
+                        setSelectedItemId(0);
+                        return;
+                      }
+                      if (!authState.token) {
+                        alert("PLease login first");
+                        setSelectedItemId(0);
+
+                        return;
+                      }
+                      let result = await deleteHistoryItem(
+                        selectedItemId,
+                        authState.token
+                      );
+                      if (result.error || !result) {
+                        alert("Delete failed");
+                        setSelectedItemId(0);
+                        return;
+                      }
+                      if (result.success) {
+                        alert("Deleted successfully");
+                        setSelectedItemId(0);
+                        const data = await getHistory(authState.token);
+                        setData(data);
+                        return;
+                      }
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Delete</Text>
+                  </Button>
+                  <Button
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(false)}
+                  >
+                    <Text style={styles.textStyle}>Back</Text>
+                  </Button>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </View>
       </SafeAreaView>
     </>
   );
@@ -138,7 +172,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 80,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -153,6 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    margin: 3,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
