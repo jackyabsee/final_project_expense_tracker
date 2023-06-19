@@ -83,8 +83,8 @@ const Home = () => {
                   colorScheme="green"
                   m="2"
                   p="2"
-                  width="95"
-                  height="45"
+                  width="90"
+                  height="42"
                   onPress={() => router.back()}
                 >
                   返回

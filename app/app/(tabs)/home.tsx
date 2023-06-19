@@ -143,7 +143,7 @@ function RenderHomeData({
       <>
         <View>
           <VictoryPie
-            // animate={{ duration: 2000 }}
+            //animate={{ duration: 2000 }}
             events={[
               {
                 target: "data",
@@ -245,7 +245,12 @@ function RenderHomeData({
         {dataItems.map((item) => (
           <View key={item.x}>
             <Text
-              style={{ fontSize: 16, fontWeight: "bold", color: "#c9d1d9" }}
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                color: "#c9d1d9",
+                marginBottom: 15,
+              }}
             >
               {item.labels}| ${item.y}
             </Text>
@@ -328,9 +333,9 @@ const Home = () => {
         <Provider store={store}>
           <RenderHomeData data={data} />
         </Provider>
-        <View>
-          {authState.token ? <Text style={styles.text}>{userId}</Text> : null}
-        </View>
+        {/* <View> */}
+        {/* {authState.token ? <Text style={styles.text}>{userId}</Text> : null} */}
+        {/* </View> */}
 
         <ModalOfDetailData />
       </SafeAreaView>
