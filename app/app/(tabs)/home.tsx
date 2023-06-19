@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Stack, useRouter, Tabs, usePathname } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button } from "native-base";
+import { Button, ScrollView } from "native-base";
 import { useAuth } from "../../context/authContext";
 import { HomeData, JWTPayload } from "../../api/types";
 import { useGetId } from "../../hooks/useGetId";
@@ -25,59 +25,59 @@ import {
 import { useDispatch } from "react-redux";
 import { PanGestureHandler, State } from "react-native-gesture-handler";
 
-function ModalOfDetailData() {
-  const selectedData = useSelector(
-    (state: RootState) => state.homeData.selectedData
-  );
-  const modalVisible = useSelector(
-    (state: RootState) => state.homeData.modalVisible
-  );
-  const dispatch = useDispatch();
-  const [modalHeight, setModalHeight] = useState(CLOSED_MODAL_HEIGHT);
-
-  return (
-    <Modal
-      style={styles.container}
-      visible={modalVisible}
-      transparent={true}
-      onRequestClose={() => {
-        alert("Modal has been closed.");
-        dispatch(setModalVisible(false));
-      }}
-    >
-      <PanGestureHandler
-        onGestureEvent={({ nativeEvent }) => {
-          setModalHeight(
-            Math.min(
-              CLOSED_MODAL_HEIGHT,
-              CLOSED_MODAL_HEIGHT - nativeEvent.translationY
-            )
-          );
-        }}
-        onHandlerStateChange={({ nativeEvent }) => {
-          if (nativeEvent.state === State.END) {
-            if (nativeEvent.translationY > 0) {
-              dispatch(setModalVisible(false));
-            }
-            setModalHeight(CLOSED_MODAL_HEIGHT);
-          }
-        }}
-      >
-        <Animated.View style={[styles.modal, { height: modalHeight }]}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Selected Item Details</Text>
-          </View>
-          <View style={styles.content}>
-            <Text style={styles.text}>
-              {selectedData?.type ? selectedData.type : null}
-              {selectedData?.price ? selectedData?.price : null}
-            </Text>
-          </View>
-        </Animated.View>
-      </PanGestureHandler>
-    </Modal>
-  );
-}
+//function ModalOfDetailData() {
+//  const selectedData = useSelector(
+//    (state: RootState) => state.homeData.selectedData
+//  );
+//  const modalVisible = useSelector(
+//    (state: RootState) => state.homeData.modalVisible
+//  );
+//  const dispatch = useDispatch();
+//  const [modalHeight, setModalHeight] = useState(CLOSED_MODAL_HEIGHT);
+//
+//  return (
+//    <Modal
+//      style={styles.container}
+//      visible={modalVisible}
+//      transparent={true}
+//      onRequestClose={() => {
+//        alert("Modal has been closed.");
+//        dispatch(setModalVisible(false));
+//      }}
+//    >
+//      <PanGestureHandler
+//        onGestureEvent={({ nativeEvent }) => {
+//          setModalHeight(
+//            Math.min(
+//              CLOSED_MODAL_HEIGHT,
+//              CLOSED_MODAL_HEIGHT - nativeEvent.translationY
+//            )
+//          );
+//        }}
+//        onHandlerStateChange={({ nativeEvent }) => {
+//          if (nativeEvent.state === State.END) {
+//            if (nativeEvent.translationY > 0) {
+//              dispatch(setModalVisible(false));
+//            }
+//            setModalHeight(CLOSED_MODAL_HEIGHT);
+//          }
+//        }}
+//      >
+//        <Animated.View style={[styles.modal, { height: modalHeight }]}>
+//          <View style={styles.header}>
+//            <Text style={styles.headerText}>Selected Item Details</Text>
+//          </View>
+//          <View style={styles.content}>
+//            <Text style={styles.text}>
+//              {selectedData?.type ? selectedData.type : null}
+//              {selectedData?.price ? selectedData?.price : null}
+//            </Text>
+//          </View>
+//        </Animated.View>
+//      </PanGestureHandler>
+//    </Modal>
+//  );
+//}
 
 const CLOSED_MODAL_HEIGHT = 300;
 
@@ -199,7 +199,7 @@ function RenderHomeData({
   }
   return (
     <>
-      <View>
+      <View style={styles.topMiddleContainer}>
         <VictoryPie
           animate={{ duration: 2000 }}
           events={[
@@ -222,12 +222,12 @@ function RenderHomeData({
           ]}
           data={dataItems}
           colorScale={[
-            "#00a8e8",
-            "#0077b6",
-            "#023e8a",
-            "#03045e",
-            "#011f4b",
-            "#000000",
+            "#FFA500",
+            "#FF0000",
+            "#A020F0",
+            "#add8e6",
+            "#90EE90",
+            "#eeae42",
           ]}
           innerRadius={60}
           labelRadius={100}
@@ -241,7 +241,7 @@ function RenderHomeData({
           theme={VictoryTheme.material}
         />
       </View>
-      <View>
+      <View style={styles.middleContainer}>
         {dataItems.map((item) => (
           <View key={item.x}>
             <Text
@@ -312,12 +312,10 @@ const Home = () => {
           p="2"
           onPress={() => router.push("/Multi")}
         >
-          多次記賬
+          多次記帳
         </Button>
-        <Button onPress={() => router.replace("/extraData")}>
-          To Extra Information
-        </Button>
-        <Button onPress={() => router.replace("/history")}>To History</Button>
+        <Button onPress={() => router.replace("/extraData")}>賺錢貼士</Button>
+        <Button onPress={() => router.replace("/history")}>記帳紀錄</Button>
         <Button
           variant="solid"
           colorScheme="green"
@@ -325,20 +323,22 @@ const Home = () => {
           p="2"
           onPress={() => router.push("/single")}
         >
-          快速記賬
+          快速記帳
         </Button>
       </View>
 
-      <SafeAreaView style={styles.container}>
-        <Provider store={store}>
-          <RenderHomeData data={data} />
-        </Provider>
-        {/* <View> */}
-        {/* {authState.token ? <Text style={styles.text}>{userId}</Text> : null} */}
-        {/* </View> */}
+      <View>
+        <ScrollView>
+          <Provider store={store}>
+            <RenderHomeData data={data} />
+          </Provider>
+          {/* <View> */}
+          {/* {authState.token ? <Text style={styles.text}>{userId}</Text> : null} */}
+          {/* </View> */}
 
-        <ModalOfDetailData />
-      </SafeAreaView>
+          {/* <ModalOfDetailData /> */}
+        </ScrollView>
+      </View>
     </>
   );
 };
@@ -346,11 +346,9 @@ const Home = () => {
 const styles = StyleSheet.create({
   topContainer: {
     display: "flex",
+
     flexDirection: "row-reverse",
     backgroundColor: "#1a1c20",
-    paddingHorizontal: 20,
-    paddingTop: 40,
-    paddingBottom: 20,
     justifyContent: "space-between",
     alignItems: "center",
   },
@@ -364,19 +362,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1a1c20",
   },
-  container: {
-    flex: 1,
-    backgroundColor: "#0d1117",
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    paddingTop: 30,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   data: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "80%",
+    width: "100%",
     marginBottom: "1.75%",
     alignItems: "center",
   },
@@ -397,7 +386,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    padding: 16,
+    padding: 0,
     borderBottomWidth: 1,
     borderBottomColor: "#2EE6D6",
   },
@@ -410,6 +399,32 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: "center",
     justifyContent: "center",
+  },
+  topMiddleContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 18,
+    shadowColor: "grey",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    marginBottom: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 50,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  middleContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 18,
+    shadowColor: "grey",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    marginBottom: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 50,
+    width: "100%",
   },
 });
 export default Home;
