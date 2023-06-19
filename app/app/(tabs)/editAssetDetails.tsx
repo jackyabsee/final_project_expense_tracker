@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -39,11 +39,11 @@ import { useEvent } from "react-use-event";
 import { object, optional, id, string } from "cast.ts";
 
 type NewAsset = {
-  institution: string;
-  type: string;
-  value: string;
-  interest_rate: string;
-  remark: string;
+  institution: string | string[] | undefined;
+  type: string | string[] | undefined;
+  value: string | string[] | undefined;
+  interest_rate: string | string[] | undefined;
+  remark: string | string[] | undefined;
 };
 
 export type CreatedAssetEvent = {
@@ -62,8 +62,12 @@ let createAssetParser = object({
   id: optional(id()),
   error: optional(string()),
 });
-function createAsset(asset: NewAsset, token: string) {
-  return post("/assets", { body: asset, token, parser: createAssetParser });
+function editAsset(asset: NewAsset, params: any, token: string) {
+  return post("/editAsset", {
+    body: { ...asset, id: params.id },
+    token,
+    parser: createAssetParser,
+  });
 }
 
 function getAssetDetails(id: number, token: string) {
@@ -74,18 +78,25 @@ const editAssetDetails = () => {
   const router = useRouter();
   const params = useLocalSearchParams();
   console.log("parmmmmmmmmmmmmmmm::", params);
-  const getAssetById = async (id: number, token: string) => {
-    let json = await getAssetDetails(id, token);
-    console.log("getAssetById::", json);
-  };
+
   let r = (Math.random() * 100) | 0;
   const [asset, setAsset] = useState<NewAsset>({
-    institution: "org " + r,
-    type: "type " + r,
-    value: "" + r,
-    interest_rate: "" + r,
-    remark: "remark " + r,
+    institution: params.institution,
+    type: params.type,
+    value: params.value,
+    interest_rate: params.interest_rate,
+    remark: params.remark,
   });
+
+  useEffect(() => {
+    setAsset({
+      institution: params.institution,
+      type: params.type,
+      value: params.value,
+      interest_rate: params.interest_rate,
+      remark: params.remark,
+    });
+  }, [params]);
 
   const dispatch = useEvent<CreatedAssetEvent>("CreatedAsset");
 
@@ -94,7 +105,7 @@ const editAssetDetails = () => {
   } = useAuth();
 
   const handleSubmit = async (token: string) => {
-    const json = await createAsset(asset, token);
+    const json = await editAsset(asset, params, token);
     if (json.id) {
       dispatch({
         asset: {
@@ -106,6 +117,7 @@ const editAssetDetails = () => {
       });
       console.log(params);
     }
+    router.push("/SavingTable");
   };
 
   if (!token) {

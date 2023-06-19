@@ -86,7 +86,11 @@ export default function SavingTable() {
       assets: data.assets ? [event.asset, ...data.assets] : [event.asset],
     }));
   });
-
+  const clickEditById = async (id: number, token: string) => {
+    let json = await getAssetDetails(id, token);
+    console.log("clickeditedit:::", json);
+    router.push({ pathname: "/editAssetDetails", params: json });
+  };
   const deleteById = async (id: number, token: string) => {
     let json = await deleteAsset(id, token);
     console.log("after clicking delete json::", json);
@@ -96,7 +100,7 @@ export default function SavingTable() {
 
   const router = useRouter();
   const getById = async (id: number, token: string) => {
-    router.push({ pathname: "/editAssetDetails", params: { id, token } });
+    await clickEditById(id, token);
   };
   useEffect(() => {
     console.log("check get asset", pathname);

@@ -1,3 +1,4 @@
+//import { number } from "cast.ts";
 import { Knex } from "knex";
 
 export class AssetService {
@@ -34,7 +35,7 @@ export class AssetService {
   async getAssetDetails(filter: { id: number; user_id: number }) {
     console.log("edit asset:", filter);
     let json = await this.knex("asset").where(filter).select();
-    console.log("edit asset:", filter);
+    console.log("edit asset:", json);
     return json;
   }
 
@@ -42,5 +43,19 @@ export class AssetService {
     console.log("delete asset:", filter);
     await this.knex("asset").where(filter).del();
     return {};
+  }
+
+  async editAsset(asset: any) {
+    console.log("editassetservice::::::", asset);
+
+    await this.knex("asset").where({ id: asset.id }).update({
+      institution: asset.institution,
+      type: asset.type,
+      value: asset.value,
+      interest_rate: asset.interest_rate,
+      remark: asset.remark,
+    });
+
+    return asset.id;
   }
 }

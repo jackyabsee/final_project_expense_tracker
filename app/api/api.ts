@@ -27,6 +27,7 @@ type AjaxOptions<T> = {
   token?: string | null;
   parser?: Parser<T>;
   body?: object;
+  params?: object;
 };
 
 async function ajax<T>(options: AjaxOptions<T>) {

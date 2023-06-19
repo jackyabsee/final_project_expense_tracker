@@ -17,7 +17,8 @@ export class AssetController extends HttpController {
     super();
     this.router.post("/assets", this.wrapMethod(this.addAsset));
     this.router.get("/assets", this.wrapMethod(this.loadAsset));
-    this.router.get("/Assets/:id", this.wrapMethod(this.getAssetDetails));
+    this.router.get("/assets/:id", this.wrapMethod(this.getAssetDetails));
+    this.router.post("/editAsset", this.wrapMethod(this.editAsset));
     this.router.delete("/assets/:id", this.wrapMethod(this.deleteAsset));
   }
 
@@ -37,17 +38,27 @@ export class AssetController extends HttpController {
   };
 
   getAssetDetails = async (req: Request) => {
+    console.log("abcdefg");
     let user_id = decodeJWT(req).id;
     let id = +req.params.id;
+    console.log(user_id, "+++++", id);
     let json = await this.assetService.getAssetDetails({ id, user_id });
-
-    return json;
+    console.log("assetconrollllll::", json[0]);
+    return json[0];
   };
 
   deleteAsset = async (req: Request) => {
     let user_id = decodeJWT(req).id;
     let id = +req.params.id;
     let json = await this.assetService.deleteAsset({ id, user_id });
+    return json;
+  };
+
+  editAsset = async (req: Request) => {
+    let asset = req.body;
+    console.log("assssetcontroller:::", asset);
+    let json = await this.assetService.editAsset(asset);
+    console.log(json);
     return json;
   };
 }
