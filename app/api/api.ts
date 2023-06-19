@@ -2,6 +2,7 @@ import { Parser } from "cast.ts";
 import { apiOrigin } from "../env";
 import {
   ExtraData,
+  HistoryData,
   HomeData,
   LoginInput,
   LoginResult,
@@ -20,6 +21,9 @@ export async function getHomeData(token: string) {
 }
 export async function getExtraData() {
   return get<{ items: Array<ExtraData> }>("/users/extra-data");
+}
+export async function getHistory(token: string) {
+  return get<{ items: Array<HistoryData> }>("/users/history", { token });
 }
 type AjaxOptions<T> = {
   method: string;

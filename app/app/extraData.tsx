@@ -55,7 +55,10 @@ const RenderExtraData = ({
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Button onPress={() => router.back()} style={styles.backButton}>
+            <Button
+              onPress={() => router.replace("/home")}
+              style={styles.backButton}
+            >
               Back
             </Button>
           </View>

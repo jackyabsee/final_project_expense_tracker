@@ -32,3 +32,10 @@ export type ExtraData = {
   title: string;
   url: string;
 };
+
+export type HistoryData = {
+  id: number;
+  type: string;
+  price: number;
+  date: Date;
+};

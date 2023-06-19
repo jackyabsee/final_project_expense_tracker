@@ -84,7 +84,14 @@ export class UserService {
     if (!data) throw new HttpError(404, "No data");
     return { items: data };
   }
-
+  async getHistory(input: number) {
+    let data = await this.knex("spending")
+      .select("id", "type", "price", "date")
+      .where("user_id", input)
+      .orderBy("date", "asc");
+    if (!data) throw new HttpError(404, "No data");
+    return { items: data };
+  }
   private genJWTPayload(id: number): JWTPayload {
     return { id, iat: Math.floor(Date.now() / 1000) };
   }
