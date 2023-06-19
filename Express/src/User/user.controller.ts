@@ -28,6 +28,10 @@ export class UserController extends HttpController {
     this.router.get("/users/current-expense", this.wrapMethod(this.getData));
     this.router.get("/users/extra-data", this.wrapMethod(this.getExtraData));
     this.router.get("/users/history", this.wrapMethod(this.getHistory));
+    this.router.post(
+      "/users/delete-history-item",
+      this.wrapMethod(this.deleteHistoryItem)
+    );
   }
 
   register = async (req: Request) => {

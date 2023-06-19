@@ -88,7 +88,7 @@ export class UserService {
     let data = await this.knex("spending")
       .select("id", "type", "price", "date", "remark")
       .where("user_id", input)
-      .orderBy("date", "asc");
+      .orderBy("date", "desc");
     if (!data) throw new HttpError(404, "No data");
     return { items: data };
   }
