@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { StyleSheet, View, Text, Pressable, Modal } from "react-native";
 import { Stack, useRouter, Tabs, usePathname } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "native-base";
@@ -8,9 +8,49 @@ import { HomeData, JWTPayload } from "../../api/types";
 import { useGetId } from "../../hooks/useGetId";
 import { getHomeData } from "../../api/api";
 import { VictoryPie, VictoryTheme } from "victory-native";
-import { Provider } from "react-redux";
-import { setSelectedData, store } from "../../redux/selectedItemStore";
+import { Provider, useSelector } from "react-redux";
+import {
+  RootState,
+  setModalVisible,
+  setSelectedData,
+  store,
+} from "../../redux/selectedItemStore";
 import { useDispatch } from "react-redux";
+
+function ModalOfDetailData() {
+  const selectedData = useSelector(
+    (state: RootState) => state.homeData.selectedData
+  );
+  const modalVisible = useSelector(
+    (state: RootState) => state.homeData.modalVisible
+  );
+  const dispatch = useDispatch();
+
+  return (
+    <Modal
+      style={styles.container}
+      visible={modalVisible}
+      animationType="slide"
+      transparent={true}
+      onRequestClose={() => {
+        alert("Modal has been closed.");
+        dispatch(setModalVisible(false));
+      }}
+    >
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Selected Item Details</Text>
+      </View>
+      <View style={styles.content}>
+        <Text style={styles.text}>
+          {selectedData?.type ? selectedData.type : null}
+
+          {selectedData?.price ? selectedData?.price : null}
+        </Text>
+      </View>
+    </Modal>
+  );
+}
+
 function RenderHomeData({
   data,
 }: {
@@ -54,7 +94,9 @@ function RenderHomeData({
               };
               console.log(input);
               dispatch(setSelectedData(input));
-              return router.push("/modal");
+              // return router.push("/modal");
+              // dispatch(setModalVisible(true));
+              return;
             },
           },
         },
@@ -146,6 +188,7 @@ const Home = () => {
           <RenderHomeData data={data} />
         </Provider>
         <View>{authState.token ? <Text>{userId}</Text> : null}</View>
+        <ModalOfDetailData />
       </SafeAreaView>
     </>
   );
@@ -192,6 +235,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#c9d1d9",
+  },
+  header: {
+    width: "100%",
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#2EE6D6",
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#2EE6D6",
+  },
+  content: {
+    padding: 16,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 export default Home;

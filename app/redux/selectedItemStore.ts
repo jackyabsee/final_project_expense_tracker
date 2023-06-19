@@ -2,9 +2,10 @@ import { HomeData } from "../api/types";
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 export type HomeDataState = {
   selectedData?: HomeData;
+  modalVisible: boolean;
 };
 
-const initialState: HomeDataState = {};
+const initialState: HomeDataState = { modalVisible: false };
 
 export const homeDataSlice = createSlice({
   name: "homeData",
@@ -16,10 +17,13 @@ export const homeDataSlice = createSlice({
     ) => {
       state.selectedData = action.payload;
     },
+    setModalVisible: (state: HomeDataState, action: PayloadAction<boolean>) => {
+      state.modalVisible = action.payload;
+    },
   },
 });
 
-export const { setSelectedData } = homeDataSlice.actions;
+export const { setSelectedData, setModalVisible } = homeDataSlice.actions;
 export const homeDataReducer = homeDataSlice.reducer;
 
 export const store = configureStore({
