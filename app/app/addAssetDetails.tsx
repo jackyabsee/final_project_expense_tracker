@@ -87,14 +87,6 @@ const addAssetDetails = () => {
       return;
     }
     if (json.id) {
-      // dispatch({
-      //   asset: {
-      //     ...asset,
-      //     id: json.id,
-      //     value: +asset.value,
-      //     interest_rate: +asset.interest_rate,
-      //   },
-      // });
       console.log("success", json);
       console.log("success");
 

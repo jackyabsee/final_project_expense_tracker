@@ -8,7 +8,7 @@ import {
   Button as BackButton,
 } from "react-native";
 import { Stack, useRouter, Tabs, useLocalSearchParams } from "expo-router";
-import { COLORS, icons, images, SIZES } from "../../constants";
+import { COLORS, icons, images, SIZES } from "../constants";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Box,
@@ -29,12 +29,12 @@ import {
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Picker } from "@react-native-picker/picker";
-import { apiOrigin } from "../../env";
+import { apiOrigin } from "../env";
 // import { JWTPayload } from "../../api/types";
 // import jwtDecode from "jwt-decode";
-import { useGetId } from "../../hooks/useGetId";
-import { get, post } from "../../api/api";
-import { useAuth } from "../../context/authContext";
+import { useGetId } from "../hooks/useGetId";
+import { get, post } from "../api/api";
+import { useAuth } from "../context/authContext";
 import { useEvent } from "react-use-event";
 import { object, optional, id, string } from "cast.ts";
 

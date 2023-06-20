@@ -345,11 +345,20 @@ const Home = () => {
 const styles = StyleSheet.create({
   topContainer: {
     display: "flex",
-
     flexDirection: "row-reverse",
-    backgroundColor: "#1a1c20",
+    // backgroundColor: "#1a1c20",
     justifyContent: "space-between",
     alignItems: "center",
+
+    backgroundColor: "#fff",
+    borderRadius: 18,
+    shadowColor: "grey",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    marginBottom: 20,
+    width: "100%",
+    marginTop: 10,
   },
   logoutButton: {
     backgroundColor: "#fff",

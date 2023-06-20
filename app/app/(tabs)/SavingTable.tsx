@@ -171,8 +171,7 @@ export default function SavingTable() {
       <Stack.Screen
         options={{
           headerShadowVisible: false,
-
-          headerTitle: "快速記帳",
+          headerTitle: "你的資產",
           headerRight: () => (
             <Button
               variant="solid"
