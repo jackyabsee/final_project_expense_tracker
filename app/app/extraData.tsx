@@ -59,11 +59,11 @@ const RenderExtraData = ({
               onPress={() => router.replace("/home")}
               style={styles.backButton}
             >
-              Back
+              返回
             </Button>
           </View>
           <View style={styles.headerCenter}>
-            <Text style={styles.headerText}>Extra Information</Text>
+            <Text style={styles.headerText}>賺錢貼士</Text>
           </View>
           <View style={styles.headerRight} />
         </View>
@@ -76,6 +76,16 @@ const RenderExtraData = ({
           {data.items.map((item: any) => (
             <View style={styles.card} key={item.id}>
               <Text style={styles.title}>{item.title}</Text>
+              <View
+                style={{
+                  borderBottomWidth: 2,
+                  borderStyle: "solid",
+                  borderBottomColor: "grey",
+                  height: 6,
+                  justifyContent: "center",
+                  paddingHorizontal: 16,
+                }}
+              ></View>
               {/* <Text style={styles.pubDate}>Published Date: {item.pubDate}</Text> */}
               {/* <Text style={styles.source}>Source: {item.source}</Text> */}
               <Link href={item.url} style={styles.link}>
@@ -142,16 +152,22 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   card: {
-    borderWidth: 1,
-    borderColor: "gray",
-    padding: 10,
-    marginBottom: 10,
+    backgroundColor: "#fff",
+    borderRadius: 18,
+    shadowColor: "grey",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    marginBottom: 15,
+    padding: 18,
     width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 3,
   },
   pubDate: {
     fontSize: 16,
@@ -164,8 +180,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   link: {
+    marginTop: 3,
     fontSize: 16,
     color: "blue",
     textDecorationLine: "underline",
+    fontWeight: "bold",
   },
 });

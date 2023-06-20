@@ -56,15 +56,15 @@ const history = () => {
               <Table
                 rows={data.items}
                 fields={[
-                  { label: "Type", width: 100, render: (row) => row.type },
-                  { label: "Price", width: 100, render: (row) => row.price },
+                  { label: "種類", width: 100, render: (row) => row.type },
+                  { label: "價格", width: 100, render: (row) => row.price },
                   {
-                    label: "Date",
+                    label: "日期",
                     width: 115,
                     render: (row) => convertDate(String(row.date)).date,
                   },
                   {
-                    label: "Remark",
+                    label: "備註",
                     width: 100,
                     render: (row) => row.remark,
                   },

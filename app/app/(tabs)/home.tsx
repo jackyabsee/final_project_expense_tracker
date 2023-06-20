@@ -99,11 +99,33 @@ function RenderHomeData({
   if (!Array.isArray(data.items)) {
     return <></>;
   }
-  const dataItems = data.items.map((item) => ({
-    x: item.type,
-    y: item.price,
-    labels: item.type,
-  }));
+  const dataItems = data.items.map((item) => {
+    let emoji;
+    switch (item.type) {
+      case "衣飾":
+        emoji = "👕";
+        break;
+      case "娛樂":
+        emoji = "🎉";
+        break;
+      case "繳費":
+        emoji = "💰";
+        break;
+      case "交通":
+        emoji = "🚌";
+        break;
+      case "餐飲":
+        emoji = "🍔";
+        break;
+      default:
+        emoji = "💡";
+    }
+    return {
+      x: item.type,
+      y: item.price,
+      labels: `${emoji}${item.type}`,
+    };
+  });
   console.log(dataItems);
 
   if (dataItems.length === 0) {
@@ -139,6 +161,7 @@ function RenderHomeData({
         label: "其他",
       },
     ];
+
     return (
       <>
         <View>
@@ -243,17 +266,13 @@ function RenderHomeData({
       </View>
       <View style={styles.middleContainer}>
         {dataItems.map((item) => (
-          <View key={item.x}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "bold",
-                color: "#c9d1d9",
-                marginBottom: 15,
-              }}
-            >
-              😀{item.labels}| ${item.y}
-            </Text>
+          <View style={styles.itemLabelContainer} key={item.x}>
+            <View style={{ width: 100 }}>
+              <Text style={styles.itemLabel}>{item.labels}</Text>
+            </View>
+            <View style={{ width: 90 }}>
+              <Text style={styles.itemLabel}>${item.y}</Text>
+            </View>
           </View>
         ))}
       </View>
@@ -267,12 +286,17 @@ function Logout() {
 
   return (
     <Button
+      variant="solid"
+      style={{
+        width: 60,
+        backgroundColor: "#d6d3d1",
+      }}
       onPress={async () => {
         await onLogout();
         router.replace("/login");
       }}
     >
-      Logout
+      登出
     </Button>
   );
 }
@@ -336,6 +360,7 @@ const Home = () => {
           {/* </View> */}
 
           {/* <ModalOfDetailData /> */}
+          <View style={{ height: 100 }}></View>
         </ScrollView>
       </View>
     </>
@@ -415,9 +440,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.8,
     shadowRadius: 8,
-    marginBottom: 20,
-    paddingVertical: 20,
-    paddingHorizontal: 50,
+    marginBottom: 15,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -433,6 +456,20 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 50,
     width: "100%",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  itemLabelContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  itemLabel: {
+    fontSize: 21.5,
+    fontWeight: "bold",
+    color: "#aab1b1",
+    marginBottom: 15,
   },
 });
 export default Home;
