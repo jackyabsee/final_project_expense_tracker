@@ -224,7 +224,7 @@ function RenderHomeData({
     <>
       <View style={styles.topMiddleContainer}>
         <VictoryPie
-          animate={{ duration: 2000 }}
+          animate={{ duration: 3000 }}
           events={[
             {
               target: "data",
