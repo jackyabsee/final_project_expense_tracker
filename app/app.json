@@ -5,6 +5,14 @@
       "bundler": "metro"
     },
     "name": "pj4",
-    "slug": "pj4"
+    "slug": "pj4",
+    "extra": {
+      "eas": {
+        "projectId": "5e43ec21-6006-4877-a385-a14505aad833"
+      }
+    },
+    "android": {
+      "package": "com.jacky.multi"
+    }
   }
 }

@@ -12,7 +12,7 @@ let loginParser = object({
 
 let registerParser = object({
   account: usernameParser,
-  password: string(),
+  password: string({ minLength: 6 }),
   email: nullable(email()),
   username: nullable(usernameParser),
 });

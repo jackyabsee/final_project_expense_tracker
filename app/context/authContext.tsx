@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import axios from "axios";
+// import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { AuthState, RegisterInput, LoginInput } from "../api/types";
-import { apiOrigin } from "../env";
+// import { apiOrigin } from "../env";
 import { loginFn, registerFn } from "../api/api";
 import { View, Text } from "react-native";
 
