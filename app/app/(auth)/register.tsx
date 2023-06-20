@@ -16,7 +16,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("abcdef");
-  const [email, setEmail] = useState<string | null>(null);
+  const [email, setEmail] = useState<string>("");
   const register = async () => {
     const result = await onRegister!({ account, username, password, email });
     if (!result) {
