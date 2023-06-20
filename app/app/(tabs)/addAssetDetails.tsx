@@ -86,6 +86,9 @@ const addAssetDetails = () => {
 
   const handleSubmit = async (token: string) => {
     const json = await createAsset(asset, token);
+    if (json.error) {
+      console.log(json.error);
+    }
     if (json.id) {
       dispatch({
         asset: {
@@ -95,7 +98,9 @@ const addAssetDetails = () => {
           interest_rate: +asset.interest_rate,
         },
       });
-      router.push("SavingTable");
+      console.log("success");
+
+      router.replace("/SavingTable");
     }
   };
 
@@ -204,7 +209,7 @@ const addAssetDetails = () => {
               p="2"
               width="95"
               height="45"
-              onPress={() => handleSubmit(token)}
+              onPress={async () => await handleSubmit(token)}
             >
               確認
             </Button>
