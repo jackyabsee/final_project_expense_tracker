@@ -13,9 +13,10 @@ import { HistoryData, HomeData } from "../api/types";
 import { usePathname, useRouter } from "expo-router";
 import { deleteHistoryItem, getHistory, getHomeData } from "../api/api";
 import { useAuth } from "../context/authContext";
-import { Table } from "../components/Table";
+import { Table } from "../components/greenTable";
 import { Button } from "native-base";
 import { convertDate } from "../api/util";
+import { background } from "native-base/lib/typescript/theme/styled-system";
 
 const history = () => {
   const router = useRouter();
@@ -40,7 +41,7 @@ const history = () => {
     <>
       <SafeAreaView style={styles.container}>
         <View>
-          <Button onPress={() => router.replace("/home")}>Back To Home</Button>
+          <Button onPress={() => router.replace("/home")}>返回</Button>
         </View>
         <ScrollView
           horizontal={true}
@@ -77,7 +78,7 @@ const history = () => {
                           setModalVisible(true);
                         }}
                       >
-                        Delete
+                        刪除
                       </Button>
                     ),
                   },

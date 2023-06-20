@@ -168,7 +168,7 @@ export default function SavingTable() {
         options={{
           headerShadowVisible: false,
 
-          headerTitle: "快速記賬",
+          headerTitle: "快速記帳",
           headerRight: () => (
             <Button
               variant="solid"

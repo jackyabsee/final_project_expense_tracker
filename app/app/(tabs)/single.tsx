@@ -76,7 +76,7 @@ const Home = () => {
               headerStyle: { backgroundColor: COLORS.lightWhite },
               headerShadowVisible: false,
 
-              headerTitle: "快速記賬",
+              headerTitle: "快速記帳",
               headerLeft: () => (
                 <Button
                   variant="solid"

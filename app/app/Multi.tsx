@@ -76,7 +76,7 @@ const App = () => {
 
   return (
     <SafeAreaView>
-      <Button onPress={() => router.back()}>back</Button>
+      <Button onPress={() => router.back()}>返回</Button>
       <Calendar
         style={{
           borderWidth: 1,
