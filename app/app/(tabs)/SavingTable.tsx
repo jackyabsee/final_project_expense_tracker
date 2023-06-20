@@ -26,8 +26,10 @@ import {
 import { del, get } from "../../api/api";
 import { Table } from "../../components/Table";
 import useEvent from "react-use-event";
-import { CreatedAssetEvent } from "./addAssetDetails";
+import { CreatedAssetEvent } from "../addAssetDetails";
 import { Button } from "native-base";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/selectedItemStore";
 
 const tableHeaders = [
   "所屬機構",
@@ -70,7 +72,7 @@ function getAssetDetails(id: number, token: string) {
 
 export default function SavingTable() {
   const pathname = usePathname();
-
+  const data = useSelector((state: RootState) => state.newAsset.data);
   const {
     authState: { token },
   } = useAuth();
@@ -104,11 +106,13 @@ export default function SavingTable() {
     await clickEditById(id, token);
   };
   useEffect(() => {
-    console.log("check get asset", pathname);
-    if (!token) return;
-    // if (pathname !== "/SavingTable") return;
-    fetchData(token);
-  }, [token]);
+    if (pathname === "/SavingTable" && token) {
+      console.log("fetching");
+
+      fetchData(token);
+    }
+    return;
+  }, [pathname]);
 
   const onRefresh = React.useCallback(() => {
     if (!token) return;
@@ -179,7 +183,7 @@ export default function SavingTable() {
               height="39"
               onPress={() => router.push("/addAssetDetails")}
             >
-              新堵資產
+              新增資產
             </Button>
           ),
         }}

@@ -34,6 +34,8 @@ export class AssetController extends HttpController {
     let input = addAssetParser.parse(req.body);
     console.log(input);
     let json = await this.assetService.addAsset({ ...input, user_id });
+    console.log("json", json);
+
     return json;
   };
 

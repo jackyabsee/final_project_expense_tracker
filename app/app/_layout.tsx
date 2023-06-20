@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from "../context/authContext";
 import { Button, NativeBaseProvider } from "native-base";
 import { Provider } from "react-redux";
 import { store } from "../redux/selectedItemStore";
+import { COLORS } from "../constants";
 // import { Provider } from "../context/auth";
 
 export default function Layout() {
@@ -20,6 +21,7 @@ export default function Layout() {
               }}
             /> */}
             <Stack.Screen name="extraData" />
+            <Stack.Screen name="addAssetDetails" />
           </Stack>
         </NativeBaseProvider>
       </AuthProvider>

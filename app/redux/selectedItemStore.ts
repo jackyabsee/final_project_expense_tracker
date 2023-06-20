@@ -1,5 +1,6 @@
 import { HomeData } from "../api/types";
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
+import { newAssestReducer } from "./NewAssetSlice";
 export type HomeDataState = {
   selectedData?: HomeData;
   modalVisible: boolean;
@@ -29,6 +30,7 @@ export const homeDataReducer = homeDataSlice.reducer;
 export const store = configureStore({
   reducer: {
     homeData: homeDataReducer,
+    newAsset: newAssestReducer,
   },
 });
 

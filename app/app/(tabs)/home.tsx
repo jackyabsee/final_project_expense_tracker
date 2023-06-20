@@ -329,9 +329,8 @@ const Home = () => {
 
       <View>
         <ScrollView>
-          <Provider store={store}>
-            <RenderHomeData data={data} />
-          </Provider>
+          <RenderHomeData data={data} />
+
           {/* <View> */}
           {/* {authState.token ? <Text style={styles.text}>{userId}</Text> : null} */}
           {/* </View> */}

@@ -26,7 +26,7 @@ import {
 import { del, get } from "../../api/api";
 import { Table } from "../../components/Table";
 import useEvent from "react-use-event";
-import { CreatedAssetEvent } from "./addAssetDetails";
+import { CreatedAssetEvent } from "../addAssetDetails";
 
 const tableHeaders = [
   "所屬機構",
