@@ -252,7 +252,7 @@ function RenderHomeData({
                 marginBottom: 15,
               }}
             >
-              {item.labels}| ${item.y}
+              😀{item.labels}| ${item.y}
             </Text>
           </View>
         ))}
