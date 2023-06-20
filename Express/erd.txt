@@ -4,7 +4,7 @@ id unique PK
 account varchar(32) unique                                          
 email	varchar(255) null unique
 password_hash varchar(60)	                               
-username varchar(32)
+username varchar(32) null
 
 spending
 ---------

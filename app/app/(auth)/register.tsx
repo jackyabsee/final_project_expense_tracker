@@ -47,59 +47,59 @@ const Register = () => {
   };
 
   return (
-    // <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <View style={styles.container}>
-      <Stack.Screen options={{ title: "Login" }} />
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Account name"
-          onChangeText={(text: string) => setAccount(text)}
-          placeholderTextColor="#aaaaaa"
-          value={account}
-        ></TextInput>
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          onChangeText={(text: string) => setPassword(text)}
-          placeholderTextColor="#aaaaaa"
-          secureTextEntry={true}
-          value={password}
-        ></TextInput>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          onChangeText={(text: string) => setEmail(text)}
-          placeholderTextColor="#aaaaaa"
-          value={email}
-        ></TextInput>
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          onChangeText={(text: string) => setUsername(text)}
-          placeholderTextColor="#aaaaaa"
-          value={username}
-        ></TextInput>
-        <Button
-          title="Register"
-          onPress={() => {
-            register();
-            setUsername("");
-            setPassword("");
-            setEmail("");
-          }}
-        ></Button>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Stack.Screen options={{ title: "Login" }} />
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="Account name"
+            onChangeText={(text: string) => setAccount(text)}
+            placeholderTextColor="#aaaaaa"
+            value={account}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            onChangeText={(text: string) => setPassword(text)}
+            placeholderTextColor="#aaaaaa"
+            secureTextEntry={true}
+            value={password}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={(text: string) => setEmail(text)}
+            placeholderTextColor="#aaaaaa"
+            value={email}
+          ></TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            onChangeText={(text: string) => setUsername(text)}
+            placeholderTextColor="#aaaaaa"
+            value={username}
+          ></TextInput>
+          <Button
+            title="Register"
+            onPress={() => {
+              register();
+              setUsername("");
+              setPassword("");
+              setEmail("");
+            }}
+          ></Button>
+        </View>
+        <View>
+          <Button
+            title="Back"
+            onPress={() => {
+              router.back();
+            }}
+          ></Button>
+        </View>
       </View>
-      <View>
-        <Button
-          title="Back"
-          onPress={() => {
-            router.back();
-          }}
-        ></Button>
-      </View>
-    </View>
-    // </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback>
   );
 };
 

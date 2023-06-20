@@ -32,6 +32,10 @@ export class UserController extends HttpController {
       "/users/delete-history-item",
       this.wrapMethod(this.deleteHistoryItem)
     );
+    this.router.post(
+      "/users/delete-account",
+      this.wrapMethod(this.deleteAccount)
+    );
   }
 
   register = async (req: Request) => {
@@ -60,5 +64,10 @@ export class UserController extends HttpController {
     let user_id = decodeJWT(req).id;
     let itemId = deleteHistoryItemParser.parse(req.body);
     return this.userService.deleteHistoryItem({ id: itemId.id, user_id });
+  };
+  deleteAccount = async (req: Request) => {
+    console.log("deleting");
+    let user_id = decodeJWT(req).id;
+    return this.userService.deleteAccount(user_id);
   };
 }

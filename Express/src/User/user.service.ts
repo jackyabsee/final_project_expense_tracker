@@ -96,6 +96,12 @@ export class UserService {
     await this.knex("spending").where(filter).del();
     return { success: true };
   }
+  async deleteAccount(input: number) {
+    await this.knex("asset").where("user_id", input).del();
+    await this.knex("spending").where("user_id", input).del();
+    await this.knex("user").where("id", input).del();
+    return { success: true };
+  }
   private genJWTPayload(id: number): JWTPayload {
     return { id, iat: Math.floor(Date.now() / 1000) };
   }

@@ -98,11 +98,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#262626",
+    backgroundColor: "#fff",
   },
   form: {
     width: "80%",
-    backgroundColor: "#191919",
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
     shadowColor: "#000",
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
-    color: "#F5F5F5",
+    color: "#00FFA2",
   },
   button: {
     backgroundColor: "#00FFA2",

@@ -13,7 +13,7 @@ import { Button, ScrollView } from "native-base";
 import { useAuth } from "../../context/authContext";
 import { HomeData, JWTPayload } from "../../api/types";
 import { useGetId } from "../../hooks/useGetId";
-import { getHomeData } from "../../api/api";
+import { deleteAccount, getHomeData } from "../../api/api";
 import { VictoryLabel, VictoryPie, VictoryTheme } from "victory-native";
 import { Provider, useSelector } from "react-redux";
 import {
@@ -303,13 +303,17 @@ function Logout() {
 
 const Home = () => {
   const router = useRouter();
-  const { authState } = useAuth();
+  const { authState, onLogout } = useAuth();
+  const {
+    authState: { token },
+  } = useAuth();
   const userId = useGetId();
   // let data: { items: Array<HomeData> } & { error?: string };
   const [data, setData] = useState<
     { items: Array<HomeData> | null } & { error?: string }
   >({ items: null, error: "loading" });
   const pathname = usePathname();
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (pathname === "/home") {
@@ -320,12 +324,43 @@ const Home = () => {
     }
   }, [pathname]);
 
+  async function callDeleteAccount() {
+    if (!token) {
+      alert("No token");
+      return;
+    }
+
+    const res = await deleteAccount(token);
+    if (res.error) {
+      alert("Error deleting");
+      console.log(res.error);
+      return;
+    }
+    if (res.success) {
+      alert("delete successfullu");
+      await onLogout();
+    }
+    router.replace("/");
+  }
+
   return (
     <>
       <View style={styles.topContainer}>
         <Stack.Screen
           options={{
             headerRight: () => <Logout />,
+            headerLeft: () => (
+              <Button
+                variant="solid"
+                style={{
+                  width: 125,
+                  backgroundColor: "#d6d3d1",
+                }}
+                onPress={() => setModalVisible(true)}
+              >
+                Delete Account
+              </Button>
+            ),
           }}
         />
 
@@ -362,6 +397,39 @@ const Home = () => {
           {/* <ModalOfDetailData /> */}
           <View style={{ height: 100 }}></View>
         </ScrollView>
+      </View>
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            alert("Modal has been closed.");
+            setModalVisible(false);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Are You Sure?</Text>
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                <Button
+                  style={styles.button}
+                  onPress={async () => {
+                    await callDeleteAccount();
+                  }}
+                >
+                  <Text style={styles.textStyle}>Delete</Text>
+                </Button>
+                <Button
+                  style={styles.button}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.textStyle}>Back</Text>
+                </Button>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </>
   );
@@ -470,6 +538,43 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#aab1b1",
     marginBottom: 15,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 80,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    margin: 3,
+    backgroundColor: "#FF0000",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
 export default Home;

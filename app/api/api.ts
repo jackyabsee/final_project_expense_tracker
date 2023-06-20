@@ -31,6 +31,9 @@ export async function deleteHistoryItem(id: number, token: string) {
     body: { id },
   });
 }
+export async function deleteAccount(token: string) {
+  return post<{ success: boolean }>("/users/delete-account", { token });
+}
 type AjaxOptions<T> = {
   method: string;
   url: string;
