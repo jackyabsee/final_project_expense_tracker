@@ -146,18 +146,6 @@ export default function SavingTable() {
     }
   }
 
-  //for (let i = 1; i < 20; i++) {
-  //  let rowData = [editAndDelete()];
-  //  if (i === 19) {
-  //    tableData.push([addBtn()]);
-  //    break;
-  //  }
-  //  for (let j = 0; j < 5; j++) {
-  //    rowData.unshift(`${i}${j}`);
-  //  }
-  //  tableData.push(rowData);
-  //}
-
   if (!token) {
     return (
       <View style={styles.container}>
@@ -233,6 +221,11 @@ export default function SavingTable() {
             <Text>Loading data...</Text>
           )}
         </ScrollView>
+      </View>
+      <View>
+        <Button onPress={() => router.push("/assetCalculator")}>
+          To Asset Calculator
+        </Button>
       </View>
     </>
   );
