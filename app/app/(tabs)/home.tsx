@@ -282,7 +282,7 @@ function RenderHomeData({
 
 function Logout() {
   const router = useRouter();
-  const { onLogout, authState } = useAuth();
+  const { onLogout } = useAuth();
 
   return (
     <Button
@@ -301,19 +301,96 @@ function Logout() {
   );
 }
 
+function DeleteAccount() {
+  const router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const {
+    authState: { token },
+    onLogout,
+  } = useAuth();
+
+  async function callDeleteAccount() {
+    if (!token) {
+      alert("No token");
+      return;
+    }
+
+    await onLogout();
+
+    // const res = await deleteAccount(token);
+
+    // if (res.error) {
+    //   alert("Error deleting");
+    //   console.log(res.error);
+    //   return;
+    // }
+    // if (res.success) {
+    //   alert("delete successfullu");
+    //   // await onLogout();
+    //   // setTimeout(async () => await onLogout(), 2000);
+    // }
+
+    // router.replace("/");
+  }
+
+  return (
+    <>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          alert("Modal has been closed.");
+          setModalVisible(false);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Are You Sure?</Text>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              <Button
+                style={styles.button}
+                onPress={async () => {
+                  await callDeleteAccount();
+                }}
+              >
+                <Text style={styles.textStyle}>Delete</Text>
+              </Button>
+              <Button
+                style={styles.button}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.textStyle}>Back</Text>
+              </Button>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Button
+        variant="solid"
+        style={{
+          width: 125,
+          backgroundColor: "#d6d3d1",
+        }}
+        onPress={() => setModalVisible(true)}
+      >
+        Delete Account
+      </Button>
+    </>
+  );
+}
+
 const Home = () => {
   const router = useRouter();
   const { authState, onLogout } = useAuth();
-  const {
-    authState: { token },
-  } = useAuth();
-  const userId = useGetId();
+
   // let data: { items: Array<HomeData> } & { error?: string };
   const [data, setData] = useState<
     { items: Array<HomeData> | null } & { error?: string }
   >({ items: null, error: "loading" });
   const pathname = usePathname();
-  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (pathname === "/home") {
@@ -324,24 +401,11 @@ const Home = () => {
     }
   }, [pathname]);
 
-  async function callDeleteAccount() {
-    if (!token) {
-      alert("No token");
-      return;
+  useEffect(() => {
+    if (!authState.token || !authState) {
+      router.replace("/");
     }
-
-    const res = await deleteAccount(token);
-    if (res.error) {
-      alert("Error deleting");
-      console.log(res.error);
-      return;
-    }
-    if (res.success) {
-      alert("delete successfullu");
-      await onLogout();
-    }
-    router.replace("/");
-  }
+  }, [authState.token, authState]);
 
   return (
     <>
@@ -349,18 +413,7 @@ const Home = () => {
         <Stack.Screen
           options={{
             headerRight: () => <Logout />,
-            headerLeft: () => (
-              <Button
-                variant="solid"
-                style={{
-                  width: 125,
-                  backgroundColor: "#d6d3d1",
-                }}
-                onPress={() => setModalVisible(true)}
-              >
-                Delete Account
-              </Button>
-            ),
+            headerLeft: () => <DeleteAccount />,
           }}
         />
 
@@ -398,39 +451,7 @@ const Home = () => {
           <View style={{ height: 100 }}></View>
         </ScrollView>
       </View>
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            alert("Modal has been closed.");
-            setModalVisible(false);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Are You Sure?</Text>
-              <View style={{ display: "flex", flexDirection: "row" }}>
-                <Button
-                  style={styles.button}
-                  onPress={async () => {
-                    await callDeleteAccount();
-                  }}
-                >
-                  <Text style={styles.textStyle}>Delete</Text>
-                </Button>
-                <Button
-                  style={styles.button}
-                  onPress={() => setModalVisible(false)}
-                >
-                  <Text style={styles.textStyle}>Back</Text>
-                </Button>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
+      <View style={styles.centeredView}></View>
     </>
   );
 };
