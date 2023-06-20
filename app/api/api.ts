@@ -45,33 +45,55 @@ async function ajax<T>(options: AjaxOptions<T>) {
     let headers: HeadersInit = {
       Authorization: "Bearer " + options?.token,
     };
+
     let init: RequestInit = {
       method: options.method,
       headers: headers,
     };
+
     if (options.body) {
       headers["Content-Type"] = "application/json";
-      init.body = JSON.stringify(options.body);
-    }
-    console.log("fetch", { url: options.url, init });
-    let res = await fetch(apiOrigin + options.url, init);
-
-    const text = await res.text();
-    console.log("fetch result:", text);
-
-    let json;
-    try {
-      json = JSON.parse(text);
-    } catch (error) {
-      throw new Error("invalid json response: " + text);
+      init["body"] = JSON.stringify(options.body);
     }
 
-    if (!json.error && options?.parser) {
-      json = options.parser.parse(json);
-    }
+    // console.log("fetch:", { url: options.url, init });
+
+    const res = await fetch(`${apiOrigin}${options.url}`, init);
+
+    // console.log(
+    //   "fetch response:",
+    //   res.status,
+    //   res.statusText,
+    //   "len: " + res.headers.get("Content-Length")
+    // );
+
+    // try {
+    //   const text = await res.json();
+    //   console.log("fetch result:", text);
+    // } catch (error) {
+    //   console.log("ERROR", error);
+    // }
+
+    // console.log(res);
+
+    const json = await res.json();
+    // console.log("fetch result:", json);
+
+    // let json;
+    // try {
+    //   json = JSON.parse(text);
+    //   console.log("fetch received json:", json);
+    // } catch (error) {
+    //   throw new Error("invalid json response: " + text);
+    // }
+
+    // if (!json.error && options?.parser) {
+    //   json = options.parser.parse(json);
+    // }
 
     return json as T & { error?: string };
   } catch (error) {
+    console.log("fetch error:", error);
     return { error: String(error) } as T & { error?: string };
   }
 }

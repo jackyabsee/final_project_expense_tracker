@@ -5,10 +5,9 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard,
-  Button as BackButton,
 } from "react-native";
 import { Stack, useRouter, Tabs } from "expo-router";
-import { COLORS, icons, images, SIZES } from "../../constants";
+import { COLORS, icons, images, SIZES } from "../constants";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Box,
@@ -23,20 +22,12 @@ import {
   Input,
   NumberInput,
 } from "native-base";
-import {
-  NavigationContainer,
-  usePreventRemoveContext,
-} from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Picker } from "@react-native-picker/picker";
-import { apiOrigin } from "../../env";
-// import { JWTPayload } from "../../api/types";
-// import jwtDecode from "jwt-decode";
-import { useGetId } from "../../hooks/useGetId";
-import { post } from "../../api/api";
-import { useAuth } from "../../context/authContext";
+import { post } from "../api/api";
+import { useAuth } from "../context/authContext";
 import { useEvent } from "react-use-event";
 import { object, optional, id, string } from "cast.ts";
+import { useDispatch } from "react-redux";
+import { addItem } from "../redux/NewAssetSlice";
 
 type NewAsset = {
   institution: string;
@@ -62,7 +53,7 @@ let createAssetParser = object({
   id: optional(id()),
   error: optional(string()),
 });
-function createAsset(asset: NewAsset, token: string) {
+async function createAsset(asset: NewAsset, token: string) {
   return post("/assets", { body: asset, token, parser: createAssetParser });
 }
 
@@ -78,29 +69,39 @@ const addAssetDetails = () => {
     remark: "remark " + r,
   });
 
-  const dispatch = useEvent<CreatedAssetEvent>("CreatedAsset");
+  // const dispatch = useEvent<CreatedAssetEvent>("CreatedAsset");
+  const dispatch = useDispatch();
 
   const {
     authState: { token },
   } = useAuth();
 
   const handleSubmit = async (token: string) => {
+    console.log("submit asset");
+
     const json = await createAsset(asset, token);
+    console.log("json: ", json);
+
     if (json.error) {
       console.log(json.error);
+      return;
     }
     if (json.id) {
-      dispatch({
-        asset: {
+      console.log("success", json);
+      console.log("success");
+
+      dispatch(
+        addItem({
           ...asset,
           id: json.id,
           value: +asset.value,
           interest_rate: +asset.interest_rate,
-        },
-      });
-      console.log("success");
+        })
+      );
 
-      router.replace("/SavingTable");
+      // router.push("/SavingTable");
+      router.back();
+      return;
     }
   };
 
@@ -118,9 +119,9 @@ const addAssetDetails = () => {
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
           <Stack.Screen
             options={{
+              headerShown: true,
               headerStyle: { backgroundColor: COLORS.lightWhite },
               headerShadowVisible: false,
-
               headerTitle: "Asset Details",
               headerLeft: () => (
                 <Button
@@ -209,7 +210,10 @@ const addAssetDetails = () => {
               p="2"
               width="95"
               height="45"
-              onPress={async () => await handleSubmit(token)}
+              onPress={() => {
+                handleSubmit(token);
+                return;
+              }}
             >
               確認
             </Button>

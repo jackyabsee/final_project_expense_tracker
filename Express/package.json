@@ -7,7 +7,8 @@
     "start": "ts-node-dev main.ts",
     "test": "jest tsc --noEmit",
     "watch": "npm run build -- --watch",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "prod": "bash ./scripts/deploy.sh"
   },
   "keywords": [],
   "author": "",
