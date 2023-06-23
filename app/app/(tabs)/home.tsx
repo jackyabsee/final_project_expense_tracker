@@ -164,7 +164,8 @@ function RenderHomeData({
 
     return (
       <>
-        <View>
+        <View style={styles.topMiddleContainer}>
+          <Text style={styles.itemLabel}>範例</Text>
           <VictoryPie
             //animate={{ duration: 2000 }}
             events={[
@@ -206,7 +207,10 @@ function RenderHomeData({
             labelRadius={100}
           />
         </View>
-        <View>
+        <View style={styles.middleContainer}>
+          <View>
+            <Text style={styles.itemLabel}>範例</Text>
+          </View>
           {testData.map((item) => (
             <View style={styles.itemLabelContainer} key={item.x}>
               <View style={{ width: 100 }}>
@@ -217,6 +221,16 @@ function RenderHomeData({
               </View>
             </View>
           ))}
+          <View style={styles.itemLabelContainer}>
+            <View style={{ width: 100 }}>
+              <Text style={styles.totalItemLabel}>總支出</Text>
+            </View>
+            <View style={{ width: 90 }}>
+              <Text style={styles.totalItemLabel}>
+                ${testData.reduce((sum, item) => sum + item.y, 0)}
+              </Text>
+            </View>
+          </View>
         </View>
       </>
     );
