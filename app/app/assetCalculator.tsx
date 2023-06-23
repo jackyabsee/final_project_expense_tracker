@@ -129,7 +129,6 @@ const assetCalculator = () => {
         value: asset.value * Math.pow(asset.interest_rate, year),
       };
     });
-    originalTotalAsset *= year;
     totalInterestRate = (totalAsset - originalTotalAsset) / originalTotalAsset;
     setOriginalTotalAsset(originalTotalAsset);
     setTotalInterestRate(+totalInterestRate.toFixed(3));
