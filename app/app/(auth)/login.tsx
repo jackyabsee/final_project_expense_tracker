@@ -5,10 +5,11 @@ import {
   Keyboard,
   View,
   TextInput,
-  Button,
   StyleSheet,
+  Text,
 } from "react-native";
 import { useAuth } from "../../context/authContext";
+import { Button } from "native-base";
 
 const Login = () => {
   const router = useRouter();
@@ -47,20 +48,24 @@ const Login = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
+        <View>
+          <Text style={styles.title}>Multi</Text>
+          <Text style={styles.secondTitle}>Manage Your Money</Text>
+        </View>
         <Stack.Screen options={{ title: "Login" }} />
         <View style={styles.form}>
           <TextInput
             style={styles.input}
             placeholder="Account Name"
             onChangeText={(text: string) => setAccount(text)}
-            placeholderTextColor="#aaaaaa"
+            placeholderTextColor="#a1a1a1"
             value={account}
           ></TextInput>
           <TextInput
             style={styles.input}
             placeholder="Password"
             onChangeText={(text: string) => setPassword(text)}
-            placeholderTextColor="#aaaaaa"
+            placeholderTextColor="#a1a1a1"
             secureTextEntry={true}
             value={password}
           ></TextInput>
@@ -70,21 +75,30 @@ const Login = () => {
           onChangeText={(text: string) => setUsername(text)}
         ></TextInput> */}
           <Button
-            title="Login"
+            style={{ backgroundColor: "#0077c2", borderRadius: 0 }}
+            variant="solid"
             onPress={() => {
               login();
               setAccount("");
               setPassword("");
             }}
-          ></Button>
+          >
+            登入
+          </Button>
         </View>
         <View>
           <Button
-            title="Create account"
+            style={{
+              backgroundColor: "#0077c2",
+              borderRadius: 0,
+              marginTop: 6,
+            }}
             onPress={() => {
               router.push("/register");
             }}
-          ></Button>
+          >
+            建立帳號
+          </Button>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -99,6 +113,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
+    shadowColor: "grey",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
   },
   form: {
     width: "80%",
@@ -114,14 +132,34 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 6,
   },
+  title: {
+    fontSize: 36,
+    fontWeight: "800",
+    marginBottom: 6,
+    textShadowColor: "grey",
+    textShadowOffset: { width: 1.3, height: 1.3 },
+    textShadowRadius: 1,
+    textAlign: "center",
+    color: "#4d648d",
+  },
+  secondTitle: {
+    fontSize: 21,
+    fontWeight: "800",
+    marginBottom: 6,
+    textShadowColor: "grey",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 1,
+    textAlign: "center",
+    color: "#4d648d",
+  },
   input: {
     height: 40,
-    borderColor: "#00FFA2",
+    borderColor: "#00CCB2",
     borderWidth: 1,
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
-    color: "#00FFA2",
+    color: "#111111",
   },
   button: {
     backgroundColor: "#00FFA2",
@@ -139,4 +177,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textDecorationLine: "underline",
   },
+  //  middleContainer: {
+  //    backgroundColor: "#fff",
+  //    borderRadius: 18,
+  //    shadowColor: "grey",
+  //    shadowOffset: { width: 1, height: 1 },
+  //    shadowOpacity: 0.8,
+  //    shadowRadius: 8,
+  //    marginBottom: 20,
+  //    paddingVertical: 20,
+  //    paddingHorizontal: 50,
+  //    width: "100%",
+  //    alignItems: "center",
+  //    justifyContent: "space-around",
+  //  },
 });

@@ -188,17 +188,17 @@ function RenderHomeData({
             ]}
             data={testData}
             colorScale={[
-              "#00a8e8",
-              "#0077b6",
-              "#023e8a",
-              "#03045e",
-              "#011f4b",
-              "#000000",
+              "#FFBB00",
+              "#EE0000",
+              "#A020F0",
+              "#32CD32",
+              "#00BFFF",
+              "#FFC0CB",
             ]}
             innerRadius={60}
             style={{
               labels: {
-                fontSize: 14,
+                fontSize: 16,
                 fill: "white",
                 margin: 20,
               },
@@ -208,12 +208,13 @@ function RenderHomeData({
         </View>
         <View>
           {testData.map((item) => (
-            <View key={item.x}>
-              <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "#c9d1d9" }}
-              >
-                {item.label}| ${item.y}
-              </Text>
+            <View style={styles.itemLabelContainer} key={item.x}>
+              <View style={{ width: 100 }}>
+                <Text style={styles.itemLabel}>{item.label}</Text>
+              </View>
+              <View style={{ width: 90 }}>
+                <Text style={styles.itemLabel}>${item.y}</Text>
+              </View>
             </View>
           ))}
         </View>
@@ -245,12 +246,12 @@ function RenderHomeData({
           ]}
           data={dataItems}
           colorScale={[
-            "#FFA500",
-            "#FF0000",
+            "#FFBB00",
+            "#EE0000",
             "#A020F0",
-            "#add8e6",
-            "#90EE90",
-            "#eeae42",
+            "#32CD32",
+            "#ADD8E6",
+            "#FFC0CB",
           ]}
           innerRadius={60}
           labelRadius={100}
@@ -275,6 +276,16 @@ function RenderHomeData({
             </View>
           </View>
         ))}
+        <View style={styles.itemLabelContainer}>
+          <View style={{ width: 100 }}>
+            <Text style={styles.totalItemLabel}>總支出</Text>
+          </View>
+          <View style={{ width: 90 }}>
+            <Text style={styles.totalItemLabel}>
+              ${dataItems.reduce((sum, item) => sum + item.y, 0)}
+            </Text>
+          </View>
+        </View>
       </View>
     </>
   );
@@ -371,12 +382,12 @@ function DeleteAccount() {
       <Button
         variant="solid"
         style={{
-          width: 125,
+          width: 85,
           backgroundColor: "#d6d3d1",
         }}
         onPress={() => setModalVisible(true)}
       >
-        Delete Account
+        刪除帳號
       </Button>
     </>
   );
@@ -548,6 +559,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
   },
+  pie: {
+    shadowOffset: { width: 10, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+  },
   itemLabelContainer: {
     display: "flex",
     flexDirection: "row",
@@ -558,6 +574,12 @@ const styles = StyleSheet.create({
     fontSize: 21.5,
     fontWeight: "bold",
     color: "#aab1b1",
+    marginBottom: 15,
+  },
+  totalItemLabel: {
+    fontSize: 21.5,
+    fontWeight: "bold",
+    color: "#333333",
     marginBottom: 15,
   },
   centeredView: {

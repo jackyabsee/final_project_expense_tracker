@@ -224,7 +224,7 @@ export default function SavingTable() {
       </View>
       <View>
         <Button onPress={() => router.push("/assetCalculator")}>
-          To Asset Calculator
+          資產計算
         </Button>
       </View>
     </>

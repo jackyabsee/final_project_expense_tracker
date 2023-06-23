@@ -50,6 +50,7 @@ const Register = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Stack.Screen options={{ title: "Login" }} />
+
         <View style={styles.form}>
           <TextInput
             style={styles.input}

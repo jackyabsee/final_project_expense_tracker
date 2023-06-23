@@ -7,15 +7,15 @@ const Tabs_layout = () => {
     <Tabs>
       <Tabs.Screen
         name="home"
-        options={{ title: "Home", tabBarIconStyle: { display: "none" } }}
+        options={{ title: "記帳", tabBarIconStyle: { display: "none" } }}
       />
       <Tabs.Screen
         name="single"
-        options={{ title: "single", tabBarIconStyle: { display: "none" } }}
+        options={{ title: "快速記帳", tabBarIconStyle: { display: "none" } }}
       />
       <Tabs.Screen
         name="SavingTable"
-        options={{ title: "Asset", tabBarIconStyle: { display: "none" } }}
+        options={{ title: "資產", tabBarIconStyle: { display: "none" } }}
       />
     </Tabs>
   );

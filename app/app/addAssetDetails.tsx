@@ -62,11 +62,11 @@ const addAssetDetails = () => {
 
   let r = (Math.random() * 100) | 0;
   const [asset, setAsset] = useState<NewAsset>({
-    institution: "org " + r,
-    type: "type " + r,
-    value: "" + r,
-    interest_rate: "" + r,
-    remark: "remark " + r,
+    institution: "xx銀行" + r,
+    type: "type ",
+    value: "100000",
+    interest_rate: "1." + r,
+    remark: "備註",
   });
 
   // const dispatch = useEvent<CreatedAssetEvent>("CreatedAsset");
