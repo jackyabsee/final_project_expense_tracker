@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Button as BackButton,
+  Platform,
 } from "react-native";
 import { Stack, useRouter, Tabs } from "expo-router";
 import { COLORS, icons, images, SIZES } from "../../constants";
@@ -30,8 +31,10 @@ import { apiOrigin } from "../../env";
 // import jwtDecode from "jwt-decode";
 import { useGetId } from "../../hooks/useGetId";
 import { useAuth } from "../../context/authContext";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+import { convertDate } from "../../api/util";
 
 const Home = () => {
   const router = useRouter();
@@ -39,6 +42,8 @@ const Home = () => {
   const [price, setPrice] = React.useState("");
   const [date, setDate] = React.useState(new Date());
   const [remark, setRemark] = React.useState("");
+  const [mode, setMode] = useState<any>("date");
+  const [show, setShow] = useState(false);
   const userId = useGetId();
   const { authState } = useAuth();
   const handleSubmit = async () => {
@@ -65,6 +70,24 @@ const Home = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+  const onChange = (event: DateTimePickerEvent, selectedDate: Date) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+    console.log(event);
+  };
+
+  const showMode = (currentMode: string) => {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      setShow(true);
+      // for iOS, add a button that closes the picker
+    }
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
   };
 
   return (
@@ -129,16 +152,20 @@ const Home = () => {
             <View style={styles.data}>
               <Text style={styles.text}>日期</Text>
               <View style={styles.InputView}>
-                <RNDateTimePicker
-                  value={date}
-                  onChange={(event, date) => {
-                    if (!date) {
-                      return;
-                    }
-                    console.log("selected date:", date);
-                    setDate(date);
-                  }}
-                />
+                <Button onPress={showDatepicker}>
+                  {convertDate(String(date)).date}
+                </Button>
+                {show && (
+                  <DateTimePicker
+                    value={date}
+                    onChange={(e, selectedDate) => {
+                      const currentDate = selectedDate;
+                      setShow(false);
+                      currentDate && setDate(currentDate);
+                    }}
+                    mode={mode}
+                  />
+                )}
               </View>
             </View>
             <View style={styles.data}>
