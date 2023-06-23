@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { Stack, useRouter, Tabs } from "expo-router";
-import { COLORS, icons, images, SIZES } from "../../constants";
+import { COLORS, icons, images, SIZES } from "../constants";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Box,
@@ -26,15 +26,15 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Picker } from "@react-native-picker/picker";
-import { apiOrigin } from "../../env";
+import { apiOrigin } from "../env";
 // import { JWTPayload } from "../../api/types";
 // import jwtDecode from "jwt-decode";
-import { useGetId } from "../../hooks/useGetId";
-import { useAuth } from "../../context/authContext";
+import { useGetId } from "../hooks/useGetId";
+import { useAuth } from "../context/authContext";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { convertDate } from "../../api/util";
+import { convertDate } from "../api/util";
 
 const Home = () => {
   const router = useRouter();

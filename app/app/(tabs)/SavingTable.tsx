@@ -223,7 +223,10 @@ export default function SavingTable() {
         </ScrollView>
       </View>
       <View>
-        <Button onPress={() => router.push("/assetCalculator")}>
+        <Button
+          style={{ marginBottom: 5 }}
+          onPress={() => router.push("/assetCalculator")}
+        >
           資產計算
         </Button>
       </View>

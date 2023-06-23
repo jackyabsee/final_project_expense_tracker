@@ -2,8 +2,8 @@ import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link, usePathname, useRouter } from "expo-router";
 import { Button } from "native-base";
-import { getExtraData } from "../api/api";
-import { ExtraData } from "../api/types";
+import { getExtraData } from "../../api/api";
+import { ExtraData } from "../../api/types";
 
 const RenderExtraData = ({
   data,
@@ -150,6 +150,8 @@ const styles = StyleSheet.create({
   },
   backButton: {
     alignSelf: "flex-start",
+    width: 80,
+    backgroundColor: "#EEAAAA",
   },
   card: {
     backgroundColor: "#fff",
@@ -163,6 +165,8 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
+    borderColor: "#EEAAAA",
+    borderWidth: 2,
   },
   title: {
     fontSize: 20,
