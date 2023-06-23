@@ -53,21 +53,22 @@ const RenderExtraData = ({
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <Button
-              onPress={() => router.replace("/home")}
-              style={styles.backButton}
-            >
-              返回
-            </Button>
-          </View>
-          <View style={styles.headerCenter}>
-            <Text style={styles.headerText}>賺錢貼士</Text>
-          </View>
-          <View style={styles.headerRight} />
-        </View>
+        {/* <View style={styles.header}> */}
+        {/* <View style={styles.headerLeft}> */}
+        {/* <Button */}
+        {/* onPress={() => router.replace("/home")} */}
+        {/* style={st`yles.backButton} */}
+        {/* > */}
+        {/* 返回 */}
+        {/* </Button> */}
+        {/* </View> */}
+        {/* <View style={styles.headerCenter}> */}
+        {/* <Text style={styles.headerText}>賺錢貼士</Text> */}
+        {/* </View> */}
+        {/* <View style={styles.headerRight} /> */}
+        {/* </View> */}
         <ScrollView
+          style={{ height: "50%" }}
           contentContainerStyle={[
             styles.container,
             { justifyContent: "center", alignItems: "center" },

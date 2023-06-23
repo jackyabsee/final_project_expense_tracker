@@ -9,6 +9,10 @@ const Tabs_layout = () => {
         name="home"
         options={{
           title: "帳目表",
+          headerStyle: {
+            borderBottomWidth: 2,
+            borderBottomColor: "green",
+          },
           tabBarIconStyle: { display: "none" },
           tabBarStyle: {
             borderTopColor: "#32BD32",
@@ -21,7 +25,7 @@ const Tabs_layout = () => {
       <Tabs.Screen
         name="SavingTable"
         options={{
-          title: "資產",
+          title: "你的資產",
           tabBarIconStyle: { display: "none" },
           tabBarStyle: {
             borderTopColor: "#6666CC",
@@ -35,6 +39,10 @@ const Tabs_layout = () => {
         name="extraData"
         options={{
           title: "賺錢貼士",
+          headerStyle: {
+            borderBottomWidth: 2,
+            borderBottomColor: "pink",
+          },
           tabBarIconStyle: { display: "none" },
           tabBarStyle: {
             borderTopColor: "#BD3232",
