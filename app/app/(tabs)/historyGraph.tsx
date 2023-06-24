@@ -243,7 +243,42 @@ const historyGraph = () => {
                   absolute
                 />
               </View>
-              <View></View>
+              <View>
+                {currentYearExpense ? (
+                  <ScrollView horizontal={true}>
+                    <LineChart
+                      data={{
+                        labels: [
+                          "January",
+                          "February",
+                          "March",
+                          "April",
+                          "May",
+                          "June",
+                          "July",
+                          "August",
+                          "September",
+                          "October",
+                          "November",
+                          "December",
+                        ],
+                        datasets: [
+                          {
+                            data: currentYearExpense,
+                            color: (opacity = 1) =>
+                              `rgba(134, 65, 244, ${opacity})`, // optional
+                            strokeWidth: 2, // optional
+                          },
+                        ],
+                      }}
+                      width={1000}
+                      height={200}
+                      chartConfig={chartConfig}
+                      fromZero
+                    />
+                  </ScrollView>
+                ) : null}
+              </View>
             </View>
           ) : (
             <Text>Loading data...</Text>
