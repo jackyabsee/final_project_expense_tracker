@@ -2,8 +2,8 @@ import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link, usePathname, useRouter } from "expo-router";
 import { Button } from "native-base";
-import { getExtraData } from "../api/api";
-import { ExtraData } from "../api/types";
+import { getExtraData } from "../../api/api";
+import { ExtraData } from "../../api/types";
 
 const RenderExtraData = ({
   data,
@@ -53,21 +53,22 @@ const RenderExtraData = ({
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <Button
-              onPress={() => router.replace("/home")}
-              style={styles.backButton}
-            >
-              返回
-            </Button>
-          </View>
-          <View style={styles.headerCenter}>
-            <Text style={styles.headerText}>賺錢貼士</Text>
-          </View>
-          <View style={styles.headerRight} />
-        </View>
+        {/* <View style={styles.header}> */}
+        {/* <View style={styles.headerLeft}> */}
+        {/* <Button */}
+        {/* onPress={() => router.replace("/home")} */}
+        {/* style={st`yles.backButton} */}
+        {/* > */}
+        {/* 返回 */}
+        {/* </Button> */}
+        {/* </View> */}
+        {/* <View style={styles.headerCenter}> */}
+        {/* <Text style={styles.headerText}>賺錢貼士</Text> */}
+        {/* </View> */}
+        {/* <View style={styles.headerRight} /> */}
+        {/* </View> */}
         <ScrollView
+          style={{ height: "50%" }}
           contentContainerStyle={[
             styles.container,
             { justifyContent: "center", alignItems: "center" },
@@ -150,6 +151,8 @@ const styles = StyleSheet.create({
   },
   backButton: {
     alignSelf: "flex-start",
+    width: 80,
+    backgroundColor: "#EEAAAA",
   },
   card: {
     backgroundColor: "#fff",
@@ -163,6 +166,8 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
+    borderColor: "#EEAAAA",
+    borderWidth: 2,
   },
   title: {
     fontSize: 20,

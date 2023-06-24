@@ -495,9 +495,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.8,
     shadowRadius: 8,
-    marginBottom: 20,
+    marginBottom: 5,
     width: "100%",
     marginTop: 10,
+    borderColor: "#32BD32",
+    borderWidth: 2.2,
   },
   logoutButton: {
     backgroundColor: "#fff",
@@ -534,7 +536,7 @@ const styles = StyleSheet.create({
   header: {
     width: "100%",
     padding: 0,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: "#2EE6D6",
   },
   headerText: {
@@ -554,10 +556,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.8,
     shadowRadius: 8,
-    marginBottom: 15,
+    marginBottom: 10,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
+    borderColor: "#32BD32",
+    borderWidth: 2.5,
   },
   middleContainer: {
     backgroundColor: "#fff",
@@ -572,6 +576,8 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "space-around",
+    borderColor: "#32BD32",
+    borderWidth: 2.5,
   },
   pie: {
     shadowOffset: { width: 10, height: 1 },

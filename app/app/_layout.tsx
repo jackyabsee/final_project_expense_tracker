@@ -14,7 +14,7 @@ export default function Layout() {
       <AuthProvider>
         <NativeBaseProvider>
           <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="extraData" />
+            <Stack.Screen name="(tabs)" />
             <Stack.Screen name="addAssetDetails" />
             <Stack.Screen name="assetCalculator" />
           </Stack>
