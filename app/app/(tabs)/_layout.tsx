@@ -23,6 +23,23 @@ const Tabs_layout = () => {
         }}
       />
       <Tabs.Screen
+        name="historyGraph"
+        options={{
+          title: "歷史",
+          headerStyle: {
+            borderBottomWidth: 2,
+            borderBottomColor: "green",
+          },
+          tabBarIconStyle: { display: "none" },
+          tabBarStyle: {
+            borderTopColor: "#32BD32",
+            borderTopWidth: 2,
+            backgroundColor: "lightgreen",
+          },
+          tabBarLabelStyle: { fontSize: 12 },
+        }}
+      />
+      <Tabs.Screen
         name="SavingTable"
         options={{
           title: "你的資產",
@@ -51,10 +68,6 @@ const Tabs_layout = () => {
           },
           tabBarLabelStyle: { fontSize: 12 },
         }}
-      />
-      <Tabs.Screen
-        name="historyGraph"
-        options={{ title: "歷史", tabBarIconStyle: { display: "none" } }}
       />
     </Tabs>
   );
