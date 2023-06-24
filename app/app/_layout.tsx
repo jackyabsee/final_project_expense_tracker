@@ -17,6 +17,7 @@ export default function Layout() {
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="addAssetDetails" />
             <Stack.Screen name="assetCalculator" />
+            <Stack.Screen name="single" options={{ headerShown: true }} />
           </Stack>
         </NativeBaseProvider>
       </AuthProvider>
