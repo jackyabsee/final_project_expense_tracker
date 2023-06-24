@@ -18,6 +18,9 @@ import { convertDate } from "../../api/util";
 import { useAuth } from "../../context/authContext";
 import { Table } from "../../components/Table";
 import { LineChart, PieChart } from "react-native-chart-kit";
+import { VictoryPie, VictoryTheme } from "victory-native";
+import { useDispatch } from "react-redux";
+import { setSelectedData } from "../../redux/selectedItemStore";
 const colorScale = [
   "#FFBB00",
   "#EE0000",
@@ -40,6 +43,24 @@ const chartConfig = {
     stroke: "#ffa726",
   },
 };
+// const chartConfig = {
+//   backgroundGradientFrom: "white",
+//   backgroundGradientTo: "white",
+//   backgroundGradientFromOpacity: 0,
+//   backgroundGradientToOpacity: 0.5,
+//   decimalPlaces: 2, // optional, defaults to 2dp
+//   color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+//   labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+//   style: {
+//     borderRadius: 16,
+//   },
+//   propsForDots: {
+//     r: "6",
+//     strokeWidth: "2",
+//     stroke: "#ffa726",
+//   },
+//   barPercentage: 0.5,
+// };
 const historyGraph = () => {
   const router = useRouter();
   const { authState } = useAuth();
@@ -53,8 +74,111 @@ const historyGraph = () => {
   const [currentYearExpense, setCurrentYearExpense] = useState<
     number[] | undefined
   >();
+  const dispatch = useDispatch();
   const [totalExpense, setTotalExpense] = useState(0);
-
+  const renderPieChart = () => {
+    if (!Uniquedata) {
+      return <></>;
+    }
+    if (!Array.isArray(Uniquedata)) {
+      return <></>;
+    }
+    const dataItems = Uniquedata.map((item) => {
+      let emoji;
+      switch (item.type) {
+        case "衣飾":
+          emoji = "👕";
+          break;
+        case "娛樂":
+          emoji = "🎉";
+          break;
+        case "繳費":
+          emoji = "💰";
+          break;
+        case "交通":
+          emoji = "🚌";
+          break;
+        case "餐飲":
+          emoji = "🍔";
+          break;
+        default:
+          emoji = "💡";
+      }
+      return {
+        x: item.type,
+        y: item.price,
+        labels: `${emoji}${item.type}`,
+      };
+    });
+    console.log(dataItems);
+    return (
+      <>
+        <View>
+          <VictoryPie
+            animate={{ duration: 3000 }}
+            events={[
+              {
+                target: "data",
+                eventHandlers: {
+                  onPressIn: (event, data) => {
+                    console.log(data.datum);
+                    const input = {
+                      type: data.datum.labels as string,
+                      price: data.datum.y as number,
+                    };
+                    console.log(input);
+                    dispatch(setSelectedData(input));
+                    return;
+                  },
+                },
+              },
+            ]}
+            data={dataItems}
+            colorScale={[
+              "#FFBB00",
+              "#EE0000",
+              "#A020F0",
+              "#32CD32",
+              "#ADD8E6",
+              "#FFC0CB",
+            ]}
+            innerRadius={60}
+            labelRadius={100}
+            style={{
+              labels: {
+                fontSize: 14,
+                fill: "white",
+                margin: 20,
+              },
+            }}
+            theme={VictoryTheme.material}
+          />
+        </View>
+        <View style={styles.middleContainer}>
+          {dataItems.map((item) => (
+            <View style={styles.itemLabelContainer} key={item.x}>
+              <View style={{ width: 100 }}>
+                <Text style={styles.itemLabel}>{item.labels}</Text>
+              </View>
+              <View style={{ width: 90 }}>
+                <Text style={styles.itemLabel}>${item.y}</Text>
+              </View>
+            </View>
+          ))}
+          <View style={styles.itemLabelContainer}>
+            <View style={{ width: 100 }}>
+              <Text style={styles.totalItemLabel}>總支出</Text>
+            </View>
+            <View style={{ width: 90 }}>
+              <Text style={styles.totalItemLabel}>
+                ${dataItems.reduce((sum, item) => sum + item.y, 0)}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </>
+    );
+  };
   useEffect(() => {
     if (pathname === "/historyGraph") {
       (async () => {
@@ -125,43 +249,7 @@ const historyGraph = () => {
       })();
     }
   }, [pathname]);
-  const testData = [
-    {
-      name: "Seoul",
-      population: 21500000,
-      color: "rgba(131, 167, 234, 1)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Toronto",
-      population: 2800000,
-      color: "#F00",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Beijing",
-      population: 527612,
-      color: "red",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "New York",
-      population: 8538000,
-      color: "#ffffff",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Moscow",
-      population: 11920000,
-      color: "rgb(0, 0, 255)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-  ];
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -169,116 +257,64 @@ const historyGraph = () => {
           <Button onPress={() => router.replace("/home")}>返回</Button>
         </View>
         <View></View>
-        {currentYearExpense ? (
-          <View style={styles.LGmiddleContainer}>
-            <Text
-              style={{
-                fontSize: 21.5,
-                fontWeight: "bold",
-                color: "#aab1b1",
-                marginBottom: 20,
-                borderBottomColor: "#32CD32",
-                borderBottomWidth: 3,
-                textAlign: "center",
-              }}
-            >
-              年度帳目
-            </Text>
-            <ScrollView horizontal={true}>
-              <LineChart
-                data={{
-                  labels: [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December",
-                  ],
-                  datasets: [
-                    {
-                      data: currentYearExpense,
-                      color: (opacity = 1) => `rgba(35, 145, 32, ${opacity})`, // optional
-                      strokeWidth: 4, // optional
-                    },
-                  ],
-                }}
-                width={1000}
-                height={200}
-                chartConfig={chartConfig}
-                fromZero
-              />
-            </ScrollView>
-          </View>
-        ) : null}
-        <ScrollView
-        // horizontal={true}
-        //   refreshControl={
-        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        //   }
-        >
-          {data.error ? <Text>{data.error}</Text> : null}
 
+        <ScrollView>
+          {data.error ? <Text>{data.error}</Text> : null}
+          <View style={styles.middleContainer}>
+            <Text style={styles.itemLabel}>年度支出</Text>
+            <Text style={styles.itemLabel}>${totalExpense}</Text>
+          </View>
+          {currentYearExpense ? (
+            <View style={styles.LGmiddleContainer}>
+              <Text
+                style={{
+                  fontSize: 21.5,
+                  fontWeight: "bold",
+                  color: "#aab1b1",
+                  marginBottom: 20,
+                  borderBottomColor: "#32CD32",
+                  borderBottomWidth: 3,
+                  textAlign: "center",
+                }}
+              >
+                年度帳目
+              </Text>
+              <ScrollView horizontal={true}>
+                <LineChart
+                  data={{
+                    labels: [
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ],
+                    datasets: [
+                      {
+                        data: currentYearExpense,
+                        color: (opacity = 1) => `rgba(35, 145, 32, ${opacity})`, // optional
+                        strokeWidth: 4, // optional
+                      },
+                    ],
+                  }}
+                  width={1000}
+                  height={200}
+                  chartConfig={chartConfig}
+                  fromZero
+                />
+              </ScrollView>
+            </View>
+          ) : null}
           {Uniquedata ? (
             <View style={styles.centeredView}>
-              <View style={styles.middleContainer}>
-                <Text style={styles.itemLabel}>{totalExpense}</Text>
-              </View>
-              <View style={styles.middleContainer}>
-                <PieChart
-                  data={Uniquedata}
-                  width={300}
-                  height={300}
-                  chartConfig={chartConfig}
-                  accessor={"price"}
-                  backgroundColor={"transparent"}
-                  paddingLeft={"0"}
-                  center={[70, 0]}
-                  absolute
-                />
-              </View>
-              <View>
-                {currentYearExpense ? (
-                  <ScrollView horizontal={true}>
-                    <LineChart
-                      data={{
-                        labels: [
-                          "January",
-                          "February",
-                          "March",
-                          "April",
-                          "May",
-                          "June",
-                          "July",
-                          "August",
-                          "September",
-                          "October",
-                          "November",
-                          "December",
-                        ],
-                        datasets: [
-                          {
-                            data: currentYearExpense,
-                            color: (opacity = 1) =>
-                              `rgba(134, 65, 244, ${opacity})`, // optional
-                            strokeWidth: 2, // optional
-                          },
-                        ],
-                      }}
-                      width={1000}
-                      height={200}
-                      chartConfig={chartConfig}
-                      fromZero
-                    />
-                  </ScrollView>
-                ) : null}
-              </View>
+              <View style={styles.middleContainer}>{renderPieChart()}</View>
             </View>
           ) : (
             <Text>Loading data...</Text>
@@ -414,6 +450,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     borderColor: "#32BD32",
     borderWidth: 2.5,
+    marginTop: 20,
   },
   LGmiddleContainer: {
     backgroundColor: "#fff",
@@ -430,10 +467,22 @@ const styles = StyleSheet.create({
     borderColor: "#32BD32",
     borderWidth: 2.5,
   },
+  itemLabelContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
   itemLabel: {
     fontSize: 21.5,
     fontWeight: "bold",
     color: "#aab1b1",
+    marginBottom: 15,
+  },
+  totalItemLabel: {
+    fontSize: 21.5,
+    fontWeight: "bold",
+    color: "#333333",
     marginBottom: 15,
   },
 });
