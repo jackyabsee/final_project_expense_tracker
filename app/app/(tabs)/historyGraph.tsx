@@ -27,14 +27,18 @@ const colorScale = [
   "#FFC0CB",
 ];
 const chartConfig = {
-  backgroundGradientFrom: "#1E2923",
+  backgroundGradientFrom: "white",
   backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "#08130D",
+  backgroundGradientTo: "white",
   backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-  strokeWidth: 2, // optional, default 3
+  color: (opacity = 1) => `rgba(26, 154, 26, ${opacity})`,
   barPercentage: 0.5,
   useShadowColorFromDataset: false, // optional
+  propsForDots: {
+    r: "5",
+    strokeWidth: "4",
+    stroke: "#ffa726",
+  },
 };
 const historyGraph = () => {
   const router = useRouter();
@@ -165,6 +169,54 @@ const historyGraph = () => {
           <Button onPress={() => router.replace("/home")}>返回</Button>
         </View>
         <View></View>
+        {currentYearExpense ? (
+          <View style={styles.LGmiddleContainer}>
+            <Text
+              style={{
+                fontSize: 21.5,
+                fontWeight: "bold",
+                color: "#aab1b1",
+                marginBottom: 20,
+                borderBottomColor: "#32CD32",
+                borderBottomWidth: 3,
+                textAlign: "center",
+              }}
+            >
+              年度帳目
+            </Text>
+            <ScrollView horizontal={true}>
+              <LineChart
+                data={{
+                  labels: [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                  ],
+                  datasets: [
+                    {
+                      data: currentYearExpense,
+                      color: (opacity = 1) => `rgba(35, 145, 32, ${opacity})`, // optional
+                      strokeWidth: 4, // optional
+                    },
+                  ],
+                }}
+                width={1000}
+                height={200}
+                chartConfig={chartConfig}
+                fromZero
+              />
+            </ScrollView>
+          </View>
+        ) : null}
         <ScrollView
         // horizontal={true}
         //   refreshControl={
@@ -191,42 +243,7 @@ const historyGraph = () => {
                   absolute
                 />
               </View>
-              <View>
-                {currentYearExpense ? (
-                  <ScrollView horizontal={true}>
-                    <LineChart
-                      data={{
-                        labels: [
-                          "January",
-                          "February",
-                          "March",
-                          "April",
-                          "May",
-                          "June",
-                          "July",
-                          "August",
-                          "September",
-                          "October",
-                          "November",
-                          "December",
-                        ],
-                        datasets: [
-                          {
-                            data: currentYearExpense,
-                            color: (opacity = 1) =>
-                              `rgba(134, 65, 244, ${opacity})`, // optional
-                            strokeWidth: 2, // optional
-                          },
-                        ],
-                      }}
-                      width={1000}
-                      height={200}
-                      chartConfig={chartConfig}
-                      fromZero
-                    />
-                  </ScrollView>
-                ) : null}
-              </View>
+              <View></View>
             </View>
           ) : (
             <Text>Loading data...</Text>
@@ -360,6 +377,23 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "space-around",
+    borderColor: "#32BD32",
+    borderWidth: 2.5,
+  },
+  LGmiddleContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 18,
+    shadowColor: "grey",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    marginTop: 10,
+    marginBottom: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    width: "100%",
+    borderColor: "#32BD32",
+    borderWidth: 2.5,
   },
   itemLabel: {
     fontSize: 21.5,
