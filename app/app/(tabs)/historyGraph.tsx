@@ -113,7 +113,7 @@ const historyGraph = () => {
     console.log(dataItems);
     return (
       <>
-        <View>
+        <View style={styles.middleContainer}>
           <VictoryPie
             animate={{ duration: 3000 }}
             events={[
@@ -252,22 +252,6 @@ const historyGraph = () => {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          headerLeft: () => (
-            <Button
-              variant="solid"
-              style={{
-                width: 60,
-              }}
-              colorScheme="green"
-              onPress={() => router.replace("/home")}
-            >
-              返回
-            </Button>
-          ),
-        }}
-      />
       <SafeAreaView style={styles.container}>
         <ScrollView>
           {data.error ? <Text>{data.error}</Text> : null}
@@ -324,8 +308,8 @@ const historyGraph = () => {
             </View>
           ) : null}
           {Uniquedata ? (
-            <View style={styles.centeredView}>
-              <View style={styles.middleContainer}>{renderPieChart()}</View>
+            <View>
+              <View>{renderPieChart()}</View>
             </View>
           ) : (
             <Text>Loading data...</Text>
