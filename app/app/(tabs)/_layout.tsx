@@ -17,6 +17,10 @@ const Tabs_layout = () => {
         name="SavingTable"
         options={{ title: "資產", tabBarIconStyle: { display: "none" } }}
       />
+      <Tabs.Screen
+        name="historyGraph"
+        options={{ title: "歷史", tabBarIconStyle: { display: "none" } }}
+      />
     </Tabs>
   );
 };
