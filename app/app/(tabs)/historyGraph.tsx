@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { usePathname, useRouter } from "expo-router";
+import { Stack, usePathname, useRouter } from "expo-router";
 import { Button } from "native-base";
 import { background } from "native-base/lib/typescript/theme/styled-system";
 import { getHistory, deleteHistoryItem } from "../../api/api";
@@ -252,12 +252,23 @@ const historyGraph = () => {
 
   return (
     <>
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <Button
+              variant="solid"
+              style={{
+                width: 60,
+              }}
+              colorScheme="green"
+              onPress={() => router.replace("/home")}
+            >
+              返回
+            </Button>
+          ),
+        }}
+      />
       <SafeAreaView style={styles.container}>
-        <View>
-          <Button onPress={() => router.replace("/home")}>返回</Button>
-        </View>
-        <View></View>
-
         <ScrollView>
           {data.error ? <Text>{data.error}</Text> : null}
           <View style={styles.middleContainer}>
